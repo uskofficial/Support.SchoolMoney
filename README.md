@@ -1,1 +1,243 @@
-# Support.SchoolMoney
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - ระบบจัดการ School Money Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body { font-family: 'Kanit', sans-serif; background: #f1f5f9; margin: 0; color: #333; }
+        .sidebar { width: 250px; background: #1e3a8a; color: white; position: fixed; height: 100vh; padding: 20px; box-sizing: border-box; }
+        .sidebar h2 { font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; }
+        .nav-btn { display: block; width: 100%; text-align: left; background: none; border: none; color: white; padding: 15px; font-size: 16px; cursor: pointer; border-radius: 8px; margin-bottom: 10px; font-family: 'Kanit', sans-serif;}
+        .nav-btn:hover, .nav-btn.active { background: #3b82f6; }
+        
+        .main-content { margin-left: 250px; padding: 30px; }
+        .section { display: none; }
+        .section.active { display: block; }
+        
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f8fafc; color: #475569; }
+        
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge.pending { background: #fef3c7; color: #d97706; }
+        .badge.replied { background: #dcfce3; color: #16a34a; }
+        
+        button { font-family: 'Kanit', sans-serif; cursor: pointer; border: none; border-radius: 6px; padding: 8px 12px; font-size: 14px; transition: 0.2s; }
+        .btn-blue { background: #3b82f6; color: white; }
+        .btn-green { background: #10b981; color: white; }
+        .btn-red { background: #ef4444; color: white; }
+        .btn-blue:hover { background: #2563eb; }
+        .btn-green:hover { background: #059669; }
+        .btn-red:hover { background: #dc2626; }
+
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Kanit', sans-serif; margin-bottom: 10px; box-sizing: border-box; }
+        
+        .notification-bell {
+            position: absolute; right: 30px; top: 30px; font-size: 24px; color: #ef4444; display: none; animation: shake 1s infinite;
+        }
+        @keyframes shake { 0% { transform: rotate(0); } 25% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 100% { transform: rotate(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา</button>
+        <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
+    </div>
+
+    <div class="main-content">
+        <i class="fas fa-bell notification-bell" id="notiBell" title="มีรายงานใหม่!"></i>
+
+        <div id="reports" class="section active">
+            <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>สถานะ</th>
+                            <th>เวลาที่เกิดเหตุ</th>
+                            <th>ชื่อ-สกุล</th>
+                            <th>ประเภทปัญหา</th>
+                            <th>ติดต่อ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTableBody">
+                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="faqs" class="section">
+            <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
+            <div class="card">
+                <h3>เพิ่มคำถามใหม่</h3>
+                <input type="text" id="faqQ" placeholder="คำถาม...">
+                <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
+                <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
+            </div>
+            
+            <div class="card">
+                <h3>รายการคำถามปัจจุบัน</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>คำถาม</th>
+                            <th>คำตอบ</th>
+                            <th width="100">ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="faqsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, onValue, update, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
+            authDomain: "support-schoolmoney.firebaseapp.com",
+            databaseURL: "https://support-schoolmoney-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "support-schoolmoney",
+            storageBucket: "support-schoolmoney.firebasestorage.app",
+            messagingSenderId: "876403473371",
+            appId: "1:876403473371:web:d3c4021983f8f45fc405fe",
+            measurementId: "G-D1JZG6ECL2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // --- ระบบจัดการ Tab ---
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // --- ดึงข้อมูลรายงานปัญหา ---
+        let initialLoad = true;
+        const reportsRef = ref(db, 'reports');
+        onValue(reportsRef, (snapshot) => {
+            const data = snapshot.val();
+            const tbody = document.getElementById('reportsTableBody');
+            tbody.innerHTML = '';
+            
+            if (data) {
+                const keys = Object.keys(data).reverse(); // เรียงจากใหม่ไปเก่า
+                let hasNew = false;
+
+                keys.forEach(key => {
+                    const r = data[key];
+                    if(r.status === 'pending') hasNew = true;
+
+                    const statusBadge = r.status === 'replied' ? '<span class="badge replied">ตอบกลับแล้ว</span>' : '<span class="badge pending">ยังไม่ตอบกลับ</span>';
+                    const btnToggle = r.status === 'replied' ? 
+                        `<button class="btn-red" onclick="toggleStatus('${key}', 'pending')">ยกเลิกการตอบ</button>` : 
+                        `<button class="btn-green" onclick="toggleStatus('${key}', 'replied')">กดว่าตอบแล้ว</button>`;
+                    
+                    const btnImage = r.image ? `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${statusBadge}</td>
+                            <td>${new Date(r.timestamp).toLocaleString('th-TH')}</td>
+                            <td>${r.name}</td>
+                            <td><b>${r.type}</b><br><span style="font-size:12px; color:#666;">${r.description}</span></td>
+                            <td>${r.contact}<br><span style="font-size:11px; color:#999;">อุปกรณ์: ${r.device}</span></td>
+                            <td style="white-space:nowrap;">${btnToggle} ${btnImage}</td>
+                        </tr>
+                    `;
+                });
+
+                // แจ้งเตือนเมื่อมีรายการใหม่
+                if (!initialLoad && hasNew) {
+                    document.getElementById('notiBell').style.display = 'block';
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'มีรายงานปัญหาใหม่เข้ามา', showConfirmButton: false, timer: 3000 });
+                } else {
+                    document.getElementById('notiBell').style.display = 'none';
+                }
+            } else {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
+            }
+            initialLoad = false;
+        });
+
+        // อัปเดตสถานะ
+        window.toggleStatus = function(key, newStatus) {
+            update(ref(db, `reports/${key}`), { status: newStatus });
+        }
+
+        // ดูรูปภาพแนบ
+        window.viewImage = function(key) {
+            onValue(ref(db, `reports/${key}`), (snapshot) => {
+                const r = snapshot.val();
+                if(r && r.image) {
+                    Swal.fire({
+                        imageUrl: r.image,
+                        imageWidth: '100%',
+                        imageAlt: 'Screenshot',
+                        confirmButtonText: 'ปิด',
+                        width: '80%'
+                    });
+                }
+            }, { onlyOnce: true });
+        }
+
+        // --- จัดการคำถามที่พบบ่อย (FAQ) ---
+        const faqsRef = ref(db, 'faqs');
+        onValue(faqsRef, (snapshot) => {
+            const data = snapshot.val();
+            const tbody = document.getElementById('faqsTableBody');
+            tbody.innerHTML = '';
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const item = data[key];
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.question}</td>
+                            <td>${item.answer}</td>
+                            <td><button class="btn-red" onclick="deleteFaq('${key}')">ลบ</button></td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
+            }
+        });
+
+        // เพิ่ม FAQ
+        document.getElementById('btnAddFaq').addEventListener('click', () => {
+            const q = document.getElementById('faqQ').value.trim();
+            const a = document.getElementById('faqA').value.trim();
+            if(!q || !a) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+
+            push(faqsRef, { question: q, answer: a }).then(() => {
+                document.getElementById('faqQ').value = '';
+                document.getElementById('faqA').value = '';
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่ม FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
+            });
+        });
+
+        // ลบ FAQ
+        window.deleteFaq = function(key) {
+            if(confirm('ต้องการลบคำถามนี้หรือไม่?')) {
+                remove(ref(db, `faqs/${key}`));
+            }
+        }
+    </script>
+</body>
+</html>
