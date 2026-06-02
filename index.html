@@ -8,26 +8,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        /* [cite: 2] */
         body { font-family: 'Kanit', sans-serif; background: #f1f5f9; margin: 0; color: #333; }
-        .sidebar { width: 250px; background: #1e3a8a; color: white; position: fixed; height: 100vh; padding: 20px; box-sizing: border-box; }
+        
+        /* [cite: 3, 4, 5, 6, 7, 8] Sidebar Styles */
+        .sidebar { width: 250px; background: #1e3a8a; color: white; position: fixed; height: 100vh; padding: 20px; box-sizing: border-box; z-index: 100;}
         .sidebar h2 { font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; }
         .nav-btn { display: block; width: 100%; text-align: left; background: none; border: none; color: white; padding: 15px; font-size: 16px; cursor: pointer; border-radius: 8px; margin-bottom: 10px; font-family: 'Kanit', sans-serif;}
         .nav-btn:hover, .nav-btn.active { background: #3b82f6; }
         
+        /* [cite: 9, 10, 11] Main Content Styles */
         .main-content { margin-left: 250px; padding: 30px; }
         .section { display: none; }
         .section.active { display: block; }
         
+        /* [cite: 12, 13, 14, 15, 16] Card & Table Styles */
         .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
         th { background: #f8fafc; color: #475569; }
         
+        /* [cite: 17, 18, 19] Badge Styles */
         .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge.pending { background: #fef3c7; color: #d97706; }
         .badge.replied { background: #dcfce3; color: #16a34a; }
         
+        /* [cite: 20, 21, 22, 23, 24, 25, 26, 27] Button Styles */
         button { font-family: 'Kanit', sans-serif; cursor: pointer; border: none; border-radius: 6px; padding: 8px 12px; font-size: 14px; transition: 0.2s; }
         .btn-blue { background: #3b82f6; color: white; }
         .btn-green { background: #10b981; color: white; }
@@ -35,133 +41,264 @@
         .btn-blue:hover { background: #2563eb; }
         .btn-green:hover { background: #059669; }
         .btn-red:hover { background: #dc2626; }
+        .btn-gray { background: #64748b; color: white; }
+        .btn-gray:hover { background: #475569; }
 
+        /* [cite: 28, 29] Input Styles */
         input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Kanit', sans-serif; margin-bottom: 10px; box-sizing: border-box; }
         select { background: #fff; }
         
-        .notification-bell {
-            position: absolute; right: 30px; top: 30px; font-size: 24px; color: #ef4444; display: none; animation: shake 1s infinite;
-        }
+        /* [cite: 30, 31, 32, 33] Notification Styles */
+        .notification-bell { position: absolute; right: 30px; top: 30px; font-size: 24px; color: #ef4444; display: none; animation: shake 1s infinite; }
         @keyframes shake { 0% { transform: rotate(0); } 25% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 100% { transform: rotate(0); } }
 
-        /* จัดรูปแบบพรีวิวประกาศ */
+        /* [cite: 34, 35, 36] Preview Styles */
         .preview-box { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 10px; text-align: center; background: #f8fafc; margin-top: 15px; position: relative; overflow: hidden; }
         .preview-box img, .preview-box video { max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; }
+
+        /* New Styles for Login and Layout */
+        #loginPage { display: flex; justify-content: center; align-items: center; height: 100vh; background: #1e3a8a; }
+        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 100%; max-width: 400px; text-align: center; }
+        .login-card h2 { margin-top: 0; color: #1e3a8a; margin-bottom: 20px; }
+        .sub-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .sub-tab-btn { flex: 1; padding: 10px; background: #e2e8f0; color: #475569; border-radius: 8px; text-align: center; cursor: pointer; font-weight: 500; transition: 0.3s;}
+        .sub-tab-btn.active { background: #3b82f6; color: white; }
+        .sub-content { display: none; }
+        .sub-content.active { display: block; }
+        .log-table { font-size: 13px; }
+        #appPage { display: none; }
+        .user-info { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); text-align: center; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <h2>Admin Panel</h2>
-        <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา</button>
-        <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
-        <button class="nav-btn" onclick="switchTab('announcement')"><i class="fas fa-bullhorn"></i> จัดการประกาศหน้าแรก</button>
+    <div id="loginPage">
+        <div class="login-card">
+            <h2><i class="fas fa-lock"></i> เข้าสู่ระบบแอดมิน</h2>
+            <input type="email" id="loginEmail" placeholder="อีเมลแอดมิน">
+            <input type="password" id="loginPassword" placeholder="รหัสผ่าน">
+            <button class="btn-blue" style="width: 100%; font-size: 16px; padding: 12px;" onclick="handleLogin()">เข้าสู่ระบบ</button>
+        </div>
     </div>
 
-    <div class="main-content">
-        <i class="fas fa-bell notification-bell" id="notiBell" title="มีรายงานใหม่!"></i>
-
-        <div id="reports" class="section active">
-            <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
-        
-            <div class="card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>สถานะ</th>
-                            <th>เวลาที่เกิดเหตุ</th>
-                            <th>ชื่อ-สกุล</th>
-                            <th>ประเภทปัญหา</th>
-                            <th>ติดต่อ</th>
-                            <th>จัดการ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="reportsTableBody">
-                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="faqs" class="section">
-            <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
-            <div class="card">
-                <h3>เพิ่มคำถามใหม่</h3>
-                <input type="text" id="faqQ" placeholder="คำถาม...">
-                <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
-                <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
-            </div>
+    <div id="appPage">
+        <div class="sidebar">
+            <h2>Admin Panel</h2>
+            <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา</button>
+            <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
+            <button class="nav-btn" onclick="switchTab('announcement')"><i class="fas fa-bullhorn"></i> จัดการประกาศหน้าแรก</button>
+            <button class="nav-btn" onclick="switchTab('admins')" id="navAdminManage"><i class="fas fa-users-cog"></i> จัดการแอดมิน</button>
+            <button class="nav-btn" onclick="switchTab('logs')"><i class="fas fa-history"></i> ประวัติระบบ</button>
             
-            <div class="card">
-                <h3>รายการคำถามปัจจุบัน</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>คำถาม</th>
-                            <th>คำตอบ</th>
-                            <th width="100">ลบ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="faqsTableBody">
-                    </tbody>
-                </table>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i> <span id="displayUserEmail"></span><br>
+                <button class="btn-red" style="margin-top: 10px; width: 100%;" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</button>
             </div>
         </div>
 
-        <div id="announcement" class="section">
-            <h2>จัดการประกาศแจ้งเตือนหน้าแรก (Startup Popup)</h2>
-            <div class="card">
-                <h3>ตั้งค่าการแสดงผล</h3>
-                <label style="font-weight: 500; font-size: 14px;">สถานะการแสดงผล:</label>
-                <select id="annActive">
-                    <option value="false">ปิดการใช้งาน (ซ่อน)</option>
-                    <option value="true">เปิดการใช้งาน (แสดงผลทุกครั้งที่โหลดหน้าแรก)</option>
-                </select>
+        <div class="main-content">
+            <i class="fas fa-bell notification-bell" id="notiBell" title="มีรายงานใหม่!"></i>
 
-                <label style="font-weight: 500; font-size: 14px;">ประเภทสื่อ:</label>
-                <select id="annType">
-                    <option value="image">รูปภาพ (Image)</option>
-                    <option value="video">วีดิโอ (Video)</option>
-                </select>
-
-                <label style="font-weight: 500; font-size: 14px;">แหล่งที่มาของไฟล์:</label>
-                <select id="annSource" onchange="toggleAnnSource()">
-                    <option value="url">แนบลิงก์ (URL) - แนะนำสำหรับวีดิโอ/รูปภาพใหญ่</option>
-                    <option value="upload">อัปโหลดจากอุปกรณ์ - แนะนำเฉพาะรูปภาพไม่เกิน 3MB</option>
-                </select>
-
-                <div id="annUrlDiv">
-                    <label style="font-weight: 500; font-size: 14px;">ลิงก์สื่อ (URL):</label>
-                    <input type="text" id="annUrl" placeholder="ตัวอย่าง: https://example.com/image.jpg หรือลิงก์ mp4">
+            <div id="reports" class="section active">
+                <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
+                
+                <div class="sub-tabs">
+                    <div class="sub-tab-btn active" onclick="switchSubTab('reports', 'pendingBox')">รอดำเนินการ <span id="pendingCount" class="badge pending">0</span></div>
+                    <div class="sub-tab-btn" onclick="switchSubTab('reports', 'repliedBox')">ตอบกลับแล้ว <span id="repliedCount" class="badge replied">0</span></div>
                 </div>
 
-                <div id="annUploadDiv" style="display: none;">
-                    <label style="font-weight: 500; font-size: 14px;">อัปโหลดไฟล์สื่อ:</label>
-                    <input type="file" id="annFile" accept="image/*,video/mp4" style="padding: 6px;">
+                <div id="pendingBox" class="sub-content active">
+                    <div class="card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>สถานะ</th>
+                                    <th>เวลาที่เกิดเหตุ</th>
+                                    <th>ชื่อ-สกุล</th>
+                                    <th>ประเภทปัญหา</th>
+                                    <th>ติดต่อ</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTableBody">
+                                <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <label style="font-weight: 500; font-size: 14px;">เวลาที่จะแสดงก่อนปิดอัตโนมัติ (วินาที):</label>
-                <input type="number" id="annDuration" placeholder="เช่น 5 (กรอก 0 หากต้องการให้ผู้ใช้กดกากบาทปิดเองเท่านั้น)" value="5">
-
-                <div style="margin-top: 15px;">
-                    <button class="btn-blue" onclick="saveAnnouncement()"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
-                    <button class="btn-red" style="margin-left: 10px;" onclick="deleteAnnouncement()"><i class="fas fa-trash"></i> ลบประกาศทิ้งทั้งหมด</button>
+                <div id="repliedBox" class="sub-content">
+                    <div class="card">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>สถานะ</th>
+                                    <th>เวลาที่เกิดเหตุ</th>
+                                    <th>ชื่อ-สกุล</th>
+                                    <th>ประเภทปัญหา</th>
+                                    <th>ติดต่อ</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="repliedReportsTableBody">
+                                <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div class="card">
-                <h3>ตัวอย่างการแสดงผลปัจจุบัน</h3>
-                <div class="preview-box" id="annPreviewBox">
-                    <p style="color: #94a3b8; margin: 20px 0;">ระบบกำลังโหลดข้อมูล...</p>
+            <div id="faqs" class="section">
+                <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
+                <div class="card">
+                    <h3>เพิ่มคำถามใหม่</h3>
+                    <input type="text" id="faqQ" placeholder="คำถาม...">
+                    <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
+                    <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
+                </div>
+                
+                <div class="card">
+                    <h3>รายการคำถามปัจจุบัน</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>คำถาม</th>
+                                <th>คำตอบ</th>
+                                <th width="100">ลบ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="faqsTableBody">
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            <div id="announcement" class="section">
+                <h2>จัดการประกาศแจ้งเตือนหน้าแรก (Startup Popup)</h2>
+                <div class="card">
+                    <h3>ตั้งค่าการแสดงผล</h3>
+                    <label style="font-weight: 500; font-size: 14px;">สถานะการแสดงผล:</label>
+                    <select id="annActive">
+                        <option value="false">ปิดการใช้งาน (ซ่อน)</option>
+                        <option value="true">เปิดการใช้งาน (แสดงผลทุกครั้งที่โหลดหน้าแรก)</option>
+                    </select>
+
+                    <label style="font-weight: 500; font-size: 14px;">ประเภทสื่อ:</label>
+                    <select id="annType">
+                        <option value="image">รูปภาพ (Image)</option>
+                        <option value="video">วีดิโอ (Video)</option>
+                    </select>
+
+                    <label style="font-weight: 500; font-size: 14px;">แหล่งที่มาของไฟล์:</label>
+                    <select id="annSource" onchange="toggleAnnSource()">
+                        <option value="url">แนบลิงก์ (URL) - แนะนำสำหรับวีดิโอ/รูปภาพใหญ่</option>
+                        <option value="upload">อัปโหลดจากอุปกรณ์ - แนะนำเฉพาะรูปภาพไม่เกิน 3MB</option>
+                    </select>
+
+                    <div id="annUrlDiv">
+                        <label style="font-weight: 500; font-size: 14px;">ลิงก์สื่อ (URL):</label>
+                        <input type="text" id="annUrl" placeholder="ตัวอย่าง: https://example.com/image.jpg หรือลิงก์ mp4">
+                    </div>
+
+                    <div id="annUploadDiv" style="display: none;">
+                        <label style="font-weight: 500; font-size: 14px;">อัปโหลดไฟล์สื่อ:</label>
+                        <input type="file" id="annFile" accept="image/*,video/mp4" style="padding: 6px;">
+                    </div>
+
+                    <label style="font-weight: 500; font-size: 14px;">เวลาที่จะแสดงก่อนปิดอัตโนมัติ (วินาที):</label>
+                    <input type="number" id="annDuration" placeholder="เช่น 5 (กรอก 0 หากต้องการให้ผู้ใช้กดกากบาทปิดเองเท่านั้น)" value="5">
+
+                    <div style="margin-top: 15px;">
+                        <button class="btn-blue" onclick="saveAnnouncement()"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
+                        <button class="btn-red" style="margin-left: 10px;" onclick="deleteAnnouncement()"><i class="fas fa-trash"></i> ลบประกาศทิ้งทั้งหมด</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>ตัวอย่างการแสดงผลปัจจุบัน</h3>
+                    <div class="preview-box" id="annPreviewBox">
+                        <p style="color: #94a3b8; margin: 20px 0;">ระบบกำลังโหลดข้อมูล...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admins" class="section">
+                <h2>จัดการบัญชีผู้ดูแลระบบ</h2>
+                
+                <div class="card" id="myPasswordCard">
+                    <h3>เปลี่ยนรหัสผ่านของฉัน</h3>
+                    <input type="password" id="myNewPassword" placeholder="รหัสผ่านใหม่">
+                    <button class="btn-blue" onclick="changeMyPassword()">อัปเดตรหัสผ่าน</button>
+                </div>
+
+                <div class="card" id="superAdminCard" style="display: none;">
+                    <h3>เพิ่มแอดมินใหม่ (เฉพาะ Super Admin)</h3>
+                    <input type="email" id="newAdminEmail" placeholder="อีเมล">
+                    <input type="text" id="newAdminPassword" placeholder="รหัสผ่าน">
+                    <button class="btn-green" onclick="addNewAdmin()"><i class="fas fa-plus"></i> เพิ่มแอดมิน</button>
+                    
+                    <h3 style="margin-top: 20px;">รายชื่อผู้ดูแลระบบทั้งหมด</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>อีเมล</th>
+                                <th>รหัสผ่าน</th>
+                                <th>สิทธิ์</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="logs" class="section">
+                <h2>ประวัติการใช้งานระบบ</h2>
+                <div class="sub-tabs">
+                    <div class="sub-tab-btn active" onclick="switchSubTab('logs', 'systemLogsBox')">กิจกรรมในระบบ</div>
+                    <div class="sub-tab-btn" onclick="switchSubTab('logs', 'loginLogsBox')">ประวัติการล็อกอิน</div>
+                </div>
+
+                <div id="systemLogsBox" class="sub-content active">
+                    <div class="card">
+                        <table class="log-table">
+                            <thead>
+                                <tr>
+                                    <th>วันเวลา</th>
+                                    <th>ผู้ใช้งาน</th>
+                                    <th>กิจกรรม</th>
+                                </tr>
+                            </thead>
+                            <tbody id="systemLogsBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="loginLogsBox" class="sub-content">
+                    <div class="card">
+                        <table class="log-table">
+                            <thead>
+                                <tr>
+                                    <th>วันเวลา</th>
+                                    <th>ผู้ใช้งาน</th>
+                                    <th>สถานะ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loginLogsBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, onValue, update, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getDatabase, ref, onValue, update, push, set, remove, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
             authDomain: "support-schoolmoney.firebaseapp.com",
@@ -176,7 +313,88 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // --- ระบบจัดการ Tab ---
+        // --- ระบบ Auth เบื้องต้น ---
+        let currentUser = null;
+
+        // เช็คและสร้าง Super Admin อัตโนมัติหากยังไม่มี
+        async function initSuperAdmin() {
+            const adminRef = ref(db, 'admins/superadmin');
+            const snapshot = await get(adminRef);
+            if (!snapshot.exists()) {
+                await set(adminRef, {
+                    email: 'admin@usk.ac.th',
+                    password: '12345678919',
+                    role: 'superadmin'
+                });
+            }
+        }
+        initSuperAdmin();
+
+        window.handleLogin = async function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            
+            if (!email || !password) return Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูลให้ครบ', 'warning');
+            Swal.fire({ title: 'กำลังตรวจสอบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            const adminsRef = ref(db, 'admins');
+            const snapshot = await get(adminsRef);
+            
+            if (snapshot.exists()) {
+                const admins = snapshot.val();
+                let foundAdmin = null;
+                let adminKey = null;
+
+                for (const key in admins) {
+                    if (admins[key].email === email && admins[key].password === password) {
+                        foundAdmin = admins[key];
+                        adminKey = key;
+                        break;
+                    }
+                }
+
+                if (foundAdmin) {
+                    currentUser = { id: adminKey, ...foundAdmin };
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('appPage').style.display = 'block';
+                    document.getElementById('displayUserEmail').innerText = currentUser.email;
+                    
+                    if (currentUser.role === 'superadmin') {
+                        document.getElementById('superAdminCard').style.display = 'block';
+                    } else {
+                        document.getElementById('superAdminCard').style.display = 'none';
+                    }
+
+                    logActivity('login', `เข้าสู่ระบบสำเร็จ`);
+                    Swal.close();
+                } else {
+                    logActivity('login', `พยายามเข้าสู่ระบบแต่รหัสผ่านผิด: ${email}`);
+                    Swal.fire('ข้อผิดพลาด', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', 'error');
+                }
+            }
+        };
+
+        window.handleLogout = function() {
+            logActivity('login', `ออกจากระบบ`);
+            currentUser = null;
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('appPage').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        };
+
+        // --- ระบบ Log ---
+        function logActivity(type, detail) {
+            if (!currentUser && type !== 'login') return;
+            const logRef = ref(db, `logs/${type}`);
+            push(logRef, {
+                timestamp: new Date().toISOString(),
+                user: currentUser ? currentUser.email : 'Unknown',
+                detail: detail
+            });
+        }
+
+        // --- ระบบจัดการ Tab [cite: 57, 58] ---
         window.switchTab = function(tabId) {
             document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
@@ -184,31 +402,50 @@
             event.currentTarget.classList.add('active');
         }
 
-        // --- ดึงข้อมูลรายงานปัญหา ---
+        window.switchSubTab = function(parentSection, boxId) {
+            const section = document.getElementById(parentSection);
+            section.querySelectorAll('.sub-content').forEach(el => el.classList.remove('active'));
+            section.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(boxId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // --- ดึงข้อมูลรายงานปัญหา [cite: 59, 60] ---
         let initialLoad = true;
         const reportsRef = ref(db, 'reports');
         onValue(reportsRef, (snapshot) => {
             const data = snapshot.val();
-            const tbody = document.getElementById('reportsTableBody');
-            tbody.innerHTML = '';
+            const pendingTbody = document.getElementById('reportsTableBody');
+            const repliedTbody = document.getElementById('repliedReportsTableBody');
+            pendingTbody.innerHTML = '';
+            repliedTbody.innerHTML = '';
             
+            let pCount = 0;
+            let rCount = 0;
+
             if (data) {
-                const keys = Object.keys(data).reverse(); // เรียงจากใหม่ไปเก่า
+                const keys = Object.keys(data).reverse(); 
                 let hasNew = false;
 
                 keys.forEach(key => {
                     const r = data[key];
-                    if(r.status === 'pending') hasNew = true;
+                    if(r.status === 'pending') {
+                        hasNew = true;
+                        pCount++;
+                    } else {
+                        rCount++;
+                    }
 
+                    // [cite: 61, 62, 63]
                     const statusBadge = r.status === 'replied' ? '<span class="badge replied">ตอบกลับแล้ว</span>' : '<span class="badge pending">ยังไม่ตอบกลับ</span>';
                     const btnToggle = r.status === 'replied' ? 
-                        `<button class="btn-red" onclick="toggleStatus('${key}', 'pending')">ยกเลิกการตอบ</button>` : 
-                        `<button class="btn-green" onclick="toggleStatus('${key}', 'replied')">กดว่าตอบแล้ว</button>`;
+                        `<button class="btn-red" onclick="toggleStatus('${key}', 'pending', '${r.name}')">ย้ายกลับไปรอดำเนินการ</button>` : 
+                        `<button class="btn-green" onclick="toggleStatus('${key}', 'replied', '${r.name}')">กดว่าตอบแล้ว</button>`;
                     
-                    const btnImage = r.image ?
-                        `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
+                    const btnImage = r.image ? `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
 
-                    tbody.innerHTML += `
+                    // [cite: 64, 65]
+                    const rowHtml = `
                         <tr>
                             <td>${statusBadge}</td>
                             <td>${new Date(r.timestamp).toLocaleString('th-TH')}</td>
@@ -218,27 +455,40 @@
                             <td style="white-space:nowrap;">${btnToggle} ${btnImage}</td>
                         </tr>
                     `;
-                });
 
-                // แจ้งเตือนเมื่อมีรายการใหม่
+                    if(r.status === 'replied') {
+                        repliedTbody.innerHTML += rowHtml;
+                    } else {
+                        pendingTbody.innerHTML += rowHtml;
+                    }
+                }); // [cite: 66]
+
+                // [cite: 67, 68, 69, 70]
                 if (!initialLoad && hasNew) {
                     document.getElementById('notiBell').style.display = 'block';
                     Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'มีรายงานปัญหาใหม่เข้ามา', showConfirmButton: false, timer: 3000 });
                 } else {
                     document.getElementById('notiBell').style.display = 'none';
                 }
-            } else {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
             }
+            
+            if(pCount === 0) pendingTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
+            if(rCount === 0) repliedTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
+            
+            document.getElementById('pendingCount').innerText = pCount;
+            document.getElementById('repliedCount').innerText = rCount;
+
             initialLoad = false;
         });
 
-        // อัปเดตสถานะ
-        window.toggleStatus = function(key, newStatus) {
-            update(ref(db, `reports/${key}`), { status: newStatus });
+        // [cite: 71, 72] อัปเดตสถานะ
+        window.toggleStatus = function(key, newStatus, name) {
+            update(ref(db, `reports/${key}`), { status: newStatus }).then(() => {
+                logActivity('system', `เปลี่ยนสถานะรายงานของ ${name} เป็น ${newStatus}`);
+            });
         }
 
-        // ดูรูปภาพแนบ
+        // [cite: 72, 73, 74, 75] ดูรูปภาพแนบ
         window.viewImage = function(key) {
             onValue(ref(db, `reports/${key}`), (snapshot) => {
                 const r = snapshot.val();
@@ -254,7 +504,7 @@
             }, { onlyOnce: true });
         }
 
-        // --- จัดการคำถามที่พบบ่อย (FAQ) ---
+        // --- [cite: 75, 76, 77, 78, 79] จัดการคำถามที่พบบ่อย (FAQ) ---
         const faqsRef = ref(db, 'faqs');
         onValue(faqsRef, (snapshot) => {
             const data = snapshot.val();
@@ -267,7 +517,7 @@
                         <tr>
                             <td>${item.question}</td>
                             <td>${item.answer}</td>
-                            <td><button class="btn-red" onclick="deleteFaq('${key}')">ลบ</button></td>
+                            <td><button class="btn-red" onclick="deleteFaq('${key}', '${item.question.substring(0, 15)}')">ลบ</button></td>
                         </tr>
                     `;
                 });
@@ -276,7 +526,7 @@
             }
         });
 
-        // เพิ่ม FAQ
+        // [cite: 80, 81] เพิ่ม FAQ
         document.getElementById('btnAddFaq').addEventListener('click', () => {
             const q = document.getElementById('faqQ').value.trim();
             const a = document.getElementById('faqA').value.trim();
@@ -285,18 +535,21 @@
             push(faqsRef, { question: q, answer: a }).then(() => {
                 document.getElementById('faqQ').value = '';
                 document.getElementById('faqA').value = '';
+                logActivity('system', `เพิ่ม FAQ: ${q.substring(0, 20)}...`);
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่ม FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
             });
         });
 
-        // ลบ FAQ
-        window.deleteFaq = function(key) {
+        // [cite: 82, 83] ลบ FAQ
+        window.deleteFaq = function(key, qSnippet) {
             if(confirm('ต้องการลบคำถามนี้หรือไม่?')) {
-                remove(ref(db, `faqs/${key}`));
+                remove(ref(db, `faqs/${key}`)).then(() => {
+                    logActivity('system', `ลบ FAQ: ${qSnippet}...`);
+                });
             }
         }
 
-        // --- จัดการประกาศหน้าแรก (Announcement / Popup) ---
+        // --- [cite: 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94] จัดการประกาศหน้าแรก (Announcement / Popup) ---
         const annRef = ref(db, 'announcement');
         let currentAnnData = null;
 
@@ -317,15 +570,12 @@
             const previewBox = document.getElementById('annPreviewBox');
             
             if (data) {
-                // อัปเดตฟอร์มให้ตรงกับข้อมูลปัจจุบัน
                 document.getElementById('annActive').value = data.isActive ? "true" : "false";
                 document.getElementById('annType').value = data.mediaType || 'image';
                 document.getElementById('annDuration').value = data.duration || 0;
                 
-                // อัปเดตหน้าจอพรีวิว
                 if (data.mediaUrl) {
                     let badge = data.isActive ? '<span class="badge replied" style="position:absolute; top:10px; right:10px;">เปิดใช้งานอยู่</span>' : '<span class="badge pending" style="position:absolute; top:10px; right:10px;">ปิดใช้งานแล้ว</span>';
-                    
                     if (data.mediaType === 'video') {
                         previewBox.innerHTML = `${badge}<video src="${data.mediaUrl}" autoplay loop muted controls></video>`;
                     } else {
@@ -340,6 +590,7 @@
             }
         });
 
+        // [cite: 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108]
         window.saveAnnouncement = async function() {
             const isActive = document.getElementById('annActive').value === "true";
             const mediaType = document.getElementById('annType').value;
@@ -349,7 +600,6 @@
             let mediaUrl = currentAnnData ? currentAnnData.mediaUrl : "";
 
             Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-
             try {
                 if (source === 'url') {
                     const urlInput = document.getElementById('annUrl').value.trim();
@@ -378,11 +628,9 @@
                     duration: duration,
                     updatedAt: new Date().toISOString()
                 };
-
                 await set(annRef, annDataToSave);
+                logActivity('system', `ตั้งค่าประกาศหน้าแรก (สถานะ: ${isActive})`);
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'บันทึกการตั้งค่าสำเร็จ', showConfirmButton: false, timer: 2000 });
-                
-                // เคลียร์ช่อง input
                 document.getElementById('annUrl').value = '';
                 document.getElementById('annFile').value = '';
                 
@@ -392,16 +640,102 @@
             }
         };
 
+        // [cite: 109, 110, 111, 112]
         window.deleteAnnouncement = async function() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
                 try {
                     await remove(annRef);
+                    logActivity('system', `ลบข้อมูลประกาศหน้าแรกทั้งหมด`);
                     Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'ลบข้อมูลสำเร็จ', showConfirmButton: false, timer: 2000 });
                 } catch (error) {
                     Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบข้อมูลได้', 'error');
                 }
             }
         };
+
+        // --- ระบบจัดการ Admin ---
+        const adminsRef = ref(db, 'admins');
+        onValue(adminsRef, (snapshot) => {
+            const data = snapshot.val();
+            const tbody = document.getElementById('adminsTableBody');
+            tbody.innerHTML = '';
+            if (data && currentUser && currentUser.role === 'superadmin') {
+                Object.keys(data).forEach(key => {
+                    const admin = data[key];
+                    const delBtn = admin.role === 'superadmin' ? '' : `<button class="btn-red" onclick="deleteAdmin('${key}', '${admin.email}')">ลบ</button>`;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${admin.email}</td>
+                            <td>${admin.password}</td>
+                            <td>${admin.role}</td>
+                            <td>${delBtn}</td>
+                        </tr>
+                    `;
+                });
+            }
+        });
+
+        window.addNewAdmin = function() {
+            const email = document.getElementById('newAdminEmail').value.trim();
+            const password = document.getElementById('newAdminPassword').value.trim();
+            if(!email || !password) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+
+            push(adminsRef, { email: email, password: password, role: 'admin' }).then(() => {
+                document.getElementById('newAdminEmail').value = '';
+                document.getElementById('newAdminPassword').value = '';
+                logActivity('system', `เพิ่มแอดมินใหม่: ${email}`);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่มแอดมินสำเร็จ', showConfirmButton: false, timer: 2000 });
+            });
+        };
+
+        window.deleteAdmin = function(key, email) {
+            if(confirm(`ต้องการลบแอดมิน ${email} ใช่หรือไม่?`)) {
+                remove(ref(db, `admins/${key}`)).then(() => {
+                    logActivity('system', `ลบแอดมิน: ${email}`);
+                });
+            }
+        };
+
+        window.changeMyPassword = function() {
+            const newPass = document.getElementById('myNewPassword').value.trim();
+            if(!newPass) return alert('กรุณากรอกรหัสผ่านใหม่');
+
+            update(ref(db, `admins/${currentUser.id}`), { password: newPass }).then(() => {
+                currentUser.password = newPass;
+                document.getElementById('myNewPassword').value = '';
+                logActivity('system', `เปลี่ยนรหัสผ่านของตัวเอง`);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'อัปเดตรหัสผ่านสำเร็จ', showConfirmButton: false, timer: 2000 });
+            });
+        };
+
+        // --- ดึงข้อมูล Logs ---
+        const sysLogRef = ref(db, 'logs/system');
+        onValue(sysLogRef, (snapshot) => {
+            const data = snapshot.val();
+            const tbody = document.getElementById('systemLogsBody');
+            tbody.innerHTML = '';
+            if (data) {
+                const keys = Object.keys(data).reverse();
+                keys.forEach(key => {
+                    const log = data[key];
+                    tbody.innerHTML += `<tr><td>${new Date(log.timestamp).toLocaleString('th-TH')}</td><td>${log.user}</td><td>${log.detail}</td></tr>`;
+                });
+            }
+        });
+
+        const loginLogRef = ref(db, 'logs/login');
+        onValue(loginLogRef, (snapshot) => {
+            const data = snapshot.val();
+            const tbody = document.getElementById('loginLogsBody');
+            tbody.innerHTML = '';
+            if (data) {
+                const keys = Object.keys(data).reverse();
+                keys.forEach(key => {
+                    const log = data[key];
+                    tbody.innerHTML += `<tr><td>${new Date(log.timestamp).toLocaleString('th-TH')}</td><td>${log.user}</td><td>${log.detail}</td></tr>`;
+                });
+            }
+        });
 
     </script>
 </body>
