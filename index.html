@@ -36,12 +36,17 @@
         .btn-green:hover { background: #059669; }
         .btn-red:hover { background: #dc2626; }
 
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Kanit', sans-serif; margin-bottom: 10px; box-sizing: border-box; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Kanit', sans-serif; margin-bottom: 10px; box-sizing: border-box; }
+        select { background: #fff; }
         
         .notification-bell {
             position: absolute; right: 30px; top: 30px; font-size: 24px; color: #ef4444; display: none; animation: shake 1s infinite;
         }
         @keyframes shake { 0% { transform: rotate(0); } 25% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 100% { transform: rotate(0); } }
+
+        /* จัดรูปแบบพรีวิวประกาศ */
+        .preview-box { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 10px; text-align: center; background: #f8fafc; margin-top: 15px; position: relative; overflow: hidden; }
+        .preview-box img, .preview-box video { max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; }
     </style>
 </head>
 <body>
@@ -50,6 +55,7 @@
         <h2>Admin Panel</h2>
         <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา</button>
         <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
+        <button class="nav-btn" onclick="switchTab('announcement')"><i class="fas fa-bullhorn"></i> จัดการประกาศหน้าแรก</button>
     </div>
 
     <div class="main-content">
@@ -57,6 +63,7 @@
 
         <div id="reports" class="section active">
             <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
+        
             <div class="card">
                 <table>
                     <thead>
@@ -100,12 +107,61 @@
                 </table>
             </div>
         </div>
+
+        <div id="announcement" class="section">
+            <h2>จัดการประกาศแจ้งเตือนหน้าแรก (Startup Popup)</h2>
+            <div class="card">
+                <h3>ตั้งค่าการแสดงผล</h3>
+                <label style="font-weight: 500; font-size: 14px;">สถานะการแสดงผล:</label>
+                <select id="annActive">
+                    <option value="false">ปิดการใช้งาน (ซ่อน)</option>
+                    <option value="true">เปิดการใช้งาน (แสดงผลทุกครั้งที่โหลดหน้าแรก)</option>
+                </select>
+
+                <label style="font-weight: 500; font-size: 14px;">ประเภทสื่อ:</label>
+                <select id="annType">
+                    <option value="image">รูปภาพ (Image)</option>
+                    <option value="video">วีดิโอ (Video)</option>
+                </select>
+
+                <label style="font-weight: 500; font-size: 14px;">แหล่งที่มาของไฟล์:</label>
+                <select id="annSource" onchange="toggleAnnSource()">
+                    <option value="url">แนบลิงก์ (URL) - แนะนำสำหรับวีดิโอ/รูปภาพใหญ่</option>
+                    <option value="upload">อัปโหลดจากอุปกรณ์ - แนะนำเฉพาะรูปภาพไม่เกิน 3MB</option>
+                </select>
+
+                <div id="annUrlDiv">
+                    <label style="font-weight: 500; font-size: 14px;">ลิงก์สื่อ (URL):</label>
+                    <input type="text" id="annUrl" placeholder="ตัวอย่าง: https://example.com/image.jpg หรือลิงก์ mp4">
+                </div>
+
+                <div id="annUploadDiv" style="display: none;">
+                    <label style="font-weight: 500; font-size: 14px;">อัปโหลดไฟล์สื่อ:</label>
+                    <input type="file" id="annFile" accept="image/*,video/mp4" style="padding: 6px;">
+                </div>
+
+                <label style="font-weight: 500; font-size: 14px;">เวลาที่จะแสดงก่อนปิดอัตโนมัติ (วินาที):</label>
+                <input type="number" id="annDuration" placeholder="เช่น 5 (กรอก 0 หากต้องการให้ผู้ใช้กดกากบาทปิดเองเท่านั้น)" value="5">
+
+                <div style="margin-top: 15px;">
+                    <button class="btn-blue" onclick="saveAnnouncement()"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
+                    <button class="btn-red" style="margin-left: 10px;" onclick="deleteAnnouncement()"><i class="fas fa-trash"></i> ลบประกาศทิ้งทั้งหมด</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>ตัวอย่างการแสดงผลปัจจุบัน</h3>
+                <div class="preview-box" id="annPreviewBox">
+                    <p style="color: #94a3b8; margin: 20px 0;">ระบบกำลังโหลดข้อมูล...</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, onValue, update, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
             authDomain: "support-schoolmoney.firebaseapp.com",
@@ -149,7 +205,8 @@
                         `<button class="btn-red" onclick="toggleStatus('${key}', 'pending')">ยกเลิกการตอบ</button>` : 
                         `<button class="btn-green" onclick="toggleStatus('${key}', 'replied')">กดว่าตอบแล้ว</button>`;
                     
-                    const btnImage = r.image ? `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
+                    const btnImage = r.image ?
+                        `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
 
                     tbody.innerHTML += `
                         <tr>
@@ -238,6 +295,114 @@
                 remove(ref(db, `faqs/${key}`));
             }
         }
+
+        // --- จัดการประกาศหน้าแรก (Announcement / Popup) ---
+        const annRef = ref(db, 'announcement');
+        let currentAnnData = null;
+
+        window.toggleAnnSource = function() {
+            const source = document.getElementById('annSource').value;
+            if (source === 'url') {
+                document.getElementById('annUrlDiv').style.display = 'block';
+                document.getElementById('annUploadDiv').style.display = 'none';
+            } else {
+                document.getElementById('annUrlDiv').style.display = 'none';
+                document.getElementById('annUploadDiv').style.display = 'block';
+            }
+        }
+
+        onValue(annRef, (snapshot) => {
+            const data = snapshot.val();
+            currentAnnData = data;
+            const previewBox = document.getElementById('annPreviewBox');
+            
+            if (data) {
+                // อัปเดตฟอร์มให้ตรงกับข้อมูลปัจจุบัน
+                document.getElementById('annActive').value = data.isActive ? "true" : "false";
+                document.getElementById('annType').value = data.mediaType || 'image';
+                document.getElementById('annDuration').value = data.duration || 0;
+                
+                // อัปเดตหน้าจอพรีวิว
+                if (data.mediaUrl) {
+                    let badge = data.isActive ? '<span class="badge replied" style="position:absolute; top:10px; right:10px;">เปิดใช้งานอยู่</span>' : '<span class="badge pending" style="position:absolute; top:10px; right:10px;">ปิดใช้งานแล้ว</span>';
+                    
+                    if (data.mediaType === 'video') {
+                        previewBox.innerHTML = `${badge}<video src="${data.mediaUrl}" autoplay loop muted controls></video>`;
+                    } else {
+                        previewBox.innerHTML = `${badge}<img src="${data.mediaUrl}">`;
+                    }
+                } else {
+                    previewBox.innerHTML = '<p style="color: #94a3b8; margin: 20px 0;">ไม่มีสื่อที่กำลังแสดงผล</p>';
+                }
+            } else {
+                previewBox.innerHTML = '<p style="color: #94a3b8; margin: 20px 0;">ยังไม่มีการตั้งค่าประกาศหน้าแรก</p>';
+                document.getElementById('annActive').value = "false";
+            }
+        });
+
+        window.saveAnnouncement = async function() {
+            const isActive = document.getElementById('annActive').value === "true";
+            const mediaType = document.getElementById('annType').value;
+            const source = document.getElementById('annSource').value;
+            const duration = parseInt(document.getElementById('annDuration').value) || 0;
+            
+            let mediaUrl = currentAnnData ? currentAnnData.mediaUrl : "";
+
+            Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                if (source === 'url') {
+                    const urlInput = document.getElementById('annUrl').value.trim();
+                    if (urlInput) mediaUrl = urlInput;
+                } else {
+                    const fileInput = document.getElementById('annFile').files[0];
+                    if (fileInput) {
+                        mediaUrl = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.readAsDataURL(fileInput);
+                            reader.onload = () => resolve(reader.result);
+                            reader.onerror = error => reject(error);
+                        });
+                    }
+                }
+
+                if (isActive && !mediaUrl) {
+                    Swal.fire('เกิดข้อผิดพลาด', 'กรุณาระบุลิงก์ หรือ แนบไฟล์สื่อเพื่อแสดงผล', 'error');
+                    return;
+                }
+
+                const annDataToSave = {
+                    isActive: isActive,
+                    mediaType: mediaType,
+                    mediaUrl: mediaUrl,
+                    duration: duration,
+                    updatedAt: new Date().toISOString()
+                };
+
+                await set(annRef, annDataToSave);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'บันทึกการตั้งค่าสำเร็จ', showConfirmButton: false, timer: 2000 });
+                
+                // เคลียร์ช่อง input
+                document.getElementById('annUrl').value = '';
+                document.getElementById('annFile').value = '';
+                
+            } catch (error) {
+                console.error(error);
+                Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้ (ไฟล์อาจใหญ่เกินไป)', 'error');
+            }
+        };
+
+        window.deleteAnnouncement = async function() {
+            if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
+                try {
+                    await remove(annRef);
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'ลบข้อมูลสำเร็จ', showConfirmButton: false, timer: 2000 });
+                } catch (error) {
+                    Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบข้อมูลได้', 'error');
+                }
+            }
+        };
+
     </script>
 </body>
 </html>
