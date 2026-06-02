@@ -65,6 +65,7 @@
             <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
         
             <div class="card">
+                <h3 style="margin-top: 0; color: #d97706;"><i class="fas fa-exclamation-circle"></i> รายงานที่รอการดำเนินการ</h3>
                 <table>
                     <thead>
                         <tr>
@@ -76,7 +77,26 @@
                             <th>จัดการ</th>
                         </tr>
                     </thead>
-                    <tbody id="reportsTableBody">
+                    <tbody id="pendingReportsTableBody">
+                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top: 0; color: #16a34a;"><i class="fas fa-check-circle"></i> รายงานที่ตอบกลับแล้ว</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>สถานะ</th>
+                            <th>เวลาที่เกิดเหตุ</th>
+                            <th>ชื่อ-สกุล</th>
+                            <th>ประเภทปัญหา</th>
+                            <th>ติดต่อ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="repliedReportsTableBody">
                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
@@ -189,12 +209,17 @@
         const reportsRef = ref(db, 'reports');
         onValue(reportsRef, (snapshot) => {
             const data = snapshot.val();
-            const tbody = document.getElementById('reportsTableBody');
-            tbody.innerHTML = '';
+            const pendingTbody = document.getElementById('pendingReportsTableBody');
+            const repliedTbody = document.getElementById('repliedReportsTableBody');
+            
+            pendingTbody.innerHTML = '';
+            repliedTbody.innerHTML = '';
             
             if (data) {
                 const keys = Object.keys(data).reverse(); // เรียงจากใหม่ไปเก่า
                 let hasNew = false;
+                let pendingCount = 0;
+                let repliedCount = 0;
 
                 keys.forEach(key => {
                     const r = data[key];
@@ -205,10 +230,10 @@
                         `<button class="btn-red" onclick="toggleStatus('${key}', 'pending')">ยกเลิกการตอบ</button>` : 
                         `<button class="btn-green" onclick="toggleStatus('${key}', 'replied')">กดว่าตอบแล้ว</button>`;
                     
-                    const btnImage = r.image ?
-                        `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
+                    const btnImage = r.image ? `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
 
-                    tbody.innerHTML += `
+                    // สร้าง Row สำหรับข้อมูล
+                    const rowHtml = `
                         <tr>
                             <td>${statusBadge}</td>
                             <td>${new Date(r.timestamp).toLocaleString('th-TH')}</td>
@@ -218,7 +243,24 @@
                             <td style="white-space:nowrap;">${btnToggle} ${btnImage}</td>
                         </tr>
                     `;
+
+                    // แยกใส่ตารางตามสถานะ
+                    if (r.status === 'replied') {
+                        repliedTbody.innerHTML += rowHtml;
+                        repliedCount++;
+                    } else {
+                        pendingTbody.innerHTML += rowHtml;
+                        pendingCount++;
+                    }
                 });
+
+                // กรณีที่ไม่มีข้อมูลในแต่ละตาราง
+                if (pendingCount === 0) {
+                    pendingTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ไม่มีรายงานที่รอการดำเนินการ</td></tr>';
+                }
+                if (repliedCount === 0) {
+                    repliedTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีรายงานที่ตอบกลับแล้ว</td></tr>';
+                }
 
                 // แจ้งเตือนเมื่อมีรายการใหม่
                 if (!initialLoad && hasNew) {
@@ -228,7 +270,8 @@
                     document.getElementById('notiBell').style.display = 'none';
                 }
             } else {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
+                pendingTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
+                repliedTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
             }
             initialLoad = false;
         });
@@ -402,7 +445,6 @@
                 }
             }
         };
-
     </script>
 </body>
 </html>
