@@ -315,8 +315,6 @@
 
         // --- ระบบ Auth และจัดการตัวแปร Session ---
         let currentUser = null;
-        let logoutTimeout = null;
-        const SESSION_TIMEOUT = 3 * 60 * 60 * 1000; // 3 ชั่วโมง (มิลลิวินาที)
 
         // เช็คและสร้าง Super Admin อัตโนมัติหากยังไม่มี
         async function initSuperAdmin() {
@@ -331,59 +329,23 @@
             }
         }
 
-        // ฟังก์ชันตั้งค่าเวลา Auto Logout เมื่อครบ 3 ชั่วโมง
-        function setupAutoLogoutTimer(duration) {
-            if (logoutTimeout) clearTimeout(logoutTimeout);
-            logoutTimeout = setTimeout(() => {
-                logActivity('login', `ออกจากระบบอัตโนมัติ (หมดเวลาเซสชัน 3 ชั่วโมง)`);
-                currentUser = null;
-                
-                localStorage.removeItem('adminUser');
-                localStorage.removeItem('adminUserKey');
-                localStorage.removeItem('loginTime');
-                
-                document.getElementById('loginPage').style.display = 'flex';
-                document.getElementById('appPage').style.display = 'none';
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-                
-                Swal.fire({
-                    title: 'หมดเวลาเซสชัน',
-                    text: 'คุณไม่ได้ออกจากระบบเกิน 3 ชั่วโมง ระบบจึงทำการออกจากระบบให้อัตโนมัติเพื่อความปลอดภัย',
-                    icon: 'warning',
-                    confirmButtonText: 'รับทราบ'
-                });
-            }, duration);
-        }
-
-        // ตรวจสอบเซสชันที่เคยล็อกอินค้างไว้ (ทำงานทันทีเมื่อโหลดหน้าจอ)
+        // ตรวจสอบเซสชันที่เคยล็อกอินค้างไว้ (ล็อคอินค้างถาวร)
         async function checkExistingSession() {
             const storedUser = localStorage.getItem('adminUser');
             const storedKey = localStorage.getItem('adminUserKey');
-            const storedLoginTime = localStorage.getItem('loginTime');
             
-            if (storedUser && storedKey && storedLoginTime) {
-                const elapsed = Date.now() - parseInt(storedLoginTime);
-                if (elapsed < SESSION_TIMEOUT) {
-                    currentUser = { id: storedKey, ...JSON.parse(storedUser) };
-                    
-                    document.getElementById('loginPage').style.display = 'none';
-                    document.getElementById('appPage').style.display = 'block';
-                    document.getElementById('displayUserEmail').innerText = currentUser.email;
-                    
-                    if (currentUser.role === 'superadmin') {
-                        document.getElementById('superAdminCard').style.display = 'block';
-                    } else {
-                        document.getElementById('superAdminCard').style.display = 'none';
-                    }
-                    
-                    // ตั้งเวลาหักลบด้วยเวลาที่เปิดหน้าจอค้างไปแล้ว
-                    setupAutoLogoutTimer(SESSION_TIMEOUT - elapsed);
+            if (storedUser && storedKey) {
+                // มีข้อมูลล็อกอินอยู่ ให้เข้าสู่ระบบให้อัตโนมัติเลยโดยไม่มีเวลาหมดอายุ
+                currentUser = { id: storedKey, ...JSON.parse(storedUser) };
+                
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appPage').style.display = 'block';
+                document.getElementById('displayUserEmail').innerText = currentUser.email;
+                
+                if (currentUser.role === 'superadmin') {
+                    document.getElementById('superAdminCard').style.display = 'block';
                 } else {
-                    // เซสชันเดิมหมดอายุไปแล้ว ล้างทิ้ง
-                    localStorage.removeItem('adminUser');
-                    localStorage.removeItem('adminUserKey');
-                    localStorage.removeItem('loginTime');
+                    document.getElementById('superAdminCard').style.display = 'none';
                 }
             }
         }
@@ -420,15 +382,10 @@
                     if (foundAdmin) {
                         currentUser = { id: adminKey, ...foundAdmin };
                         
-                        // บันทึกเซสชันลง localStorage
-                        const loginTime = Date.now();
+                        // บันทึกเซสชันลง localStorage เพื่อให้ค้างไว้ถาวร
                         localStorage.setItem('adminUser', JSON.stringify(foundAdmin));
                         localStorage.setItem('adminUserKey', adminKey);
-                        localStorage.setItem('loginTime', loginTime.toString());
                         
-                        // ตั้งเวลา Auto Logout 3 ชั่วโมง
-                        setupAutoLogoutTimer(SESSION_TIMEOUT);
-
                         document.getElementById('loginPage').style.display = 'none';
                         document.getElementById('appPage').style.display = 'block';
                         document.getElementById('displayUserEmail').innerText = currentUser.email;
@@ -458,11 +415,9 @@
             logActivity('login', `ออกจากระบบ`);
             currentUser = null;
             
-            // ล้างค่าในหน่วยความจำเบราว์เซอร์ทั้งหมด
+            // ล้างค่าในหน่วยความจำเบราว์เซอร์เมื่อกดปุ่มออกเท่านั้น
             localStorage.removeItem('adminUser');
             localStorage.removeItem('adminUserKey');
-            localStorage.removeItem('loginTime');
-            if (logoutTimeout) clearTimeout(logoutTimeout);
 
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('appPage').style.display = 'none';
