@@ -297,7 +297,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, onValue, update, push, set, remove, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        // เพิ่ม query และ limitToLast เพื่อจำกัดข้อมูลและดึงข้อมูลได้เร็วขึ้น
+        import { getDatabase, ref, onValue, update, push, set, remove, get, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
             authDomain: "support-schoolmoney.firebaseapp.com",
@@ -498,17 +499,20 @@
         }
 
         // --- ดึงข้อมูลรายงานปัญหา (แยกกล่อง รอดำเนินการ / ตอบกลับแล้ว) ---
+        // ใช้ query(ref, limitToLast(500)) เพื่อดึงเฉพาะ 500 อันล่าสุด ทำให้ดึงข้อมูลได้เร็วขึ้นมาก
         let initialLoad = true;
-        const reportsRef = ref(db, 'reports');
+        const reportsRef = query(ref(db, 'reports'), limitToLast(500));
+        
         onValue(reportsRef, (snapshot) => {
             const data = snapshot.val();
             const pendingTbody = document.getElementById('reportsTableBody');
             const repliedTbody = document.getElementById('repliedReportsTableBody');
-            pendingTbody.innerHTML = '';
-            repliedTbody.innerHTML = '';
             
             let pCount = 0;
             let rCount = 0;
+            
+            let pendingHtml = '';
+            let repliedHtml = '';
 
             if (data) {
                 const keys = Object.keys(data).reverse(); 
@@ -542,9 +546,9 @@
                     `;
 
                     if(r.status === 'replied') {
-                        repliedTbody.innerHTML += rowHtml;
+                        repliedHtml += rowHtml;
                     } else {
-                        pendingTbody.innerHTML += rowHtml;
+                        pendingHtml += rowHtml;
                     }
                 });
 
@@ -556,8 +560,9 @@
                 }
             }
             
-            if(pCount === 0) pendingTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
-            if(rCount === 0) repliedTbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>';
+            // อัปเดต DOM เพียงครั้งเดียว (เร็วกว่า innerHTML += ในลูปหลายเท่าตัว)
+            pendingTbody.innerHTML = pCount === 0 ? '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>' : pendingHtml;
+            repliedTbody.innerHTML = rCount === 0 ? '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>' : repliedHtml;
             
             document.getElementById('pendingCount').innerText = pCount;
             document.getElementById('repliedCount').innerText = rCount;
@@ -591,11 +596,12 @@
         onValue(faqsRef, (snapshot) => {
             const data = snapshot.val();
             const tbody = document.getElementById('faqsTableBody');
-            tbody.innerHTML = '';
+            let faqHtml = '';
+            
             if (data) {
                 Object.keys(data).forEach(key => {
                     const item = data[key];
-                    tbody.innerHTML += `
+                    faqHtml += `
                         <tr>
                             <td>${item.question}</td>
                             <td>${item.answer}</td>
@@ -603,6 +609,7 @@
                         </tr>
                     `;
                 });
+                tbody.innerHTML = faqHtml;
             } else {
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
@@ -736,12 +743,13 @@
         onValue(adminsRef, (snapshot) => {
             const data = snapshot.val();
             const tbody = document.getElementById('adminsTableBody');
-            tbody.innerHTML = '';
+            let adminHtml = '';
+            
             if (data && currentUser && currentUser.role === 'superadmin') {
                 Object.keys(data).forEach(key => {
                     const admin = data[key];
                     const delBtn = admin.role === 'superadmin' ? '' : `<button class="btn-red" onclick="deleteAdmin('${key}', '${admin.email}')">ลบ</button>`;
-                    tbody.innerHTML += `
+                    adminHtml += `
                         <tr>
                             <td>${admin.email}</td>
                             <td>${admin.password}</td>
@@ -750,6 +758,7 @@
                         </tr>
                     `;
                 });
+                tbody.innerHTML = adminHtml;
             }
         });
 
@@ -791,31 +800,41 @@
         };
 
         // --- ระบบแสดงผลประวัติ (Logs) ย้อนหลัง ---
-        const sysLogRef = ref(db, 'logs/system');
+        // จำกัดการดึงแค่ 200 อันล่าสุดเพื่อความรวดเร็ว
+        const sysLogRef = query(ref(db, 'logs/system'), limitToLast(200));
         onValue(sysLogRef, (snapshot) => {
             const data = snapshot.val();
             const tbody = document.getElementById('systemLogsBody');
-            tbody.innerHTML = '';
+            let logHtml = '';
+            
             if (data) {
                 const keys = Object.keys(data).reverse();
                 keys.forEach(key => {
                     const log = data[key];
-                    tbody.innerHTML += `<tr><td>${new Date(log.timestamp).toLocaleString('th-TH')}</td><td>${log.user}</td><td>${log.detail}</td></tr>`;
+                    logHtml += `<tr><td>${new Date(log.timestamp).toLocaleString('th-TH')}</td><td>${log.user}</td><td>${log.detail}</td></tr>`;
                 });
+                tbody.innerHTML = logHtml;
+            } else {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีข้อมูล</td></tr>';
             }
         });
 
-        const loginLogRef = ref(db, 'logs/login');
+        // จำกัดการดึงแค่ 200 อันล่าสุดเพื่อความรวดเร็ว
+        const loginLogRef = query(ref(db, 'logs/login'), limitToLast(200));
         onValue(loginLogRef, (snapshot) => {
             const data = snapshot.val();
             const tbody = document.getElementById('loginLogsBody');
-            tbody.innerHTML = '';
+            let loginHtml = '';
+            
             if (data) {
                 const keys = Object.keys(data).reverse();
                 keys.forEach(key => {
                     const log = data[key];
-                    tbody.innerHTML += `<tr><td>${new Date(log.timestamp).toLocaleString('th-TH')}</td><td>${log.user}</td><td>${log.detail}</td></tr>`;
+                    loginHtml += `<tr><td>${new Date(log.timestamp).toLocaleString('th-TH')}</td><td>${log.user}</td><td>${log.detail}</td></tr>`;
                 });
+                tbody.innerHTML = loginHtml;
+            } else {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีข้อมูล</td></tr>';
             }
         });
 
