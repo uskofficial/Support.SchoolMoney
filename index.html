@@ -52,17 +52,14 @@
            สไตล์สำหรับ Pagination สไตล์ UTTAYAN (จัดเรียงเหมือน Google)
            ========================================= */
         .uttayan-pagination {
-            display: flex;
-            align-items: flex-start;
+            display: flex; align-items: flex-start;
             justify-content: center;
             font-family: Arial, sans-serif; /* ฟอนต์ที่คล้าย Google */
-            margin-top: 25px;
-            overflow-x: auto;
+            margin-top: 25px; overflow-x: auto;
             padding-bottom: 15px;
         }
         .g-col {
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             align-items: center;
             text-decoration: none;
             margin: 0 3px;
@@ -74,12 +71,10 @@
         .g-letter {
             font-size: 38px; /* ขนาดตัวอักษรคำว่า UTTAYAN */
             font-weight: bold;
-            line-height: 1;
-            margin-bottom: 5px;
+            line-height: 1; margin-bottom: 5px;
         }
         .g-num {
-            font-size: 14px;
-            color: #1a0dab; /* สีน้ำเงินลิงก์แบบ Google */
+            font-size: 14px; color: #1a0dab; /* สีน้ำเงินลิงก์แบบ Google */
             height: 20px; /* ล็อคความสูงให้ตัวอักษรเรียงตรงกันเสมอแม้ไม่มีเลข */
             display: flex;
             align-items: center;
@@ -103,8 +98,7 @@
            ========================================= */
         @media screen and (max-width: 768px) {
             .sidebar {
-                width: 100%;
-                height: auto;
+                width: 100%; height: auto;
                 position: fixed;
                 bottom: 0;
                 top: auto;
@@ -112,14 +106,12 @@
                 padding: 10px 5px;
                 display: flex;
                 flex-direction: row;
-                justify-content: space-around;
-                z-index: 1000;
+                justify-content: space-around; z-index: 1000;
                 box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
             }
             .sidebar h2 { display: none; }
             .nav-btn {
-                margin-bottom: 0;
-                padding: 8px 5px;
+                margin-bottom: 0; padding: 8px 5px;
                 font-size: 12px;
                 flex: 1;
                 text-align: center;
@@ -130,19 +122,16 @@
                 border-radius: 8px;
             }
             .nav-btn i {
-                font-size: 18px;
-                margin-bottom: 4px;
+                font-size: 18px; margin-bottom: 4px;
             }
             
             .main-content {
-                margin-left: 0;
-                padding: 15px;
+                margin-left: 0; padding: 15px;
                 padding-bottom: 90px; 
             }
 
             .notification-bell {
-                right: 15px;
-                top: 15px;
+                right: 15px; top: 15px;
                 font-size: 20px;
             }
 
@@ -158,32 +147,27 @@
                 display: none; /* ซ่อนหัวตาราง */
             }
             tr {
-                background: #fff;
-                border: 1px solid #e2e8f0;
+                background: #fff; border: 1px solid #e2e8f0;
                 border-radius: 12px;
                 margin-bottom: 15px;
                 padding: 15px;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             }
             td {
-                border: none;
-                border-bottom: 1px dashed #e2e8f0;
+                border: none; border-bottom: 1px dashed #e2e8f0;
                 padding: 10px 0;
                 text-align: left;
                 position: relative;
             }
             td:last-child {
-                border-bottom: none;
-                padding-bottom: 0;
+                border-bottom: none; padding-bottom: 0;
             }
             /* สร้างหัวข้อเสมือนในแต่ละบรรทัด โดยดึงค่าจาก data-label */
             td::before {
-                content: attr(data-label);
-                display: block;
+                content: attr(data-label); display: block;
                 font-weight: 600;
                 color: #1e3a8a; /* สีหัวข้อเน้นความชัดเจน */
-                margin-bottom: 6px;
-                font-size: 14px;
+                margin-bottom: 6px; font-size: 14px;
             }
 
             /* ปรับขนาด Pagination บนมือถือ */
@@ -325,8 +309,9 @@
     </div>
 
     <script type="module">
+        // เพิ่ม get, onChildAdded, onChildChanged, onChildRemoved เพื่ออัปเกรดความเร็วแบบ Realtime เฉพาะจุด
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, onValue, update, push, set, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getDatabase, ref, onValue, update, push, set, remove, get, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
             authDomain: "support-schoolmoney.firebaseapp.com",
@@ -357,44 +342,77 @@
         let currentRepliedPage = 1;
         const ITEMS_PER_PAGE = 10; // จำกัด 1 ตัว T = 10 รายการ
 
-        // --- ดึงข้อมูลรายงานปัญหา ---
+        // --- ดึงข้อมูลรายงานปัญหา (อัปเกรดเป็น onChild Events) ---
         const reportsRef = ref(db, 'reports');
-        onValue(reportsRef, (snapshot) => {
-            const data = snapshot.val();
-            
+        let allReportsMap = new Map(); // ใช้ Map เพื่อการค้นหาและอัปเดตข้อมูลที่เร็วมาก
+        let isFirstLoadComplete = false;
+
+        // ฟังก์ชันจัดกลุ่มและสั่ง Render
+        function updateListsAndRender() {
             allPendingData = [];
             allRepliedData = [];
             let hasNew = false;
             
-            if (data) {
-                const keys = Object.keys(data).reverse(); // เรียงจากใหม่ไปเก่า
+            // เรียงข้อมูลจากใหม่ไปเก่า (อิงจาก key ที่ Firebase สร้างจะเรียงตามเวลาอยู่แล้ว)
+            const sortedReports = Array.from(allReportsMap.values()).sort((a, b) => b.key.localeCompare(a.key));
 
-                keys.forEach(key => {
-                    const r = data[key];
-                    r.key = key; // เก็บ key ไว้ในอ็อบเจ็กต์เพื่อใช้ทำฟังก์ชัน
-
-                    if(r.status === 'pending') {
-                        hasNew = true;
-                        allPendingData.push(r);
-                    } else {
-                        allRepliedData.push(r);
-                    }
-                });
-
-                // แจ้งเตือนเมื่อมีรายการใหม่
-                if (!initialLoad && hasNew) {
-                    document.getElementById('notiBell').style.display = 'block';
-                    Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'มีรายงานปัญหาใหม่เข้ามา', showConfirmButton: false, timer: 3000 });
-                } else if (!hasNew) {
-                    document.getElementById('notiBell').style.display = 'none';
+            sortedReports.forEach(r => {
+                if(r.status === 'pending') {
+                    hasNew = true;
+                    allPendingData.push(r);
+                } else {
+                    allRepliedData.push(r);
                 }
+            });
+
+            // แจ้งเตือนกระดิ่ง
+            if (hasNew) {
+                document.getElementById('notiBell').style.display = 'block';
+            } else {
+                document.getElementById('notiBell').style.display = 'none';
             }
-            initialLoad = false;
 
             // สั่งเรนเดอร์ข้อมูลแยกตามหน้าปัจจุบัน
             renderTable('pending', currentPendingPage);
             renderTable('replied', currentRepliedPage);
+        }
+
+        // ดึงข้อมูลครั้งแรกครั้งเดียว เพื่อป้องกันการแจ้งเตือนรัวๆ ตอนโหลดหน้าเว็บ
+        get(reportsRef).then((snapshot) => {
+            isFirstLoadComplete = true;
+            initialLoad = false;
+            updateListsAndRender();
         });
+
+        // ตรวจจับเมื่อมีข้อมูล "เพิ่มใหม่" เท่านั้น
+        onChildAdded(reportsRef, (snapshot) => {
+            const data = snapshot.val();
+            data.key = snapshot.key;
+            allReportsMap.set(snapshot.key, data);
+            
+            if (isFirstLoadComplete) {
+                if (data.status === 'pending') {
+                    document.getElementById('notiBell').style.display = 'block';
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'มีรายงานปัญหาใหม่เข้ามา', showConfirmButton: false, timer: 3000 });
+                }
+                updateListsAndRender();
+            }
+        });
+
+        // ตรวจจับเมื่อมีข้อมูล "ถูกเปลี่ยนแปลง" เท่านั้น (เช่น การกดเปลี่ยนสถานะ)
+        onChildChanged(reportsRef, (snapshot) => {
+            const data = snapshot.val();
+            data.key = snapshot.key;
+            allReportsMap.set(snapshot.key, data);
+            if (isFirstLoadComplete) updateListsAndRender();
+        });
+
+        // ตรวจจับเมื่อมีข้อมูล "ถูกลบ" เท่านั้น
+        onChildRemoved(reportsRef, (snapshot) => {
+            allReportsMap.delete(snapshot.key);
+            if (isFirstLoadComplete) updateListsAndRender();
+        });
+
 
         // --- ฟังก์ชันสร้าง Pagination สไตล์ UTTAYAN ---
         function generateUttayanPagination(totalItems, currentPage, type) {
@@ -403,18 +421,14 @@
             if (totalPages < 1) totalPages = 1; 
 
             let html = '<div class="uttayan-pagination">';
-            
             // ตัวอักษร U (ไม่ซ้ำ, ไม่มีลิงก์เลขหน้า)
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #4285F4;">U</div><div class="g-num"></div></div>`;
-            
             // ตัวอักษร T ตัวแรก (ตั้งเป็นโครงสร้างคงที่ เพื่อให้คำว่า UTTAYAN สมบูรณ์ตั้งแต่หน้า 1)
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #EA4335;">T</div><div class="g-num"></div></div>`;
-            
             // วนลูปสร้างตัว T ตามจำนวนหน้า โดยหน้า 1 จะไปปรากฏที่ตัว T ตัวที่ 2
             const colors = ['#FBBC05', '#4285F4', '#34A853', '#EA4335']; // เหลือง, น้ำเงิน, เขียว, แดง
             for(let i = 1; i <= totalPages; i++) {
-                let tColor = colors[(i-1) % 4]; 
-                
+                let tColor = colors[(i-1) % 4];
                 if(i === currentPage) {
                     html += `
                     <div class="g-col active">
@@ -458,7 +472,6 @@
             const dataList = type === 'pending' ? allPendingData : allRepliedData;
             
             tbody.innerHTML = '';
-            
             if (dataList.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ? 'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
                 // ถึงไม่มีข้อมูล ก็ให้โชว์ Pagination 1 หน้า 
@@ -469,15 +482,12 @@
             const totalPages = Math.ceil(dataList.length / ITEMS_PER_PAGE);
             if (page > totalPages) page = totalPages;
             if (page < 1) page = 1;
-
             if (type === 'pending') currentPendingPage = page;
             if (type === 'replied') currentRepliedPage = page;
-
             // เลือกข้อมูลเฉพาะหน้าที่ต้องการ
             const startIdx = (page - 1) * ITEMS_PER_PAGE;
             const endIdx = startIdx + ITEMS_PER_PAGE;
             const currentData = dataList.slice(startIdx, endIdx);
-
             currentData.forEach(r => {
                 const key = r.key;
                 const statusBadge = r.status === 'replied' ? '<span class="badge replied">ตอบกลับแล้ว</span>' : '<span class="badge pending">ยังไม่ตอบกลับ</span>';
@@ -547,7 +557,6 @@
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
         });
-
         // เพิ่ม FAQ
         document.getElementById('btnAddFaq').addEventListener('click', () => {
             const q = document.getElementById('faqQ').value.trim();
@@ -560,7 +569,6 @@
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่ม FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
             });
         });
-
         // ลบ FAQ
         window.deleteFaq = function(key) {
             if(confirm('ต้องการลบคำถามนี้หรือไม่?')) {
@@ -609,7 +617,6 @@
                 document.getElementById('annActive').value = "false";
             }
         });
-
         window.saveAnnouncement = async function() {
             const isActive = document.getElementById('annActive').value === "true";
             const mediaType = document.getElementById('annType').value;
@@ -619,7 +626,6 @@
             let mediaUrl = currentAnnData ? currentAnnData.mediaUrl : "";
 
             Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-
             try {
                 if (source === 'url') {
                     const urlInput = document.getElementById('annUrl').value.trim();
@@ -648,7 +654,6 @@
                     duration: duration,
                     updatedAt: new Date().toISOString()
                 };
-
                 await set(annRef, annDataToSave);
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'บันทึกการตั้งค่าสำเร็จ', showConfirmButton: false, timer: 2000 });
                 
@@ -660,7 +665,6 @@
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้ (ไฟล์อาจใหญ่เกินไป)', 'error');
             }
         };
-
         window.deleteAnnouncement = async function() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
                 try {
