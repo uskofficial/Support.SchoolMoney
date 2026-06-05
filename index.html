@@ -355,7 +355,7 @@
         let allRepliedData = [];
         let currentPendingPage = 1;
         let currentRepliedPage = 1;
-        const ITEMS_PER_PAGE = 5; // กำหนดจำนวนรายการต่อหน้า (แก้ตัวเลขตรงนี้ได้)
+        const ITEMS_PER_PAGE = 10; // จำกัด 1 ตัว T = 10 รายการ
 
         // --- ดึงข้อมูลรายงานปัญหา ---
         const reportsRef = ref(db, 'reports');
@@ -398,17 +398,20 @@
 
         // --- ฟังก์ชันสร้าง Pagination สไตล์ UTTAYAN ---
         function generateUttayanPagination(totalItems, currentPage, type) {
-            // คำนวณจำนวนหน้า ขั้นต่ำคือ 1 หน้าเสมอเพื่อให้แสดง UTTAYAN
+            // คำนวณจำนวนหน้า ขั้นต่ำคือ 1 หน้าเสมอ
             let totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
             if (totalPages < 1) totalPages = 1; 
 
             let html = '<div class="uttayan-pagination">';
             
-            // ตัวอักษร U (ไม่ซ้ำ)
+            // ตัวอักษร U (ไม่ซ้ำ, ไม่มีลิงก์เลขหน้า)
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #4285F4;">U</div><div class="g-num"></div></div>`;
             
-            // วนลูปสร้างตัว T ตามจำนวนหน้า และวางเลขหน้าไว้ด้านล่าง
-            const colors = ['#EA4335', '#FBBC05', '#4285F4', '#34A853']; // แดง, เหลือง, น้ำเงิน, เขียว
+            // ตัวอักษร T ตัวแรก (ตั้งเป็นโครงสร้างคงที่ เพื่อให้คำว่า UTTAYAN สมบูรณ์ตั้งแต่หน้า 1)
+            html += `<div class="g-col no-link"><div class="g-letter" style="color: #EA4335;">T</div><div class="g-num"></div></div>`;
+            
+            // วนลูปสร้างตัว T ตามจำนวนหน้า โดยหน้า 1 จะไปปรากฏที่ตัว T ตัวที่ 2
+            const colors = ['#FBBC05', '#4285F4', '#34A853', '#EA4335']; // เหลือง, น้ำเงิน, เขียว, แดง
             for(let i = 1; i <= totalPages; i++) {
                 let tColor = colors[(i-1) % 4]; 
                 
@@ -458,7 +461,7 @@
             
             if (dataList.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ? 'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
-                // ถึงไม่มีข้อมูล ก็ให้โชว์ Pagination 1 หน้าตามที่คุณต้องการ
+                // ถึงไม่มีข้อมูล ก็ให้โชว์ Pagination 1 หน้า 
                 paginationDiv.innerHTML = generateUttayanPagination(0, 1, type);
                 return;
             }
