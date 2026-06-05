@@ -47,6 +47,72 @@
         /* จัดรูปแบบพรีวิวประกาศ */
         .preview-box { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 10px; text-align: center; background: #f8fafc; margin-top: 15px; position: relative; overflow: hidden; }
         .preview-box img, .preview-box video { max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; }
+
+        /* =========================================
+           Responsive Design (รองรับมือถือและแท็บเล็ต)
+           ========================================= */
+        @media screen and (max-width: 768px) {
+            /* ปรับ Sidebar ให้เป็นแถบเมนูด้านล่างบนหน้าจอขนาดเล็ก */
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                padding: 10px 5px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                z-index: 1000;
+                box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            }
+            .sidebar h2 {
+                display: none; /* ซ่อนข้อความ Admin Panel */
+            }
+            .nav-btn {
+                margin-bottom: 0;
+                padding: 8px 5px;
+                font-size: 12px;
+                flex: 1;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+            }
+            .nav-btn i {
+                font-size: 18px;
+                margin-bottom: 4px;
+            }
+            
+            /* ปรับพื้นที่ Main Content ให้เต็มจอ และเว้นที่ด้านล่าง */
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+                padding-bottom: 90px; /* ไม่ให้เนื้อหาโดนเมนูด้านล่างบัง */
+            }
+            
+            /* ปรับตารางให้สามารถเลื่อนซ้ายขวา (Scroll) ได้ ไม่ล้นจอ */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* ปรับกระดิ่งแจ้งเตือนให้พอดีจอมือถือ */
+            .notification-bell {
+                right: 15px;
+                top: 15px;
+                font-size: 20px;
+            }
+
+            /* ลด padding ภายใน card เพื่อประหยัดพื้นที่ */
+            .card {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -229,7 +295,7 @@
                     const btnToggle = r.status === 'replied' ? 
                         `<button class="btn-red" onclick="toggleStatus('${key}', 'pending')">ยกเลิกการตอบ</button>` : 
                         `<button class="btn-green" onclick="toggleStatus('${key}', 'replied')">กดว่าตอบแล้ว</button>`;
-                    
+
                     const btnImage = r.image ? `<button class="btn-blue" style="margin-left:5px;" onclick="viewImage('${key}')"><i class="fas fa-image"></i></button>` : '';
 
                     // สร้าง Row สำหรับข้อมูล
