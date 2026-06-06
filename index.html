@@ -109,9 +109,9 @@
             </div>
             <h2 style="color: #1e3a8a; margin-top: 0; margin-bottom: 25px;">เข้าสู่ระบบผู้ดูแล (Admin)</h2>
             <input type="email" id="loginEmail" placeholder="อีเมล (Email)" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;">
-            <input type="password" id="loginPassword" placeholder="รหัสผ่าน (Password)" style="width: 100%; padding: 12px; margin-bottom: 25px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;">
+            <input type="password" id="loginPassword" placeholder="รหัสผ่าน (Password)" style="width: 100%; padding: 12px; margin-bottom: 25px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;" onkeypress="if(event.key==='Enter') window.doLogin()">
             
-            <button type="button" id="btnLoginAction" class="btn-blue" disabled style="width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; font-weight: 500; opacity: 0.5; cursor: not-allowed;"><i class="fas fa-spinner fa-spin"></i> กำลังเตรียมระบบ...</button>
+            <button type="button" onclick="window.doLogin()" class="btn-blue" style="width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; font-weight: 500;"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
         </div>
     </div>
 
@@ -333,31 +333,11 @@
                     document.getElementById('loginPassword').value = '';
                 })
                 .catch((error) => {
-                    // ปรับแต่งให้แสดง Error ของ Firebase เผื่อเอาไว้เช็คปัญหา
                     let errorMsg = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
                     if(error.code === 'auth/unauthorized-domain') errorMsg = 'โดเมนนี้ยังไม่ได้รับอนุญาตในตั้งค่า Firebase';
                     Swal.fire('เข้าสู่ระบบไม่ได้', `${errorMsg}<br><small style="color:red;">(${error.code})</small>`, 'error');
                 });
         };
-
-        // การควบคุมปุ่มล็อกอิน แก้ปัญหากดไม่ติดจากการโหลด Module ช้า
-        const loginBtnEle = document.getElementById('btnLoginAction');
-        const passInputEle = document.getElementById('loginPassword');
-        
-        // เมื่อโค้ดถึงบรรทัดนี้ แสดงว่าโหลด Firebase เตรียมพร้อมเสร็จแล้ว ให้ปลดล็อกปุ่ม
-        loginBtnEle.disabled = false;
-        loginBtnEle.style.opacity = '1';
-        loginBtnEle.style.cursor = 'pointer';
-        loginBtnEle.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ';
-        
-        // ผูก Event Listener แทนการเรียกผ่าน onclick เพื่อแก้ปัญหาในเบราว์เซอร์
-        loginBtnEle.addEventListener('click', window.doLogin);
-        passInputEle.addEventListener('keypress', function(event) {
-            if(event.key === 'Enter') {
-                event.preventDefault(); // ป้องกันเบราว์เซอร์ refresh เอง
-                window.doLogin();
-            }
-        });
 
         window.doLogout = function() {
             Swal.fire({
