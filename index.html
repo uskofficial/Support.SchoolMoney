@@ -102,12 +102,26 @@
 </head>
 <body>
 
+    <div id="loginOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f1f5f9; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 40px 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center;">
+            <div style="background: #1e3a8a; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px auto;">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2 style="color: #1e3a8a; margin-top: 0; margin-bottom: 25px;">เข้าสู่ระบบผู้ดูแล (Admin)</h2>
+            <input type="email" id="loginEmail" placeholder="อีเมล (Email)" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;">
+            <input type="password" id="loginPassword" placeholder="รหัสผ่าน (Password)" style="width: 100%; padding: 12px; margin-bottom: 25px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;" onkeypress="if(event.key==='Enter') doLogin()">
+            <button onclick="doLogin()" class="btn-blue" style="width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; font-weight: 500;"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+        </div>
+    </div>
+
     <div class="sidebar">
         <h2>Admin Panel</h2>
         <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา <span id="navRepBadge" class="badge-red" style="display:none;">0</span></button>
         <button class="nav-btn" onclick="switchTab('livechat')"><i class="fas fa-comments"></i> พิมพ์ข้อความสด <span id="navChatBadge" class="badge-red" style="display:none;">0</span></button>
         <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
         <button class="nav-btn" onclick="switchTab('announcement')"><i class="fas fa-bullhorn"></i> จัดการประกาศหน้าแรก</button>
+        
+        <button class="nav-btn" onclick="doLogout()" style="background: #ef4444; margin-top: 30px;"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</button>
     </div>
 
     <div class="main-content">
@@ -149,7 +163,7 @@
                         </tr>
                     </thead>
                     <tbody id="repliedReportsTableBody">
-                       <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="repliedPagination"></div>
@@ -275,6 +289,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, onValue, update, push, set, remove, get, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        // เพิ่ม Import สำหรับ Firebase Authentication
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
  
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
@@ -288,6 +304,60 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        // กำหนดตัวแปร Auth
+        const auth = getAuth(app);
+
+        // --- ระบบ Authentication ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // หากล็อกอินแล้ว ให้ซ่อนหน้าล็อกอิน
+                document.getElementById('loginOverlay').style.display = 'none';
+            } else {
+                // หากยังไม่ล็อกอิน ให้แสดงหน้าล็อกอิน
+                document.getElementById('loginOverlay').style.display = 'flex';
+            }
+        });
+
+        window.doLogin = function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if(!email || !password) {
+                Swal.fire('แจ้งเตือน', 'กรุณากรอกอีเมลและรหัสผ่าน', 'warning');
+                return;
+            }
+
+            Swal.fire({ title: 'กำลังเข้าสู่ระบบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เข้าสู่ระบบสำเร็จ', showConfirmButton: false, timer: 2000 });
+                    document.getElementById('loginEmail').value = '';
+                    document.getElementById('loginPassword').value = '';
+                })
+                .catch((error) => {
+                    Swal.fire('เกิดข้อผิดพลาด', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', 'error');
+                });
+        };
+
+        window.doLogout = function() {
+            Swal.fire({
+                title: 'ยืนยันการออกจากระบบ',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'ออกจากระบบ',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#ef4444'
+            }).then((result) => {
+                if(result.isConfirmed) {
+                    signOut(auth).then(() => {
+                        // ไม่ต้องทำอะไรเพิ่ม onAuthStateChanged จะจัดการเปลี่ยนหน้าให้เอง
+                    }).catch((error) => {
+                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถออกจากระบบได้', 'error');
+                    });
+                }
+            });
+        };
 
         // --- ระบบจัดการ Tab ---
         window.switchTab = function(tabId) {
@@ -297,7 +367,7 @@
             event.currentTarget.classList.add('active');
         }
 
-        let allReportsMap = new Map(); 
+        let allReportsMap = new Map();
         let allPendingData = []; let allRepliedData = [];
         let currentPendingPage = 1; let currentRepliedPage = 1;
         const ITEMS_PER_PAGE = 10;
@@ -310,18 +380,18 @@
 
         // --- จัดการข้อมูล Reports ---
         function updateListsAndRender() {
-            allPendingData = []; allRepliedData = []; unreadRepCount = 0;
+            allPendingData = [];
+            allRepliedData = []; unreadRepCount = 0;
             const sortedReports = Array.from(allReportsMap.values()).sort((a, b) => b.key.localeCompare(a.key));
-            
             sortedReports.forEach(r => {
                 if(r.status === 'pending') {
                     unreadRepCount++;
                     allPendingData.push(r);
                 } else {
                     allRepliedData.push(r);
+ 
                 }
             });
-            
             updateGlobalNotification();
             renderTable('pending', currentPendingPage);
             renderTable('replied', currentRepliedPage);
@@ -332,12 +402,12 @@
             const repBadge = document.getElementById('navRepBadge');
             const chatBadge = document.getElementById('navChatBadge');
 
-            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount; }
+            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount;
+            }
             else repBadge.style.display = 'none';
-
-            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount; }
+            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount;
+            }
             else chatBadge.style.display = 'none';
-
             if(unreadRepCount + unreadChatCount > 0) bell.style.display = 'block';
             else bell.style.display = 'none';
         }
@@ -350,9 +420,9 @@
             if (isFirstLoadComplete) {
                 if (data.status === 'pending') { Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'มีรายงานปัญหาใหม่', showConfirmButton: false, timer: 3000 }); }
                 updateListsAndRender();
+    
             }
         });
-        
         onChildChanged(reportsRef, (snapshot) => {
             const data = snapshot.val(); data.key = snapshot.key; allReportsMap.set(snapshot.key, data);
             if (isFirstLoadComplete) updateListsAndRender();
@@ -360,9 +430,9 @@
             // อัปเดตหน้าต่าง Reply ถ้าเปิดค้างอยู่
             if(window.currentReplyKey === snapshot.key) {
                 renderReplyList(data.replies);
+     
             }
         });
-        
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
 
         // --- จัดการข้อมูล Live Chat ---
@@ -373,18 +443,19 @@
             snapshot.forEach(child => {
                 const userName = child.key;
                 const data = child.val();
-                let hasUnread = false;
+                let hasUnread = 
+false;
                 if(data.messages) {
                     Object.values(data.messages).forEach(m => { if(m.sender === 'user' && !m.adminRead) hasUnread = true; });
                 }
                 if(hasUnread) unreadChatCount++;
                 allChatsMap.set(userName, data);
+  
             });
             updateGlobalNotification();
             renderChatUserList();
             if(activeChatUser && allChatsMap.has(activeChatUser)) renderChatMessages(activeChatUser);
         });
-
         function renderChatUserList() {
             const listEl = document.getElementById('adminChatList');
             listEl.innerHTML = '';
@@ -395,7 +466,6 @@
                 const tB = new Date(b[1].lastUpdated || 0).getTime();
                 return tB - tA;
             });
-
             if(sortedUsers.length === 0) {
                 listEl.innerHTML = '<div style="padding:15px; color:#64748b; text-align:center;">ยังไม่มีข้อความ</div>';
                 return;
@@ -405,28 +475,32 @@
                 let unreadBadge = '';
                 if(data.messages) {
                     let uCount = 0;
-                    Object.values(data.messages).forEach(m => { if(m.sender === 'user' && !m.adminRead) uCount++; });
+                    Object.values(data.messages).forEach(m => { if(m.sender === 
+'user' && !m.adminRead) uCount++; });
                     if(uCount > 0) unreadBadge = `<span class="badge-red">${uCount}</span>`;
                 }
 
                 const isActive = activeChatUser === userName ? 'active' : '';
                 listEl.innerHTML += `
+           
                     <div class="chat-user-item ${isActive}" onclick="selectChatUser('${userName}')">
                         <div class="chat-user-name">${userName}</div>
                         ${unreadBadge}
                     </div>
                 `;
+   
             });
-        }
+}
 
         window.selectChatUser = function(userName) {
             activeChatUser = userName;
             document.getElementById('adminChatEmpty').style.display = 'none';
             document.getElementById('adminChatMain').style.display = 'flex';
             document.getElementById('chatActiveUserName').innerText = `สนทนากับ: ${userName}`;
-            renderChatUserList(); // Update active class
+            renderChatUserList();
+// Update active class
             renderChatMessages(userName);
-        }
+}
 
         function renderChatMessages(userName) {
             const data = allChatsMap.get(userName);
@@ -436,33 +510,40 @@
                 Object.keys(data.messages).forEach(key => {
                     const msg = data.messages[key];
                     const msgClass = msg.sender === 'admin' ? 'admin' : 'user';
+                    
                     const timeStr = new Date(msg.timestamp).toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'});
                     
                     // เพิ่มส่วนแสดงสถานะว่า ส่งแล้ว หรือ อ่านแล้ว (สำหรับข้อความที่แอดมินเป็นคนส่ง)
                     let readStatusHtml = '';
                     if(msg.sender === 'admin') {
+   
                         if(msg.userRead) {
                             readStatusHtml = '<span style="margin-left:5px; color:#a5b4fc;"><i class="fas fa-check-double"></i> อ่านแล้ว</span>';
                         } else {
+                 
                             readStatusHtml = '<span style="margin-left:5px; color:#e2e8f0;"><i class="fas fa-check"></i> ส่งแล้ว</span>';
                         }
                     }
 
                     box.innerHTML += `
+                
                         <div class="reply-msg ${msgClass}" style="max-width: 70%;">
                             ${msg.message}
-                            <div style="font-size:10px; opacity:0.7; text-align:right; margin-top:3px;">${timeStr} ${readStatusHtml}</div>
+                            <div style="font-size:10px;
+opacity:0.7; text-align:right; margin-top:3px;">${timeStr} ${readStatusHtml}</div>
                         </div>
                     `;
 
                     // Mark user messages as read
                     if(msg.sender === 'user' && !msg.adminRead) {
+   
                         update(ref(db, `chats/${userName}/messages/${key}`), { adminRead: true });
                     }
                 });
                 box.scrollTop = box.scrollHeight;
             }
-        }
+        
+}
 
         window.sendAdminChat = function() {
             if(!activeChatUser) return;
@@ -471,7 +552,8 @@
             if(!text) return;
 
             push(ref(db, `chats/${activeChatUser}/messages`), {
-                sender: 'admin', message: text, timestamp: new Date().toISOString(), userRead: false
+                sender: 'admin', message: 
+text, timestamp: new Date().toISOString(), userRead: false
             });
             update(ref(db, `chats/${activeChatUser}`), { lastUpdated: new Date().toISOString() });
             input.value = '';
@@ -479,13 +561,13 @@
 
         // --- ระบบตาราง Reports และ Pagination UTTAYAN ---
         function generateUttayanPagination(totalItems, currentPage, type) {
-            let totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            let totalPages = Math.ceil(totalItems 
+/ ITEMS_PER_PAGE);
             if (totalPages < 1) totalPages = 1; 
 
             let html = '<div class="uttayan-pagination">';
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #4285F4;">U</div><div class="g-num"></div></div>`;
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #EA4335;">T</div><div class="g-num"></div></div>`;
-            
             const colors = ['#FBBC05', '#4285F4', '#34A853', '#EA4335'];
             for(let i = 1; i <= totalPages; i++) {
                 let tColor = colors[(i-1) % 4];
@@ -502,11 +584,12 @@
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #FBBC05;">N</div><div class="g-num"></div></div>`;
             
             if (currentPage < totalPages) {
-                html += `<a class="g-col" href="#" onclick="renderTable('${type}', ${currentPage + 1}); return false;" style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-size: 20px; display: flex; align-items: flex-end; height: 100%; padding-bottom: 2px;"><i class="fas fa-chevron-right"></i></div><div class="g-num">Next</div></a>`;
-            }
+                html += `<a class="g-col" href="#" onclick="renderTable('${type}', ${currentPage + 1}); return false;"
+style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-size: 20px; display: flex; align-items: flex-end; height: 100%; padding-bottom: 2px;"><i class="fas fa-chevron-right"></i></div><div class="g-num">Next</div></a>`;
+}
             html += '</div>';
             return html;
-        }
+}
 
         // --- ฟังก์ชันรับเรื่องโดยไม่ต้องพิมพ์ตอบเอง ---
         window.markAsReviewed = function(key) {
@@ -514,23 +597,26 @@
                 title: 'ยืนยันรับเรื่อง (ไม่ต้องตอบกลับ)',
                 text: 'ระบบจะส่งข้อความแจ้งเตือนผู้ใช้ว่า "ได้รับการตรวจสอบแล้ว" โดยอัตโนมัติ',
                 icon: 'info',
+            
                 showCancelButton: true,
                 confirmButtonText: 'ยืนยัน',
                 cancelButtonText: 'ยกเลิก',
                 confirmButtonColor: '#3b82f6'
             }).then((result) => {
                 if(result.isConfirmed) {
+             
                     push(ref(db, `reports/${key}/replies`), {
                         sender: 'admin',
                         message: 'แอดมินได้รับเรื่องและดำเนินการตรวจสอบปัญหาของท่านเรียบร้อยแล้ว',
                         timestamp: new Date().toISOString(),
+               
                         userRead: false
                     });
                     update(ref(db, `reports/${key}`), { status: 'replied' });
                     Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'อัปเดตสถานะเรียบร้อย', showConfirmButton: false, timer: 2000 });
-                }
+}
             });
-        }
+}
 
         window.renderTable = function(type, page) {
             const tbody = document.getElementById(`${type}ReportsTableBody`);
@@ -539,7 +625,8 @@
             
             tbody.innerHTML = '';
             if (dataList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ? 'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ?
+'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
                 paginationDiv.innerHTML = generateUttayanPagination(0, 1, type);
                 return;
             }
@@ -549,38 +636,43 @@
             if (page < 1) page = 1;
             if (type === 'pending') currentPendingPage = page;
             if (type === 'replied') currentRepliedPage = page;
-            
             const startIdx = (page - 1) * ITEMS_PER_PAGE;
             const currentData = dataList.slice(startIdx, startIdx + ITEMS_PER_PAGE);
-            
             currentData.forEach(r => {
                 const key = r.key;
                 const statusBadge = r.status === 'replied' ? '<span class="badge replied">ตอบกลับแล้ว</span>' : '<span class="badge pending">ยังไม่ตอบกลับ</span>';
                 
                 let btnReply = '';
+               
                 if(r.status === 'pending') {
                     btnReply = `
                         <div style="display:flex; gap:5px; flex-wrap:wrap;">
                             <button class="btn-blue" style="background:#3b82f6;" onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับทราบ</button>
+             
                             <button class="btn-green" onclick="openReplyModal('${key}')"><i class="fas fa-reply"></i> ตอบกลับ</button>
                         </div>
                     `;
                 } else {
+                  
                     btnReply = `<button class="btn-green" style="background:#10b981;" onclick="openReplyModal('${key}')"><i class="fas fa-eye"></i> ดู/อัปเดตสถานะ</button>`;
                 }
                 
                 const rowHtml = `
                     <tr>
+                   
                         <td data-label="สถานะ:">${statusBadge}</td>
                         <td data-label="เวลาที่เกิดเหตุ:">${new Date(r.timestamp).toLocaleString('th-TH')}</td>
                         <td data-label="ชื่อ-สกุล:">${r.name}</td>
-                        <td data-label="ประเภทปัญหา:"><b>${r.type}</b><br><span style="font-size:12px; color:#666;">${r.description}</span></td>
-                        <td data-label="ข้อมูลติดต่อ:">${r.contact}<br><span style="font-size:11px; color:#999;">อุปกรณ์: ${r.device}</span></td>
+                        <td data-label="ประเภทปัญหา:"><b>${r.type}</b><br><span style="font-size:12px;
+color:#666;">${r.description}</span></td>
+                        <td data-label="ข้อมูลติดต่อ:">${r.contact}<br><span style="font-size:11px;
+color:#999;">อุปกรณ์: ${r.device}</span></td>
                         <td data-label="จัดการ:" style="white-space:nowrap;">${btnReply}</td>
                     </tr>
                 `;
                 tbody.innerHTML += rowHtml;
             });
+       
             paginationDiv.innerHTML = generateUttayanPagination(dataList.length, page, type);
         };
 
@@ -591,6 +683,7 @@
             const r = allReportsMap.get(key);
             if(!r) return;
             currentReplyKey = key;
+       
             
             document.getElementById('rmName').innerText = r.name;
             document.getElementById('rmType').innerText = r.type;
@@ -598,13 +691,13 @@
             
             if(r.image) {
                 document.getElementById('rmImageBtn').innerHTML = `<button class="btn-blue" onclick="Swal.fire({imageUrl:'${r.image}', imageWidth:'100%'})"><i class="fas fa-image"></i> ดูรูปภาพแนบ</button>`;
-            } else {
+} else {
                 document.getElementById('rmImageBtn').innerHTML = '';
-            }
+}
 
             renderReplyList(r.replies);
             document.getElementById('replyReportModal').style.display = 'flex';
-        }
+}
 
         window.closeReplyModal = function() {
             currentReplyKey = null;
@@ -635,9 +728,8 @@
             push(ref(db, `reports/${currentReplyKey}/replies`), {
                 sender: 'admin', message: text, timestamp: new Date().toISOString(), userRead: false
             });
-            // Update status to replied
+// Update status to replied
             update(ref(db, `reports/${currentReplyKey}`), { status: 'replied' });
-            
             input.value = '';
         }
 
@@ -649,15 +741,18 @@
             tbody.innerHTML = '';
             if (data) {
                 Object.keys(data).forEach(key => {
-                    const item = data[key];
+                    const 
+item = data[key];
                     tbody.innerHTML += `
                         <tr>
                             <td data-label="คำถาม:">${item.question}</td>
+                       
                             <td data-label="คำตอบ:">${item.answer}</td>
                             <td data-label="จัดการ:"><button class="btn-red" onclick="deleteFaq('${key}')">ลบ</button></td>
                         </tr>
                     `;
                 });
+   
             } else {
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
@@ -668,12 +763,13 @@
             if(!q || !a) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
             push(faqsRef, { question: q, answer: a }).then(() => {
                 document.getElementById('faqQ').value = ''; document.getElementById('faqA').value = '';
+          
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่ม FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
             });
         });
         window.deleteFaq = function(key) {
             if(confirm('ต้องการลบคำถามนี้หรือไม่?')) remove(ref(db, `faqs/${key}`));
-        }
+}
 
         // --- จัดการประกาศหน้าแรก (Announcement) ---
         const annRef = ref(db, 'announcement');
@@ -681,8 +777,10 @@
 
         window.toggleAnnSource = function() {
             const source = document.getElementById('annSource').value;
-            if (source === 'url') { document.getElementById('annUrlDiv').style.display = 'block'; document.getElementById('annUploadDiv').style.display = 'none'; } 
-            else { document.getElementById('annUrlDiv').style.display = 'none'; document.getElementById('annUploadDiv').style.display = 'block'; }
+            if (source === 'url') { document.getElementById('annUrlDiv').style.display = 'block'; document.getElementById('annUploadDiv').style.display = 'none';
+            } 
+            else { document.getElementById('annUrlDiv').style.display = 'none';
+            document.getElementById('annUploadDiv').style.display = 'block'; }
         }
 
         onValue(annRef, (snapshot) => {
@@ -690,14 +788,18 @@
             const previewBox = document.getElementById('annPreviewBox');
             if (data) {
                 document.getElementById('annActive').value = data.isActive ? "true" : "false";
+         
                 document.getElementById('annType').value = data.mediaType || 'image';
                 document.getElementById('annDuration').value = data.duration || 0;
                 
                 if (data.mediaUrl) {
-                    let badge = data.isActive ? '<span class="badge replied" style="position:absolute; top:10px; right:10px;">เปิดใช้งานอยู่</span>' : '<span class="badge pending" style="position:absolute; top:10px; right:10px;">ปิดใช้งานแล้ว</span>';
+                    let badge = data.isActive ? '<span class="badge replied" style="position:absolute; top:10px; right:10px;">เปิดใช้งานอยู่</span>' : '<span class="badge pending" 
+style="position:absolute; top:10px; right:10px;">ปิดใช้งานแล้ว</span>';
                     if (data.mediaType === 'video') { previewBox.innerHTML = `${badge}<video src="${data.mediaUrl}" autoplay loop muted controls></video>`; } 
-                    else { previewBox.innerHTML = `${badge}<img src="${data.mediaUrl}">`; }
-                } else { previewBox.innerHTML = '<p style="color: #94a3b8; margin: 20px 0;">ไม่มีสื่อที่กำลังแสดงผล</p>'; }
+                    else { previewBox.innerHTML = `${badge}<img src="${data.mediaUrl}">`;
+}
+                } else { previewBox.innerHTML = '<p style="color: #94a3b8; margin: 20px 0;">ไม่มีสื่อที่กำลังแสดงผล</p>';
+}
             } else {
                 previewBox.innerHTML = '<p style="color: #94a3b8; margin: 20px 0;">ยังไม่มีการตั้งค่าประกาศหน้าแรก</p>';
                 document.getElementById('annActive').value = "false";
@@ -708,7 +810,8 @@
             const mediaType = document.getElementById('annType').value;
             const source = document.getElementById('annSource').value;
             const duration = parseInt(document.getElementById('annDuration').value) || 0;
-            let mediaUrl = currentAnnData ? currentAnnData.mediaUrl : "";
+            let mediaUrl = currentAnnData ?
+            currentAnnData.mediaUrl : "";
 
             Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             try {
@@ -720,12 +823,14 @@
                     if (fileInput) {
                         mediaUrl = await new Promise((resolve, reject) => {
                             const reader = new FileReader(); reader.readAsDataURL(fileInput);
-                            reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error);
+                            reader.onload = () => resolve(reader.result); reader.onerror 
+= error => reject(error);
                         });
-                    }
+}
                 }
 
-                if (isActive && !mediaUrl) { Swal.fire('เกิดข้อผิดพลาด', 'กรุณาระบุลิงก์ หรือ แนบไฟล์สื่อเพื่อแสดงผล', 'error'); return; }
+                if (isActive && !mediaUrl) { Swal.fire('เกิดข้อผิดพลาด', 'กรุณาระบุลิงก์ หรือ แนบไฟล์สื่อเพื่อแสดงผล', 'error');
+                return; }
 
                 await set(annRef, { isActive: isActive, mediaType: mediaType, mediaUrl: mediaUrl, duration: duration, updatedAt: new Date().toISOString() });
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'บันทึกการตั้งค่าสำเร็จ', showConfirmButton: false, timer: 2000 });
@@ -734,10 +839,13 @@
         };
         window.deleteAnnouncement = async function() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
-                try { await remove(annRef); Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'ลบข้อมูลสำเร็จ', showConfirmButton: false, timer: 2000 }); } 
-                catch (error) { Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบข้อมูลได้', 'error'); }
+                try { await remove(annRef);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'ลบข้อมูลสำเร็จ', showConfirmButton: false, timer: 2000 });
+                } 
+                catch (error) { Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบข้อมูลได้', 'error');
+                }
             }
         };
-    </script>
+</script>
 </body>
 </html>
