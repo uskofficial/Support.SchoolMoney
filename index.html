@@ -109,8 +109,9 @@
             </div>
             <h2 style="color: #1e3a8a; margin-top: 0; margin-bottom: 25px;">เข้าสู่ระบบผู้ดูแล (Admin)</h2>
             <input type="email" id="loginEmail" placeholder="อีเมล (Email)" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;">
-            <input type="password" id="loginPassword" placeholder="รหัสผ่าน (Password)" style="width: 100%; padding: 12px; margin-bottom: 25px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;" onkeypress="if(event.key==='Enter') doLogin()">
-            <button onclick="doLogin()" class="btn-blue" style="width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; font-weight: 500;"><i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ</button>
+            <input type="password" id="loginPassword" placeholder="รหัสผ่าน (Password)" style="width: 100%; padding: 12px; margin-bottom: 25px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: 'Kanit', sans-serif; box-sizing: border-box; font-size: 15px;">
+            
+            <button type="button" id="btnLoginAction" class="btn-blue" disabled style="width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; font-weight: 500; opacity: 0.5; cursor: not-allowed;"><i class="fas fa-spinner fa-spin"></i> กำลังเตรียมระบบ...</button>
         </div>
     </div>
 
@@ -289,7 +290,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, onValue, update, push, set, remove, get, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
-        // เพิ่ม Import สำหรับ Firebase Authentication
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
  
         const firebaseConfig = {
@@ -304,16 +304,13 @@
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        // กำหนดตัวแปร Auth
         const auth = getAuth(app);
 
         // --- ระบบ Authentication ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // หากล็อกอินแล้ว ให้ซ่อนหน้าล็อกอิน
                 document.getElementById('loginOverlay').style.display = 'none';
             } else {
-                // หากยังไม่ล็อกอิน ให้แสดงหน้าล็อกอิน
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
@@ -336,9 +333,31 @@
                     document.getElementById('loginPassword').value = '';
                 })
                 .catch((error) => {
-                    Swal.fire('เกิดข้อผิดพลาด', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', 'error');
+                    // ปรับแต่งให้แสดง Error ของ Firebase เผื่อเอาไว้เช็คปัญหา
+                    let errorMsg = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+                    if(error.code === 'auth/unauthorized-domain') errorMsg = 'โดเมนนี้ยังไม่ได้รับอนุญาตในตั้งค่า Firebase';
+                    Swal.fire('เข้าสู่ระบบไม่ได้', `${errorMsg}<br><small style="color:red;">(${error.code})</small>`, 'error');
                 });
         };
+
+        // การควบคุมปุ่มล็อกอิน แก้ปัญหากดไม่ติดจากการโหลด Module ช้า
+        const loginBtnEle = document.getElementById('btnLoginAction');
+        const passInputEle = document.getElementById('loginPassword');
+        
+        // เมื่อโค้ดถึงบรรทัดนี้ แสดงว่าโหลด Firebase เตรียมพร้อมเสร็จแล้ว ให้ปลดล็อกปุ่ม
+        loginBtnEle.disabled = false;
+        loginBtnEle.style.opacity = '1';
+        loginBtnEle.style.cursor = 'pointer';
+        loginBtnEle.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ';
+        
+        // ผูก Event Listener แทนการเรียกผ่าน onclick เพื่อแก้ปัญหาในเบราว์เซอร์
+        loginBtnEle.addEventListener('click', window.doLogin);
+        passInputEle.addEventListener('keypress', function(event) {
+            if(event.key === 'Enter') {
+                event.preventDefault(); // ป้องกันเบราว์เซอร์ refresh เอง
+                window.doLogin();
+            }
+        });
 
         window.doLogout = function() {
             Swal.fire({
@@ -350,9 +369,7 @@
                 confirmButtonColor: '#ef4444'
             }).then((result) => {
                 if(result.isConfirmed) {
-                    signOut(auth).then(() => {
-                        // ไม่ต้องทำอะไรเพิ่ม onAuthStateChanged จะจัดการเปลี่ยนหน้าให้เอง
-                    }).catch((error) => {
+                    signOut(auth).catch((error) => {
                         Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถออกจากระบบได้', 'error');
                     });
                 }
