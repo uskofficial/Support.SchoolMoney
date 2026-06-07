@@ -108,12 +108,33 @@
             .online-users-desktop { display: none !important; }
 
             .card { padding: 15px; }
-            table, thead, tbody, th, td, tr { display: block; }
-            thead { display: none; }
-            tr { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-            td { border: none; border-bottom: 1px dashed #e2e8f0; padding: 10px 0; text-align: left; position: relative; }
-            td:last-child { border-bottom: none; padding-bottom: 0; }
-            td::before { content: attr(data-label); display: block; font-weight: 600; color: #1e3a8a; margin-bottom: 6px; font-size: 14px; }
+            
+            /* ใช้กับตารางอื่นๆ เป็นแบบ Card */
+            .section:not(#frontend_users) table, 
+            .section:not(#frontend_users) thead, 
+            .section:not(#frontend_users) tbody, 
+            .section:not(#frontend_users) th, 
+            .section:not(#frontend_users) td, 
+            .section:not(#frontend_users) tr { display: block; }
+            .section:not(#frontend_users) thead { display: none; }
+            .section:not(#frontend_users) tr { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+            .section:not(#frontend_users) td { border: none; border-bottom: 1px dashed #e2e8f0; padding: 10px 0; text-align: left; position: relative; }
+            .section:not(#frontend_users) td:last-child { border-bottom: none; padding-bottom: 0; }
+            .section:not(#frontend_users) td::before { content: attr(data-label); display: block; font-weight: 600; color: #1e3a8a; margin-bottom: 6px; font-size: 14px; }
+            
+            /* เฉพาะตารางผู้ใช้งานหน้าบ้าน ให้อยู่แบบแนวนอน (ตารางปกติ) และบีบให้พอดีจอ ไม่ต้องปัดซ้ายขวา */
+            #frontend_users .card { padding: 10px; overflow-x: hidden; }
+            #frontend_users table { display: table; width: 100%; table-layout: fixed; border-collapse: collapse; }
+            #frontend_users thead { display: table-header-group; }
+            #frontend_users tbody { display: table-row-group; }
+            #frontend_users tr { display: table-row; background: transparent; border: none; margin: 0; padding: 0; box-shadow: none; border-radius: 0; border-bottom: 1px solid #e2e8f0; }
+            #frontend_users th, #frontend_users td { display: table-cell; border: none; border-bottom: 1px solid #e2e8f0; padding: 8px 4px; font-size: 11px; word-wrap: break-word; word-break: break-word; text-align: left; vertical-align: middle; line-height: 1.4; }
+            #frontend_users th { background: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0; }
+            #frontend_users th:nth-child(1) { width: 30%; } /* สถานะ */
+            #frontend_users th:nth-child(2) { width: 38%; } /* ชื่อ */
+            #frontend_users th:nth-child(3) { width: 32%; } /* เวลา */
+            #frontend_users td::before { display: none; } /* ซ่อน Label ในมือถือ */
+
             .g-letter { font-size: 28px; }
             .g-num { font-size: 12px; }
             .chat-container { flex-direction: column; height: 80vh; }
@@ -144,12 +165,14 @@
     </div>
 
     <div class="sidebar" id="mainSidebar">
+      
         <button class="sidebar-close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
         <h2>Admin Panel</h2>
         <div style="flex: 1; margin-top: 10px;">
             <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา <span id="navRepBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('livechat')"><i class="fas fa-comments"></i> พิมพ์ข้อความสด <span id="navChatBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
+            
             <button class="nav-btn" onclick="switchTab('announcement')"><i class="fas fa-bullhorn"></i> จัดการประกาศ</button>
             <button class="nav-btn" onclick="switchTab('frontend_users')"><i class="fas fa-users"></i> กำลังใช้งาน <span id="navOnlineBadge" class="badge-red" style="background:#10b981; display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('system_mgmt')"><i class="fas fa-cogs"></i> จัดการระบบ</button>
@@ -171,57 +194,68 @@
         <div id="reports" class="section active">
             <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
             <div class="card">
-                 <h3 style="margin-top: 0; color: #d97706;"><i class="fas fa-exclamation-circle"></i> รายงานที่รอการดำเนินการ</h3>
+   
+                <h3 style="margin-top: 0; color: #d97706;"><i class="fas fa-exclamation-circle"></i> รายงานที่รอการดำเนินการ</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>สถานะ</th>
+        
                             <th>เวลาที่เกิดเหตุ</th>
                             <th>ชื่อ-สกุล</th>
                             <th>ประเภทปัญหา</th>
+                        
                             <th>ติดต่อ</th>
                             <th>จัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="pendingReportsTableBody">
-                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+   
+                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="pendingPagination"></div>
             </div>
 
-            <div class="card">
+           
+             <div class="card">
                 <h3 style="margin-top: 0; color: #16a34a;"><i class="fas fa-check-circle"></i> รายงานที่ตอบกลับแล้ว</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>สถานะ</th>
+        
                             <th>เวลาที่เกิดเหตุ</th>
                             <th>ชื่อ-สกุล</th>
                             <th>ประเภทปัญหา</th>
+                        
                             <th>ติดต่อ</th>
                             <th>จัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="repliedReportsTableBody">
-                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+   
+                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="repliedPagination"></div>
             </div>
         </div>
 
-        <div id="livechat" class="section">
+   
+         <div id="livechat" class="section">
             <h2>พิมพ์ข้อความสด (Live Chat)</h2>
             <div class="chat-container">
                 <div class="chat-sidebar" id="adminChatList">
                 </div>
                 <div class="chat-main" id="adminChatMain" style="display: none;">
+            
                     <div style="padding: 15px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; font-weight: 600; color: #1e3a8a;" id="chatActiveUserName">เลือกผู้ใช้งานเพื่อเริ่มแชท</div>
                     <div class="chat-messages" id="adminChatMessages">
                     </div>
                     <div class="chat-input-area">
                         <input type="text" id="adminChatInput" placeholder="พิมพ์ข้อความตอบกลับ..." onkeypress="if(event.key==='Enter') sendAdminChat()">
+      
                         <button class="btn-blue" onclick="sendAdminChat()">ส่ง</button>
                     </div>
                 </div>
@@ -234,21 +268,25 @@
         <div id="faqs" class="section">
             <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
             <div class="card">
-                 <h3>เพิ่มคำถามใหม่</h3>
+     
+                <h3>เพิ่มคำถามใหม่</h3>
                 <input type="text" id="faqQ" placeholder="คำถาม...">
                 <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
                 <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
             </div>
             
-            <div class="card">
+       
+             <div class="card">
                 <h3>รายการคำถามปัจจุบัน</h3>
                 <table>
                     <thead>
                         <tr>
-                             <th>คำถาม</th>
+                  
+                            <th>คำถาม</th>
                             <th>คำตอบ</th>
                             <th width="100">ลบ</th>
                         </tr>
+        
                     </thead>
                     <tbody id="faqsTableBody"></tbody>
                 </table>
@@ -257,7 +295,8 @@
 
         <div id="announcement" class="section">
             <h2>จัดการประกาศแจ้งเตือนหน้าแรก (Startup Popup)</h2>
-            <div class="card">
+       
+             <div class="card">
                 <h3>ตั้งค่าการแสดงผล</h3>
                 <label style="font-weight: 500; font-size: 14px;">สถานะการแสดงผล:</label>
                 <select id="annActive">
@@ -293,6 +332,7 @@
                 <div style="margin-top: 15px;">
                     <button class="btn-blue" onclick="saveAnnouncement()"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
                     <button class="btn-red" style="margin-left: 10px;" onclick="deleteAnnouncement()"><i class="fas fa-trash"></i> ลบประกาศทิ้งทั้งหมด</button>
+    
                 </div>
             </div>
 
@@ -307,15 +347,24 @@
         <div id="frontend_users" class="section">
             <h2>ผู้ที่กำลังใช้งานระบบหน้าบ้าน (ออนไลน์)</h2>
             <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                    <div style="font-size: 16px; font-weight: 600; color: #1e3a8a;">
+                        <i class="fas fa-user-graduate"></i> จำนวนนักเรียนที่กำลังใช้งานในระบบ: <span id="studentOnlineCountInTab" style="color: #10b981; font-size: 18px; font-weight: bold;">0</span> คน
+                    </div>
+                    <button class="btn-blue" onclick="refreshFrontendUsers()"><i class="fas fa-sync-alt"></i> รีเฟรชข้อมูล</button>
+                </div>
                 <table>
+          
                     <thead>
                         <tr>
                             <th>สถานะ</th>
                             <th>ชื่อนักเรียนผู้ใช้งาน</th>
+          
                             <th>เวลาที่มีความเคลื่อนไหวล่าสุด</th>
                         </tr>
                     </thead>
                     <tbody id="frontendUsersTableBody">
+                 
                         <tr><td colspan="3" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>
                     </tbody>
                 </table>
@@ -324,12 +373,14 @@
 
         <div id="system_mgmt" class="section">
             <h2>จัดการระบบ (System Management)</h2>
-            
+           
+ 
             <div class="card" id="addAdminCard" style="display: none;">
                 <h3><i class="fas fa-user-plus"></i> เพิ่มผู้ดูแลระบบ (Admin)</h3>
                 <input type="email" id="newAdminEmail" placeholder="อีเมลแอดมินใหม่">
                 <input type="password" id="newAdminPassword" placeholder="รหัสผ่านแอดมินใหม่ (อย่างน้อย 6 ตัว)">
                 <button class="btn-blue" onclick="addNewAdmin()"><i class="fas fa-plus"></i> เพิ่มแอดมิน</button>
+ 
             </div>
 
             <div class="card">
@@ -338,19 +389,23 @@
                 <button class="btn-blue" onclick="changeMyPassword()"><i class="fas fa-save"></i> เปลี่ยนรหัสผ่าน</button>
             </div>
 
+  
             <div class="card">
                 <h3><i class="fas fa-users-cog"></i> รายชื่อผู้ดูแลระบบ</h3>
                 <table>
                     <thead>
                         <tr>
+          
                             <th>สถานะ</th>
                             <th>อีเมล</th>
                             <th>รหัสผ่าน</th>
+                          
                             <th>จัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="adminUsersTableBody">
                         <tr><td colspan="4" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>
+       
                     </tbody>
                 </table>
             </div>
@@ -359,15 +414,18 @@
         <div id="activity_logs" class="section">
             <h2>ประวัติกิจกรรมของแอดมิน</h2>
             <div class="card">
+                
                 <table>
                     <thead>
                          <tr>
                             <th>เวลา</th>
+                           
                             <th>แอดมิน (Email)</th>
                             <th>รายละเอียดกิจกรรม</th>
                         </tr>
                     </thead>
                     <tbody id="logsTableBody">
+     
                         <tr><td colspan="3" style="text-align:center;">กำลังโหลดประวัติ...</td></tr>
                     </tbody>
                 </table>
@@ -378,6 +436,7 @@
 
     <div class="admin-modal-overlay" id="replyReportModal">
         <div class="admin-modal-box">
+    
             <button class="admin-modal-close" onclick="closeReplyModal()"><i class="fas fa-times"></i></button>
             <div class="admin-modal-header">ข้อมูลและการตอบกลับรายงาน</div>
              <div class="admin-modal-body">
@@ -386,6 +445,7 @@
                     <b>ปัญหา:</b> <span id="rmType"></span><br>
                     <b>รายละเอียด:</b> <span id="rmDesc"></span><br>
                     <div id="rmImageBtn" style="margin-top:10px;"></div>
+          
                 </div>
                 <b>ประวัติการตอบกลับ:</b>
                 <div class="reply-chat-box" id="rmRepliesList">
@@ -420,6 +480,7 @@
             projectId: "support-schoolmoney",
             storageBucket: "support-schoolmoney.firebasestorage.app",
             messagingSenderId: "876403473371",
+         
             appId: "1:876403473371:web:d3c4021983f8f45fc405fe",
             measurementId: "G-D1JZG6ECL2"
         };
@@ -442,6 +503,7 @@
                     icon: 'info',
                     title: 'หมดเวลาเชื่อมต่อ',
                     text: 'ระบบได้ออกจากระบบอัตโนมัติเนื่องจากเข้าสู่ระบบครบ 5 ชั่วโมงแล้ว',
+               
                     confirmButtonText: 'ตกลง'
                 }).then(() => {
                     logoutAdmin();
@@ -583,17 +645,20 @@
                 text: "คุณต้องการลบบัญชีผู้ดูแลระบบนี้ออกจากตารางหรือไม่?",
                 icon: 'warning',
                 showCancelButton: true,
+ 
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
                 confirmButtonText: 'ลบข้อมูล'
             }).then((result) => {
                 if (result.isConfirmed) {
+                  
                     remove(ref(db, `admin_users/${encEmail}`));
                     remove(ref(db, `admin_presence/${encEmail}`));
                     Swal.fire('ลบสำเร็จ', 'ลบบัญชีออกจากระบบเรียบร้อยแล้ว', 'success');
                     logAdminActivity(`ลบบัญชีผู้ดูแลระบบออกจากตาราง`);
                 }
             })
+      
         }
 
         checkUserSession();
@@ -619,6 +684,7 @@
             tbody.innerHTML = '';
             if(!snapshot.exists()) {
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ยังไม่มีประวัติกิจกรรม</td></tr>';
+              
                 return;
             }
             
@@ -627,16 +693,17 @@
             logsArray.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)); 
 
             logsArray.forEach(log => {
+          
                 tbody.innerHTML += `
                     <tr>
                         <td data-label="เวลา:">${new Date(log.timestamp).toLocaleString('th-TH')}</td>
                         <td data-label="แอดมิน:">${log.email}</td>
+                     
                         <td data-label="กิจกรรม:"><b>${log.action}</b></td>
                     </tr>
                 `;
             });
         });
-
         // --- ระบบการติดตามแอดมิน (แยกจากผู้ใช้หน้าบ้าน) ---
         const connectedRef = ref(db, ".info/connected");
         const onlineUsersRef = ref(db, "presence");
@@ -651,6 +718,7 @@
                     set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
                     onDisconnect(myAdminPresenceRef).set({ status: 'offline', last_seen: serverTimestamp() });
                 }
+          
             });
         }
 
@@ -661,18 +729,33 @@
             }
         }
 
+        // Helper สำหรับอัปเดต UI จำนวนการออนไลน์ต่างๆ (สำหรับนักเรียนเท่านั้น)
+        function updateOnlineCountsUI(count) {
+            // เอา dElem และ mElem (มุมขวาบนและมือถือ) ออกจากฟังก์ชันนี้ เพราะมุมขวาบนจะถูกนับแยกเฉพาะแอดมิน
+            const badgeElem = document.getElementById('navOnlineBadge');
+            const tabElem = document.getElementById('studentOnlineCountInTab');
+            
+            if(badgeElem) {
+                badgeElem.innerText = count;
+                badgeElem.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+            if(tabElem) tabElem.innerText = count;
+        }
+
         // --- ระบบดึงข้อมูลผู้ใช้งานหน้าบ้าน (ออนไลน์) ---
+        // ใช้ onValue ของ Firebase เพื่อดึงข้อมูลตารางเด็กนักเรียนแบบ Real-time รวดเร็วทันทีที่มีคนเข้า/ออก
         onValue(onlineUsersRef, (snapshot) => {
             let userPresenceMap = new Map();
             let onlineUniqueNames = new Set();
             
             if(snapshot.exists()) {
+         
                 snapshot.forEach(child => {
                     let data = child.val();
                     let userName = data.name || data.email || child.key;
                     
-                    // ป้องกันนำอีเมลแอดมินตกค้าง หรือคนที่ยังไม่ได้กรอกชื่อมาแสดง
-                    if(userName.includes('@') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
+                    // ป้องกันนำอีเมลแอดมินตกค้าง หรือคนที่ยังไม่ได้กรอกชื่อมาแสดง และกรองคำว่า admin ทิ้ง
+                    if(userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
 
                     let isOnline = data.status === 'online';
                     let lastSeen = data.timestamp || data.last_seen || 0;
@@ -681,6 +764,7 @@
                         userPresenceMap.set(userName, { 
                             name: userName, 
                             status: isOnline ? 'online' : 'offline', 
+          
                             last_seen: lastSeen 
                         });
                     } else {
@@ -700,22 +784,57 @@
                     onlineUniqueNames.add(user.name);
                 }
             });
-            
             let count = onlineUniqueNames.size;
             
-            const dElem = document.getElementById('onlineCountDesktop');
-            const mElem = document.getElementById('onlineCountMobile');
-            const badgeElem = document.getElementById('navOnlineBadge');
-            
-            if(dElem) dElem.innerText = count;
-            if(mElem) mElem.innerText = count;
-            if(badgeElem) {
-                badgeElem.innerText = count;
-                badgeElem.style.display = count > 0 ? 'inline-block' : 'none';
-            }
-
+            updateOnlineCountsUI(count);
             renderFrontendUsersTable(userPresenceMap);
         });
+
+        // ฟังก์ชันสำหรับปุ่มรีเฟรชข้อมูลนักเรียนออนไลน์ (ทำเผื่อไว้ แต่จริงๆ ระบบจะเรียลไทม์อยู่แล้วจาก onValue ด้านบน)
+        window.refreshFrontendUsers = function() {
+            const tbody = document.getElementById('frontendUsersTableBody');
+            if(tbody) tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">กำลังรีเฟรชข้อมูล...</td></tr>';
+            
+            get(onlineUsersRef).then((snapshot) => {
+                let userPresenceMap = new Map();
+                let onlineUniqueNames = new Set();
+                
+                if(snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        let data = child.val();
+                        let userName = data.name || data.email || child.key;
+                        
+                        if(userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
+
+                        let isOnline = data.status === 'online';
+                        let lastSeen = data.timestamp || data.last_seen || 0;
+
+                        if(!userPresenceMap.has(userName)) {
+                            userPresenceMap.set(userName, { name: userName, status: isOnline ? 'online' : 'offline', last_seen: lastSeen });
+                        } else {
+                            let existing = userPresenceMap.get(userName);
+                            if(isOnline) existing.status = 'online';
+                            if(new Date(lastSeen) > new Date(existing.last_seen)) {
+                                existing.last_seen = lastSeen;
+                            }
+                        }
+                    });
+                }
+                
+                userPresenceMap.forEach(user => {
+                    if(user.status === 'online') {
+                        onlineUniqueNames.add(user.name);
+                    }
+                });
+                
+                let count = onlineUniqueNames.size;
+                updateOnlineCountsUI(count);
+                renderFrontendUsersTable(userPresenceMap);
+                Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'รีเฟรชข้อมูลล่าสุดแล้ว', showConfirmButton: false, timer: 1500 });
+            }).catch(error => {
+                Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถดึงข้อมูลได้', 'error');
+            });
+        }
 
         window.renderFrontendUsersTable = function(userPresenceMap) {
             const tbody = document.getElementById('frontendUsersTableBody');
@@ -728,45 +847,65 @@
             }
 
             let usersArray = Array.from(userPresenceMap.values());
-            
             usersArray.sort((a, b) => {
                 // เรียงคนออนไลน์ (สีเขียว) ไว้บนสุด 
                 if(a.status === 'online' && b.status !== 'online') return -1;
                 if(a.status !== 'online' && b.status === 'online') return 1;
                 // ถ้าสถานะเหมือนกัน ให้เรียงตามความเคลื่อนไหวล่าสุด
+           
                 return new Date(b.last_seen) - new Date(a.last_seen);
             });
-
             usersArray.forEach(user => {
                 let dotClass = user.status === 'online' ? 'status-online' : 'status-recent';
                 let statusText = user.status === 'online' ? 'กำลังใช้งาน (อยู่ในระบบ)' : 'ออกจากระบบแล้ว';
                 
                 let timeStr = '-';
+            
                 if(user.last_seen && user.last_seen !== 0) {
                     timeStr = new Date(user.last_seen).toLocaleString('th-TH');
                 }
 
                 tbody.innerHTML += `
                     <tr>
+              
                         <td data-label="สถานะ:"><span class="status-dot ${dotClass}"></span>${statusText}</td>
                         <td data-label="ชื่อนักเรียนผู้ใช้งาน:"><b>${user.name}</b></td>
                         <td data-label="เวลาที่มีความเคลื่อนไหวล่าสุด:">${timeStr}</td>
                     </tr>
                 `;
-            });
+ 
+             });
         }
 
         // --- ระบบจัดการรายชื่อผู้ดูแลระบบในเมนูตั้งค่า ---
         let allAdminsData = {};
         let allAdminsPresence = {};
+        
         onValue(ref(db, 'admin_users'), (snapshot) => {
             allAdminsData = snapshot.exists() ? snapshot.val() : {};
             window.renderAdminTable();
         });
+        
+        // จุดที่แก้ไข: นับและอัปเดตจำนวน 'ผู้ใช้งานพร้อมกัน (เฉพาะแอดมิน)' ด้านมุมขวาบนแบบเรียลไทม์
         onValue(ref(db, 'admin_presence'), (snapshot) => {
             allAdminsPresence = snapshot.exists() ? snapshot.val() : {};
             window.renderAdminTable();
+            
+            // นับเฉพาะจำนวนแอดมินที่กำลังออนไลน์
+            let adminOnlineCount = 0;
+            Object.values(allAdminsPresence).forEach(pres => {
+                if(pres.status === 'online') {
+                    adminOnlineCount++;
+                }
+            });
+            
+            // อัปเดตตัวเลขแสดงผลที่มุมขวาบน และมุมบนซ้ายมือถือ
+            const dElem = document.getElementById('onlineCountDesktop');
+            const mElem = document.getElementById('onlineCountMobile');
+            if(dElem) dElem.innerText = adminOnlineCount;
+            if(mElem) mElem.innerText = adminOnlineCount;
         });
+        
         window.renderAdminTable = function() {
             const tbody = document.getElementById('adminUsersTableBody');
             if(!tbody) return;
@@ -782,23 +921,28 @@
                 const pres = allAdminsPresence[encEmail] || { status: 'offline', last_seen: 0 };
                 
                 let dotClass = 'status-offline';
-                let statusText = 'ออกจากระบบนานแล้ว';
+     
+                 let statusText = 'ออกจากระบบนานแล้ว';
                 
                 if(pres.status === 'online') {
                     dotClass = 'status-online';
                     statusText = 'กำลังใช้งาน';
-                } else {
+       
+                 } else {
                     const now = Date.now();
                     const diff = now - pres.last_seen;
                     if(diff < 5 * 60 * 1000 && pres.last_seen > 0) { 
-                        dotClass = 'status-recent';
+         
+                         dotClass = 'status-recent';
                         statusText = 'เพิ่งออก';
                     }
                 }
                 
-                let passDisplay = '********';
+     
+                 let passDisplay = '********';
                 if(currentAdminEmail === 'admin@usk.ac.th' || currentAdminEmail === adminData.email) {
-                    passDisplay = adminData.password || 'ไม่ทราบรหัสผ่าน';
+                    passDisplay = adminData.password ||
+'ไม่ทราบรหัสผ่าน';
                 }
                 
                 let actBtn = '-';
@@ -810,11 +954,12 @@
                     <tr>
                         <td data-label="สถานะ:"><span class="status-dot ${dotClass}"></span>${statusText}</td>
                         <td data-label="อีเมล:">${adminData.email}</td>
+          
                         <td data-label="รหัสผ่าน:">${passDisplay}</td>
                         <td data-label="จัดการ:">${actBtn}</td>
                     </tr>
                 `;
-            });
+        });
         }
 
 
@@ -858,7 +1003,8 @@
                     allPendingData.push(r);
                 } else {
                     allRepliedData.push(r);
-                }
+ 
+                 }
             });
             updateGlobalNotification();
             renderTable('pending', currentPendingPage);
@@ -870,9 +1016,11 @@
             const repBadge = document.getElementById('navRepBadge');
             const chatBadge = document.getElementById('navChatBadge');
 
-            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount; }
+            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount;
+            }
             else repBadge.style.display = 'none';
-            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount; }
+            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount;
+            }
             else chatBadge.style.display = 'none';
             if(unreadRepCount + unreadChatCount > 0) bell.style.display = 'block';
             else bell.style.display = 'none';
@@ -886,6 +1034,7 @@
             if (isFirstLoadComplete) {
                 if (data.status === 'pending') { Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'มีรายงานปัญหาใหม่', showConfirmButton: false, timer: 3000 }); }
                 updateListsAndRender();
+    
             }
         });
         onChildChanged(reportsRef, (snapshot) => {
@@ -895,6 +1044,7 @@
             if(window.currentReplyKey === snapshot.key) {
                 renderReplyList(data.replies);
             }
+        
         });
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
         // --- จัดการข้อมูล Live Chat ---
@@ -911,6 +1061,7 @@
                 }
                 if(hasUnread) unreadChatCount++;
                 allChatsMap.set(userName, data);
+  
             });
             updateGlobalNotification();
             renderChatUserList();
@@ -940,12 +1091,14 @@
 
                 const isActive = activeChatUser === userName ? 'active' : '';
                 listEl.innerHTML += `
+           
                     <div class="chat-user-item ${isActive}" onclick="selectChatUser('${userName}')">
                         <div class="chat-user-name">${userName}</div>
                         ${unreadBadge}
                     </div>
                 `;
-            });
+   
+             });
         }
 
         window.selectChatUser = function(userName) {
@@ -966,18 +1119,22 @@
                     const msg = data.messages[key];
                     const msgClass = msg.sender === 'admin' ? 'admin' : 'user';
                     
+
                     const timeStr = new Date(msg.timestamp).toLocaleTimeString('th-TH', {hour:'2-digit', minute:'2-digit'});
                     
                     let readStatusHtml = '';
                     if(msg.sender === 'admin') {
+        
                         if(msg.userRead) {
                             readStatusHtml = '<span style="margin-left:5px; color:#a5b4fc;"><i class="fas fa-check-double"></i> อ่านแล้ว</span>';
                         } else {
-                            readStatusHtml = '<span style="margin-left:5px; color:#e2e8f0;"><i class="fas fa-check"></i> ส่งแล้ว</span>';
+                      
+            readStatusHtml = '<span style="margin-left:5px; color:#e2e8f0;"><i class="fas fa-check"></i> ส่งแล้ว</span>';
                         }
                     }
 
                     box.innerHTML += `
+                     
                         <div class="reply-msg ${msgClass}" style="max-width: 70%;">
                             ${msg.message}
                             <div style="font-size:10px; opacity:0.7; text-align:right; margin-top:3px;">${timeStr} ${readStatusHtml}</div>
@@ -994,6 +1151,7 @@
 
         window.sendAdminChat = function() {
             if(!activeChatUser) return;
+ 
             const input = document.getElementById('adminChatInput');
             const text = input.value.trim();
             if(!text) return;
@@ -1001,6 +1159,7 @@
             push(ref(db, `chats/${activeChatUser}/messages`), {
                 sender: 'admin', message: text, timestamp: new Date().toISOString(), userRead: false
             });
+        
             update(ref(db, `chats/${activeChatUser}`), { lastUpdated: new Date().toISOString() });
             
             logAdminActivity(`ตอบแชทสดถึงผู้ใช้: ${activeChatUser}`);
@@ -1043,16 +1202,19 @@
                 text: 'ระบบจะส่งข้อความแจ้งเตือนผู้ใช้ว่า "ได้รับการตรวจสอบแล้ว" โดยอัตโนมัติ',
                 icon: 'info',
                 showCancelButton: true,
+      
                 confirmButtonText: 'ยืนยัน',
                 cancelButtonText: 'ยกเลิก',
                 confirmButtonColor: '#3b82f6'
             }).then((result) => {
                 if(result.isConfirmed) {
                     push(ref(db, `reports/${key}/replies`), {
+  
                         sender: 'admin',
                         message: 'แอดมินได้รับเรื่องและดำเนินการตรวจสอบปัญหาของท่านเรียบร้อยแล้ว',
                         timestamp: new Date().toISOString(),
                         userRead: false
+ 
                     });
                     update(ref(db, `reports/${key}`), { status: 'replied' });
                     
@@ -1095,16 +1257,19 @@
                         </div>
                     `;
                 } else {
+   
                     btnReply = `<button class="btn-green" style="background:#10b981;" onclick="openReplyModal('${key}')"><i class="fas fa-eye"></i> ดู/อัปเดตสถานะ</button>`;
                 }
                 
                 const rowHtml = `
                     <tr>
                         <td data-label="สถานะ:">${statusBadge}</td>
+                    
                         <td data-label="เวลาที่เกิดเหตุ:">${new Date(r.timestamp).toLocaleString('th-TH')}</td>
                         <td data-label="ชื่อ-สกุล:">${r.name}</td>
                         <td data-label="ประเภทปัญหา:"><b>${r.type}</b><br><span style="font-size:12px; color:#666;">${r.description}</span></td>
                         <td data-label="ข้อมูลติดต่อ:">${r.contact}<br><span style="font-size:11px; color:#999;">อุปกรณ์: ${r.device}</span></td>
+              
                         <td data-label="จัดการ:" style="white-space:nowrap;">${btnReply}</td>
                     </tr>
                 `;
@@ -1178,12 +1343,14 @@
                     tbody.innerHTML += `
                         <tr>
                             <td data-label="คำถาม:">${item.question}</td>
+                       
                             <td data-label="คำตอบ:">${item.answer}</td>
                             <td data-label="จัดการ:"><button class="btn-red" onclick="deleteFaq('${key}')">ลบ</button></td>
                         </tr>
                     `;
                 });
-            } else {
+   
+             } else {
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
         });
@@ -1193,6 +1360,7 @@
             if(!q || !a) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
             push(faqsRef, { question: q, answer: a }).then(() => {
                 logAdminActivity(`เพิ่มข้อความ FAQ เรื่อง: ${q}`);
+            
                 document.getElementById('faqQ').value = ''; document.getElementById('faqA').value = '';
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่ม FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
             });
@@ -1221,6 +1389,7 @@
             const previewBox = document.getElementById('annPreviewBox');
             if (data) {
                 document.getElementById('annActive').value = data.isActive ? "true" : "false";
+         
                 document.getElementById('annType').value = data.mediaType || 'image';
                 document.getElementById('annDuration').value = data.duration || 0;
                 
@@ -1279,6 +1448,6 @@
                 }
             }
         };
-    </script>
+        </script>
 </body>
 </html>
