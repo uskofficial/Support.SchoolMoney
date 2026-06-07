@@ -18,8 +18,7 @@
 text-align: center; margin-top: 0; flex-shrink: 0; }
         
         .nav-btn { display: block; width: 100%; text-align: left;
-background: none; border: none; color: white; padding: 15px; font-size: 16px; cursor: pointer; border-radius: 8px; margin-bottom: 10px;
-font-family: 'Kanit', sans-serif;}
+background: none; border: none; color: white; padding: 15px; font-size: 16px; cursor: pointer; border-radius: 8px; margin-bottom: 10px; font-family: 'Kanit', sans-serif;}
         .nav-btn:hover, .nav-btn.active { background: #3b82f6; }
         
         .main-content { margin-left: 250px; padding: 30px; }
@@ -219,7 +218,7 @@ font-family: 'Kanit', sans-serif;}
         <div id="reports" class="section active">
             <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
             <div class="card">
-                <h3 style="margin-top: 0; color: #d97706;"><i class="fas fa-exclamation-circle"></i> รายงานที่รอการดำเนินการ</h3>
+                 <h3 style="margin-top: 0; color: #d97706;"><i class="fas fa-exclamation-circle"></i> รายงานที่รอการดำเนินการ</h3>
                 <table>
                     <thead>
                         <tr>
@@ -232,7 +231,7 @@ font-family: 'Kanit', sans-serif;}
                         </tr>
                     </thead>
                     <tbody id="pendingReportsTableBody">
-                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="pendingPagination"></div>
@@ -252,7 +251,7 @@ font-family: 'Kanit', sans-serif;}
                         </tr>
                     </thead>
                     <tbody id="repliedReportsTableBody">
-                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="repliedPagination"></div>
@@ -280,7 +279,7 @@ font-family: 'Kanit', sans-serif;}
         <div id="faqs" class="section">
             <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
             <div class="card">
-                <h3>เพิ่มคำถามใหม่</h3>
+                 <h3>เพิ่มคำถามใหม่</h3>
                 <input type="text" id="faqQ" placeholder="คำถาม...">
                 <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
                 <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
@@ -295,7 +294,7 @@ font-family: 'Kanit', sans-serif;}
                             <th>คำตอบ</th>
                             <th width="100">ลบ</th>
                         </tr>
-                    </thead>
+                     </thead>
                     <tbody id="faqsTableBody"></tbody>
                 </table>
             </div>
@@ -339,7 +338,7 @@ font-family: 'Kanit', sans-serif;}
                 <div style="margin-top: 15px;">
                     <button class="btn-blue" onclick="saveAnnouncement()"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
                     <button class="btn-red" style="margin-left: 10px;" onclick="deleteAnnouncement()"><i class="fas fa-trash"></i> ลบประกาศทิ้งทั้งหมด</button>
-                </div>
+                 </div>
             </div>
 
             <div class="card">
@@ -377,33 +376,33 @@ font-family: 'Kanit', sans-serif;}
         <div id="system_mgmt" class="section">
             <h2>จัดการระบบ (System Management)</h2>
             <div class="card" id="addAdminCard" style="display: none;">
-                <h3><i class="fas fa-user-plus"></i> เพิ่มผู้ดูแลระบบ (Admin)</h3>
+                 <h3><i class="fas fa-user-plus"></i> เพิ่มผู้ดูแลระบบ (Admin)</h3>
                 <input type="email" id="newAdminEmail" placeholder="อีเมลแอดมินใหม่">
                 <input type="password" id="newAdminPassword" placeholder="รหัสผ่านแอดมินใหม่ (อย่างน้อย 6 ตัว)">
                 <button class="btn-blue" onclick="addNewAdmin()"><i class="fas fa-plus"></i> เพิ่มแอดมิน</button>
             </div>
 
-            <div class="card">
+             <div class="card">
                 <h3><i class="fas fa-key"></i> เปลี่ยนรหัสผ่านของฉัน</h3>
                 <input type="password" id="myNewPassword" placeholder="รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)">
                 <button class="btn-blue" onclick="changeMyPassword()"><i class="fas fa-save"></i> เปลี่ยนรหัสผ่าน</button>
             </div>
 
             <div class="card">
-                <h3><i class="fas fa-users-cog"></i> รายชื่อผู้ดูแลระบบ</h3>
+                 <h3><i class="fas fa-users-cog"></i> รายชื่อผู้ดูแลระบบ</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>สถานะ</th>
-                            <th>อีเมล</th>
+                             <th>อีเมล</th>
                             <th>รหัสผ่าน</th>
                             <th>จัดการ</th>
-                        </tr>
+                         </tr>
                     </thead>
                     <tbody id="adminUsersTableBody">
                         <tr><td colspan="4" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>
                     </tbody>
-                </table>
+                 </table>
             </div>
         </div>
 
@@ -412,7 +411,7 @@ font-family: 'Kanit', sans-serif;}
             <div class="card">
                 <table>
                     <thead>
-                         <tr>
+                          <tr>
                             <th>เวลา</th>
                             <th>แอดมิน (Email)</th>
                             <th>รายละเอียดกิจกรรม</th>
@@ -430,14 +429,14 @@ font-family: 'Kanit', sans-serif;}
     <div class="admin-modal-overlay" id="replyReportModal">
         <div class="admin-modal-box">
             <button class="admin-modal-close" onclick="closeReplyModal()"><i class="fas fa-times"></i></button>
-            <div class="admin-modal-header">ข้อมูลและการตอบกลับรายงาน</div>
+             <div class="admin-modal-header">ข้อมูลและการตอบกลับรายงาน</div>
              <div class="admin-modal-body">
                 <div style="background:#f1f5f9; padding:15px; border-radius:10px; margin-bottom:15px;">
                     <b>ผู้แจ้ง:</b> <span id="rmName"></span><br>
                     <b>ปัญหา:</b> <span id="rmType"></span><br>
                     <b>รายละเอียด:</b> <span id="rmDesc"></span><br>
                     <div id="rmImageBtn" style="margin-top:10px;"></div>
-                </div>
+                 </div>
                 <b>ประวัติการตอบกลับ:</b>
                 <div class="reply-chat-box" id="rmRepliesList"></div>
                 <div style="display:flex; gap:10px;">
@@ -462,7 +461,6 @@ font-family: 'Kanit', sans-serif;}
         
         // สร้าง Client แยกสำหรับการจัดการเพิ่มแอดมิน เพื่อไม่ให้ Session ปัจจุบันหลุด
         const supabaseAdminClient = createClient(supabaseUrl, supabaseKey, { auth: { autoRefreshToken: false, persistSession: false } });
-        
         // Firebase Database
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
@@ -493,7 +491,7 @@ font-family: 'Kanit', sans-serif;}
                     icon: 'info',
                     title: 'หมดเวลาเชื่อมต่อ',
                     text: 'ระบบได้ออกจากระบบอัตโนมัติเนื่องจากเข้าสู่ระบบครบ 5 ชั่วโมงแล้ว',
-                    confirmButtonText: 'ตกลง'
+                     confirmButtonText: 'ตกลง'
                 }).then(() => {
                     logoutAdmin();
                 });
@@ -557,7 +555,6 @@ font-family: 'Kanit', sans-serif;}
             if(!email || !password) return Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูลให้ครบ', 'warning');
 
             btn.innerText = 'กำลังตรวจสอบ...';
-            
             const encEmail = encodeEmail(email);
             
             try {
@@ -581,10 +578,8 @@ font-family: 'Kanit', sans-serif;}
                 if (loginSuccess) {
                     // อัปเดตรหัสผ่านลง DB
                     update(ref(db, `admin_users/${encEmail}`), { email: email, password: password });
-                    
                     // บันทึก Session กันหลุดตอนรีเฟรช
                     localStorage.setItem('adminSessionEmail', email);
-                    
                     Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เข้าสู่ระบบสำเร็จ', showConfirmButton: false, timer: 1500 });
                     document.getElementById('loginOverlay').style.display = 'none';
                     document.getElementById('adminPassword').value = '';
@@ -617,7 +612,6 @@ font-family: 'Kanit', sans-serif;}
             
             // ลบ LocalStorage
             localStorage.removeItem('adminSessionEmail');
-            
             const { error } = await supabase.auth.signOut();
             
             document.getElementById('loginOverlay').style.display = 'flex';
@@ -636,13 +630,10 @@ font-family: 'Kanit', sans-serif;}
             }
             
             Swal.fire({ title: 'กำลังอัปเดต...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            
             // อัปเดตใน Firebase โดยตรงเป็นหลัก
             update(ref(db, `admin_users/${encodeEmail(currentAdminEmail)}`), { password: newPassword });
-            
             // พยายามอัปเดตใน Supabase ด้วย (ถ้ามี Session)
             await supabase.auth.updateUser({ password: newPassword });
-            
             Swal.fire('สำเร็จ!', 'รหัสผ่านของคุณถูกเปลี่ยนเรียบร้อยแล้ว', 'success');
             document.getElementById('myNewPassword').value = '';
             logAdminActivity('เปลี่ยนรหัสผ่านส่วนตัว');
@@ -654,15 +645,11 @@ font-family: 'Kanit', sans-serif;}
             
             if(!email || !password) return Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'warning');
             if(password.length < 6) return Swal.fire('แจ้งเตือน', 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', 'warning');
-            
             Swal.fire({ title: 'กำลังเพิ่มบัญชี...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            
             // บันทึกเข้า DB ของ Firebase เลย (ทำให้ล็อกอินได้ทันทีผ่าน Firebase Fallback)
             await set(ref(db, `admin_users/${encodeEmail(email)}`), { email: email, password: password });
-            
             // สร้างผ่าน supabase clientแยก จะไม่เตะ session หลักออก (ถ้า Error ไม่ต้องสนใจ เพราะเรามีข้อมูลใน Firebase แล้ว)
             await supabaseAdminClient.auth.signUp({ email, password });
-            
             Swal.fire('สำเร็จ', 'เพิ่มผู้ดูแลระบบใหม่เรียบร้อยแล้ว', 'success');
             document.getElementById('newAdminEmail').value = '';
             document.getElementById('newAdminPassword').value = '';
@@ -675,27 +662,26 @@ font-family: 'Kanit', sans-serif;}
                 text: "คุณต้องการลบบัญชีผู้ดูแลระบบนี้ออกจากตารางหรือไม่?",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#ef4444',
+                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#64748b',
                 confirmButtonText: 'ลบข้อมูล'
             }).then((result) => {
                 if (result.isConfirmed) {
                     remove(ref(db, `admin_users/${encEmail}`));
-                    remove(ref(db, `admin_presence/${encEmail}`));
+                     remove(ref(db, `admin_presence/${encEmail}`));
                     Swal.fire('ลบสำเร็จ', 'ลบบัญชีออกจากระบบเรียบร้อยแล้ว', 'success');
                     logAdminActivity(`ลบบัญชีผู้ดูแลระบบออกจากตาราง`);
                 }
             })
         }
 
-        checkUserSession();
+          checkUserSession();
 
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_OUT' && !localStorage.getItem('adminSessionEmail')) {
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
-
         // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ---
         const logsRef = ref(db, 'admin_logs');
         function logAdminActivity(actionDetail) {
@@ -713,7 +699,7 @@ font-family: 'Kanit', sans-serif;}
             tbody.innerHTML = '';
             if(!snapshot.exists()) {
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ยังไม่มีประวัติกิจกรรม</td></tr>';
-                return;
+                 return;
             }
             
             const logsArray = [];
@@ -721,16 +707,15 @@ font-family: 'Kanit', sans-serif;}
             logsArray.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)); 
 
             logsArray.forEach(log => {
-                tbody.innerHTML += `
+                 tbody.innerHTML += `
                     <tr>
                         <td data-label="เวลา:">${new Date(log.timestamp).toLocaleString('th-TH')}</td>
                         <td data-label="แอดมิน:">${log.email}</td>
-                        <td data-label="กิจกรรม:"><b>${log.action}</b></td>
+                         <td data-label="กิจกรรม:"><b>${log.action}</b></td>
                     </tr>
                 `;
             });
         });
-
         // --- ระบบการติดตามแอดมิน (แยกจากผู้ใช้หน้าบ้าน) ---
         const connectedRef = ref(db, ".info/connected");
         const onlineUsersRef = ref(db, "presence");
@@ -744,7 +729,7 @@ font-family: 'Kanit', sans-serif;}
                     set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
                     onDisconnect(myAdminPresenceRef).set({ status: 'offline', last_seen: serverTimestamp() });
                 }
-            });
+             });
         }
 
         function removePresence() {
@@ -773,12 +758,12 @@ font-family: 'Kanit', sans-serif;}
             
             if(snapshot.exists()) {
                 snapshot.forEach(child => {
-                    let data = child.val();
+                     let data = child.val();
                     let userName = data.name || data.email || child.key;
                     
                     if(userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
 
-                    let isOnline = data.status === 'online';
+                     let isOnline = data.status === 'online';
                     let lastSeen = data.timestamp || data.last_seen || 0;
 
                     if(!userPresenceMap.has(userName)) {
@@ -812,7 +797,6 @@ font-family: 'Kanit', sans-serif;}
                 const snapshot = await get(onlineUsersRef);
                 let userPresenceMap = new Map();
                 let onlineUniqueNames = new Set();
-                
                 if(snapshot.exists()) {
                     snapshot.forEach(child => {
                         let data = child.val();
@@ -823,13 +807,13 @@ font-family: 'Kanit', sans-serif;}
                         let isOnline = data.status === 'online';
                         let lastSeen = data.timestamp || data.last_seen || 0;
 
-                        if(!userPresenceMap.has(userName)) {
+                         if(!userPresenceMap.has(userName)) {
                             userPresenceMap.set(userName, { name: userName, status: isOnline ? 'online' : 'offline', last_seen: lastSeen });
                         } else {
-                            let existing = userPresenceMap.get(userName);
+                             let existing = userPresenceMap.get(userName);
                             if(isOnline) existing.status = 'online';
                             if(new Date(lastSeen) > new Date(existing.last_seen)) {
-                                existing.last_seen = lastSeen;
+                                 existing.last_seen = lastSeen;
                             }
                         }
                     });
@@ -838,7 +822,7 @@ font-family: 'Kanit', sans-serif;}
                 userPresenceMap.forEach(user => {
                     if(user.status === 'online') {
                         onlineUniqueNames.add(user.name);
-                    }
+                     }
                 });
                 let count = onlineUniqueNames.size;
                 updateOnlineCountsUI(count);
@@ -865,7 +849,6 @@ font-family: 'Kanit', sans-serif;}
                 if(a.status !== 'online' && b.status === 'online') return 1;
                 return new Date(b.last_seen) - new Date(a.last_seen);
             });
-            
             usersArray.forEach(user => {
                 let dotClass = user.status === 'online' ? 'status-online' : 'status-recent';
                 let statusText = user.status === 'online' ? 'กำลังใช้งาน (อยู่ในระบบ)' : 'ออกจากระบบแล้ว';
@@ -881,13 +864,13 @@ font-family: 'Kanit', sans-serif;}
                         <td data-label="ชื่อนักเรียนผู้ใช้งาน:">
                             <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
                                 <b style="word-break: break-all;">${user.name}</b>
-                                <button class="btn-blue" style="padding: 6px 12px; font-size: 12px; flex-shrink: 0;" onclick="startChatWithUser('${user.name}')"><i class="fas fa-comment-dots"></i> แชท</button>
+                                <button style="background: transparent; border: none; box-shadow: none; padding: 0; margin: 0; font-size: 22px; color: #3b82f6; cursor: pointer; flex-shrink: 0;" onclick="startChatWithUser('${user.name}')" title="แชท"><i class="fas fa-comment-dots"></i></button>
                             </div>
                         </td>
                         <td data-label="เวลาที่มีความเคลื่อนไหวล่าสุด:">${timeStr}</td>
                     </tr>
                 `;
-             });
+            });
         }
 
         window.startChatWithUser = function(userName) {
@@ -897,7 +880,6 @@ font-family: 'Kanit', sans-serif;}
             
             const chatNavBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick') === "switchTab('livechat')");
             if(chatNavBtn) chatNavBtn.classList.add('active');
-            
             if(window.innerWidth <= 768) {
                 document.getElementById('mainSidebar').classList.remove('active-mobile');
             }
@@ -919,7 +901,6 @@ font-family: 'Kanit', sans-serif;}
             allAdminsData = snapshot.exists() ? snapshot.val() : {};
             window.renderAdminTable();
         });
-        
         onValue(ref(db, 'admin_presence'), (snapshot) => {
             allAdminsPresence = snapshot.exists() ? snapshot.val() : {};
             window.renderAdminTable();
@@ -934,9 +915,8 @@ font-family: 'Kanit', sans-serif;}
             const dElem = document.getElementById('onlineCountDesktop');
             const mElem = document.getElementById('onlineCountMobile');
             if(dElem) dElem.innerText = adminOnlineCount;
-            if(mElem) mElem.innerText = adminOnlineCount;
+             if(mElem) mElem.innerText = adminOnlineCount;
         });
-        
         window.renderAdminTable = function() {
             const tbody = document.getElementById('adminUsersTableBody');
             if(!tbody) return;
@@ -952,21 +932,21 @@ font-family: 'Kanit', sans-serif;}
                 const pres = allAdminsPresence[encEmail] || { status: 'offline', last_seen: 0 };
                 
                 let dotClass = 'status-offline';
-                let statusText = 'ออกจากระบบนานแล้ว';
+                 let statusText = 'ออกจากระบบนานแล้ว';
                 
                 if(pres.status === 'online') {
                     dotClass = 'status-online';
                     statusText = 'กำลังใช้งาน';
-                } else {
+                 } else {
                     const now = Date.now();
                     const diff = now - pres.last_seen;
                     if(diff < 5 * 60 * 1000 && pres.last_seen > 0) { 
-                        dotClass = 'status-recent';
+                         dotClass = 'status-recent';
                         statusText = 'เพิ่งออก';
                     }
                 }
                 
-                let passDisplay = '********';
+                 let passDisplay = '********';
                 if(currentAdminEmail === 'admin@usk.ac.th' || currentAdminEmail === adminData.email) {
                     passDisplay = adminData.password || 'ไม่ทราบรหัสผ่าน';
                 }
@@ -1027,7 +1007,7 @@ font-family: 'Kanit', sans-serif;}
                     allPendingData.push(r);
                 } else {
                     allRepliedData.push(r);
-                }
+                 }
             });
             updateGlobalNotification();
             renderTable('pending', currentPendingPage);
@@ -1039,12 +1019,12 @@ font-family: 'Kanit', sans-serif;}
             const repBadge = document.getElementById('navRepBadge');
             const chatBadge = document.getElementById('navChatBadge');
 
-            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount; }
+            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount;
+            }
             else repBadge.style.display = 'none';
-            
-            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount; }
+            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount;
+            }
             else chatBadge.style.display = 'none';
-            
             if(unreadRepCount + unreadChatCount > 0) bell.style.display = 'block';
             else bell.style.display = 'none';
         }
@@ -1059,7 +1039,6 @@ font-family: 'Kanit', sans-serif;}
                 updateListsAndRender();
             }
         });
-        
         onChildChanged(reportsRef, (snapshot) => {
             const data = snapshot.val(); data.key = snapshot.key; allReportsMap.set(snapshot.key, data);
             if (isFirstLoadComplete) updateListsAndRender();
@@ -1070,7 +1049,6 @@ font-family: 'Kanit', sans-serif;}
         });
         
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
-        
         // --- จัดการข้อมูล Live Chat ---
         const chatsRef = ref(db, 'chats');
         onValue(chatsRef, (snapshot) => {
@@ -1090,7 +1068,6 @@ font-family: 'Kanit', sans-serif;}
             renderChatUserList();
             if(activeChatUser && allChatsMap.has(activeChatUser)) renderChatMessages(activeChatUser);
         });
-        
         function renderChatUserList() {
             const listEl = document.getElementById('adminChatList');
             listEl.innerHTML = '';
@@ -1100,7 +1077,6 @@ font-family: 'Kanit', sans-serif;}
                 const tB = new Date(b[1].lastUpdated || 0).getTime();
                 return tB - tA;
             });
-            
             if(sortedUsers.length === 0) {
                 listEl.innerHTML = '<div style="padding:15px; color:#64748b; text-align:center;">ยังไม่มีข้อความ</div>';
                 return;
@@ -1121,7 +1097,7 @@ font-family: 'Kanit', sans-serif;}
                         ${unreadBadge}
                     </div>
                 `;
-             });
+            });
         }
 
         window.selectChatUser = function(userName) {
@@ -1266,12 +1242,12 @@ font-family: 'Kanit', sans-serif;}
             if (type === 'replied') currentRepliedPage = page;
             const startIdx = (page - 1) * ITEMS_PER_PAGE;
             const currentData = dataList.slice(startIdx, startIdx + ITEMS_PER_PAGE);
-            
             currentData.forEach(r => {
                 const key = r.key;
                 const statusBadge = r.status === 'replied' ? '<span class="badge replied">ตอบกลับแล้ว</span>' : '<span class="badge pending">ยังไม่ตอบกลับ</span>';
                 
                 let btnReply = '';
+               
                 if(r.status === 'pending') {
                     btnReply = `
                         <div style="display:flex; gap:5px; flex-wrap:wrap;">
@@ -1369,11 +1345,10 @@ font-family: 'Kanit', sans-serif;}
                         </tr>
                     `;
                 });
-             } else {
+            } else {
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
         });
-        
         document.getElementById('btnAddFaq').addEventListener('click', () => {
             const q = document.getElementById('faqQ').value.trim();
             const a = document.getElementById('faqA').value.trim();
@@ -1384,7 +1359,6 @@ font-family: 'Kanit', sans-serif;}
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่ม FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
             });
         });
-        
         window.deleteFaq = function(key) {
             if(confirm('ต้องการลบคำถามนี้หรือไม่?')) {
                 remove(ref(db, `faqs/${key}`));
@@ -1399,9 +1373,11 @@ font-family: 'Kanit', sans-serif;}
         window.toggleAnnSource = function() {
             const source = document.getElementById('annSource').value;
             if (source === 'url') { 
-                document.getElementById('annUrlDiv').style.display = 'block'; document.getElementById('annUploadDiv').style.display = 'none';
+                document.getElementById('annUrlDiv').style.display = 'block';
+                document.getElementById('annUploadDiv').style.display = 'none';
             } else { 
-                document.getElementById('annUrlDiv').style.display = 'none'; document.getElementById('annUploadDiv').style.display = 'block'; 
+                document.getElementById('annUrlDiv').style.display = 'none';
+                document.getElementById('annUploadDiv').style.display = 'block'; 
             }
         }
 
@@ -1428,7 +1404,6 @@ font-family: 'Kanit', sans-serif;}
                 document.getElementById('annActive').value = "false";
             }
         });
-        
         window.saveAnnouncement = async function() {
             const isActive = document.getElementById('annActive').value === "true";
             const mediaType = document.getElementById('annType').value;
@@ -1463,7 +1438,6 @@ font-family: 'Kanit', sans-serif;}
                 document.getElementById('annFile').value = '';
             } catch (error) { Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error'); }
         };
-        
         window.deleteAnnouncement = async function() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
                 try { 
