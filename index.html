@@ -11,15 +11,11 @@
         body { font-family: 'Kanit', sans-serif; background: #f1f5f9; margin: 0; color: #333; }
         
         /* ปรับ Sidebar ให้คงที่ และให้เลื่อนได้เฉพาะ Container ด้านใน เพื่อให้ Header กับปุ่มออกระบบยึดติดกับที่ */
-        .sidebar { width: 250px; background: #1e3a8a; color: white; position: fixed;
-        height: 100vh; height: 100dvh; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; z-index: 1000;}
+        .sidebar { width: 250px; background: #1e3a8a; color: white; position: fixed; height: 100vh; height: 100dvh; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; z-index: 1000;}
         
-        .sidebar h2 { font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px;
-text-align: center; margin-top: 0; flex-shrink: 0; }
+        .sidebar h2 { font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 15px; text-align: center; margin-top: 0; flex-shrink: 0; }
         
-        .nav-btn { display: block; width: 100%; text-align: left;
-background: none; border: none; color: white; padding: 15px; font-size: 16px; cursor: pointer; border-radius: 8px; margin-bottom: 10px;
-font-family: 'Kanit', sans-serif;}
+        .nav-btn { display: block; width: 100%; text-align: left; background: none; border: none; color: white; padding: 15px; font-size: 16px; cursor: pointer; border-radius: 8px; margin-bottom: 10px; font-family: 'Kanit', sans-serif;}
         .nav-btn:hover, .nav-btn.active { background: #3b82f6; }
         
         .main-content { margin-left: 250px; padding: 30px; }
@@ -35,8 +31,7 @@ font-family: 'Kanit', sans-serif;}
         .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge.pending { background: #fef3c7; color: #d97706; }
         .badge.replied { background: #dcfce3; color: #16a34a; }
-        .badge-red { background: #ef4444; color: white; padding: 2px 6px; border-radius: 10px;
-font-size: 11px; margin-left: 5px;}
+        .badge-red { background: #ef4444; color: white; padding: 2px 6px; border-radius: 10px; font-size: 11px; margin-left: 5px;}
         
         button { font-family: 'Kanit', sans-serif; cursor: pointer; border: none; border-radius: 6px; padding: 8px 12px; font-size: 14px; transition: 0.2s; }
         .btn-blue { background: #3b82f6; color: white; }
@@ -53,8 +48,7 @@ font-size: 11px; margin-left: 5px;}
         .notification-bell { color: #ef4444; display: none; animation: shake 1s infinite; cursor: pointer; }
         @keyframes shake { 0% { transform: rotate(0); } 25% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } 100% { transform: rotate(0); } }
 
-        .preview-box { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 10px;
-text-align: center; background: #f8fafc; margin-top: 15px; position: relative; overflow: hidden; }
+        .preview-box { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 10px; text-align: center; background: #f8fafc; margin-top: 15px; position: relative; overflow: hidden; }
         .preview-box img, .preview-box video { max-width: 100%; max-height: 300px; border-radius: 8px; object-fit: contain; }
 
         /* Pagination UTTAYAN */
@@ -221,7 +215,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
         <div id="reports" class="section active">
             <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
             <div class="card">
-              <h3 style="margin-top: 0; color: #d97706;"><i class="fas fa-exclamation-circle"></i> รายงานที่รอการดำเนินการ</h3>
+               <h3 style="margin-top: 0; color: #d97706;"><i class="fas fa-exclamation-circle"></i> รายงานที่รอการดำเนินการ</h3>
                 <table>
                     <thead>
                         <tr>
@@ -234,14 +228,14 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                         </tr>
                     </thead>
                     <tbody id="pendingReportsTableBody">
-                      <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                       <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="pendingPagination"></div>
             </div>
 
             <div class="card">
-                <h3 style="margin-top: 0; color: #16a34a;"><i class="fas fa-check-circle"></i> รายงานที่ตอบกลับแล้ว</h3>
+                 <h3 style="margin-top: 0; color: #16a34a;"><i class="fas fa-check-circle"></i> รายงานที่ตอบกลับแล้ว</h3>
                 <table>
                     <thead>
                         <tr>
@@ -254,7 +248,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                         </tr>
                     </thead>
                     <tbody id="repliedReportsTableBody">
-                      <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                       <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="repliedPagination"></div>
@@ -282,7 +276,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
         <div id="faqs" class="section">
             <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
             <div class="card">
-             <h3>เพิ่มคำถามใหม่</h3>
+              <h3>เพิ่มคำถามใหม่</h3>
                 <input type="text" id="faqQ" placeholder="คำถาม...">
                 <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
                 <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
@@ -295,9 +289,9 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                         <tr>
                             <th>คำถาม</th>
                             <th>คำตอบ</th>
-                            <th width="100">ลบ</th>
+                            <th width="150">จัดการ</th>
                         </tr>
-                     </thead>
+                      </thead>
                     <tbody id="faqsTableBody"></tbody>
                 </table>
             </div>
@@ -305,7 +299,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
 
         <div id="announcement" class="section">
             <h2>จัดการประกาศแจ้งเตือนหน้าแรก (Startup Popup)</h2>
-             <div class="card">
+              <div class="card">
                 <h3>ตั้งค่าการแสดงผล</h3>
                 <label style="font-weight: 500; font-size: 14px;">สถานะการแสดงผล:</label>
                 <select id="annActive">
@@ -341,7 +335,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                 <div style="margin-top: 15px;">
                     <button class="btn-blue" onclick="saveAnnouncement()"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
                     <button class="btn-red" style="margin-left: 10px;" onclick="deleteAnnouncement()"><i class="fas fa-trash"></i> ลบประกาศทิ้งทั้งหมด</button>
-                 </div>
+                  </div>
             </div>
 
             <div class="card">
@@ -380,20 +374,20 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                 </div>
             </div>
 
-            <div class="card">
+             <div class="card">
                 <h3>รายการข่าวประชาสัมพันธ์ทั้งหมด</h3>
                 <table>
                     <thead>
                         <tr>
                             <th width="20%">รูปภาพ</th>
                             <th width="25%">หัวข้อหลัก</th>
-                            <th width="45%">เนื้อหา</th>
-                            <th width="10%">จัดการ</th>
+                            <th width="40%">เนื้อหา</th>
+                            <th width="15%">จัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="prTableBody">
                         <tr><td colspan="4" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>
-                    </tbody>
+                     </tbody>
                 </table>
             </div>
         </div>
@@ -417,7 +411,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                     </thead>
                     <tbody id="frontendUsersTableBody">
                         <tr><td colspan="3" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>
-                    </tbody>
+                   </tbody>
                 </table>
             </div>
         </div>
@@ -425,7 +419,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
         <div id="system_mgmt" class="section">
             <h2>จัดการระบบ (System Management)</h2>
             <div class="card" id="addAdminCard" style="display: none;">
-                 <h3><i class="fas fa-user-plus"></i> เพิ่มผู้ดูแลระบบ (Admin)</h3>
+                  <h3><i class="fas fa-user-plus"></i> เพิ่มผู้ดูแลระบบ (Admin)</h3>
                 <input type="email" id="newAdminEmail" placeholder="อีเมลแอดมินใหม่">
                 <input type="password" id="newAdminPassword" placeholder="รหัสผ่านแอดมินใหม่ (อย่างน้อย 6 ตัว)">
                 <button class="btn-blue" onclick="addNewAdmin()"><i class="fas fa-plus"></i> เพิ่มแอดมิน</button>
@@ -438,7 +432,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             </div>
 
             <div class="card">
-                 <h3><i class="fas fa-users-cog"></i> รายชื่อผู้ดูแลระบบ</h3>
+                  <h3><i class="fas fa-users-cog"></i> รายชื่อผู้ดูแลระบบ</h3>
                 <table>
                     <thead>
                         <tr>
@@ -451,7 +445,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                     <tbody id="adminUsersTableBody">
                         <tr><td colspan="4" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>
                     </tbody>
-                </table>
+                 </table>
             </div>
         </div>
 
@@ -478,7 +472,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
     <div class="admin-modal-overlay" id="replyReportModal">
         <div class="admin-modal-box">
             <button class="admin-modal-close" onclick="closeReplyModal()"><i class="fas fa-times"></i></button>
-             <div class="admin-modal-header">ข้อมูลและการตอบกลับรายงาน</div>
+              <div class="admin-modal-header">ข้อมูลและการตอบกลับรายงาน</div>
              <div class="admin-modal-body">
                 <div style="background:#f1f5f9; padding:15px; border-radius:10px; margin-bottom:15px;">
                     <b>ผู้แจ้ง:</b> <span id="rmName"></span><br>
@@ -510,7 +504,6 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
         
         // สร้าง Client แยกสำหรับการจัดการเพิ่มแอดมิน เพื่อไม่ให้ Session ปัจจุบันหลุด
         const supabaseAdminClient = createClient(supabaseUrl, supabaseKey, { auth: { autoRefreshToken: false, persistSession: false } });
-        
         // Firebase Database
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
@@ -616,14 +609,12 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             
             try {
                 let loginSuccess = false;
-
                 // 1. เช็ค Master Admin ก่อนเผื่อใช้เข้าฉุกเฉิน
                 if (email === 'admin@usk.ac.th' && password === '123456') {
                     loginSuccess = true;
                 } else {
                     // 2. ใช้ Supabase ในการตรวจสอบการเข้าสู่ระบบเป็นหลัก
                     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                    
                     if (!error && data.user) {
                         loginSuccess = true;
                     } else {
@@ -641,6 +632,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
 
                 if (loginSuccess) {
                     // ซิงค์ข้อมูลเข้า Firebase แบบเงียบๆ ป้องกัน Error เด้งกวนใจ
+                    
                     try {
                         update(ref(db, `admin_users/${encEmail}`), { email: email, password: password });
                     } catch(e) {}
@@ -752,13 +744,11 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
         }
 
         checkUserSession();
-
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_OUT' && !localStorage.getItem('adminSessionEmail')) {
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
-
         // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ---
         const logsRef = ref(db, 'admin_logs');
         function logAdminActivity(actionDetail) {
@@ -819,7 +809,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                 try {
                     update(myAdminPresenceRef, { status: 'offline', last_seen: serverTimestamp() });
                 } catch(e) {}
-                myAdminPresenceRef = null; 
+                myAdminPresenceRef = null;
             }
         }
 
@@ -933,6 +923,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                 if(a.status !== 'online' && b.status === 'online') return 1;
                 return new Date(b.last_seen) - new Date(a.last_seen);
             });
+
             usersArray.forEach(user => {
                 let dotClass = user.status === 'online' ? 'status-online' : 'status-recent';
                 let statusText = user.status === 'online' ? 'กำลังใช้งาน (อยู่ในระบบ)' : 'ออกจากระบบแล้ว';
@@ -1116,7 +1107,6 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
 
         const reportsRef = ref(db, 'reports');
         get(reportsRef).then((snapshot) => { isFirstLoadComplete = true; updateListsAndRender(); }).catch(() => { isFirstLoadComplete = true; });
-        
         onChildAdded(reportsRef, (snapshot) => {
             const data = snapshot.val(); data.key = snapshot.key; allReportsMap.set(snapshot.key, data);
             if (isFirstLoadComplete) {
@@ -1135,7 +1125,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
         });
         
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
-
+        
         // --- จัดการข้อมูล Live Chat ---
         const chatsRef = ref(db, 'chats');
         onValue(chatsRef, (snapshot) => {
@@ -1155,7 +1145,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             renderChatUserList();
             if(activeChatUser && allChatsMap.has(activeChatUser)) renderChatMessages(activeChatUser);
         }, (error) => { console.warn(error); });
-
+        
         function renderChatUserList() {
             const listEl = document.getElementById('adminChatList');
             listEl.innerHTML = '';
@@ -1165,7 +1155,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                 const tB = new Date(b[1].lastUpdated || 0).getTime();
                 return tB - tA;
             });
-
+            
             if(sortedUsers.length === 0) {
                 listEl.innerHTML = '<div style="padding:15px; color:#64748b; text-align:center;">ยังไม่มีข้อความ</div>';
                 return;
@@ -1339,12 +1329,12 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             if (type === 'replied') currentRepliedPage = page;
             const startIdx = (page - 1) * ITEMS_PER_PAGE;
             const currentData = dataList.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+            
             currentData.forEach(r => {
                 const key = r.key;
                 const statusBadge = r.status === 'replied' ? '<span class="badge replied">ตอบกลับแล้ว</span>' : '<span class="badge pending">ยังไม่ตอบกลับ</span>';
                 
                 let btnReply = '';
-               
                 if(r.status === 'pending') {
                     btnReply = `
                         <div style="display:flex; gap:5px; flex-wrap:wrap;">
@@ -1370,7 +1360,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             });
             paginationDiv.innerHTML = generateUttayanPagination(dataList.length, page, type);
         };
-
+        
         // --- ระบบตอบกลับ Report Modal ---
         window.currentReplyKey = null;
         window.openReplyModal = function(key) {
@@ -1438,11 +1428,18 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             if (data) {
                 Object.keys(data).forEach(key => {
                     const item = data[key];
+                    const safeQ = item.question ? item.question.replace(/"/g, '&quot;').replace(/'/g, "\\'") : '';
+                    const safeA = item.answer ? item.answer.replace(/"/g, '&quot;').replace(/'/g, "\\'") : '';
                     tbody.innerHTML += `
                         <tr>
                             <td data-label="คำถาม:">${item.question}</td>
                             <td data-label="คำตอบ:">${item.answer}</td>
-                            <td data-label="จัดการ:"><button class="btn-red" onclick="deleteFaq('${key}')">ลบ</button></td>
+                            <td data-label="จัดการ:">
+                                <div style="display:flex; gap:5px;">
+                                    <button class="btn-blue" style="background:#eab308;" onclick="editFaq('${key}', '${safeQ}', '${safeA}')"><i class="fas fa-edit"></i> แก้ไข</button>
+                                    <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
+                                </div>
+                            </td>
                         </tr>
                     `;
                 });
@@ -1471,6 +1468,45 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                     logAdminActivity(`ลบข้อมูล FAQ ออกจากระบบ`);
                 } catch(e) {}
             }
+        }
+
+        window.editFaq = function(key, currentQ, currentA) {
+            Swal.fire({
+                title: 'แก้ไขคำถาม FAQ',
+                html:
+                    '<div style="text-align: left; margin-bottom: 5px; font-weight: 500;">คำถาม:</div>' +
+                    '<input id="swal-faq-q" class="swal2-input" placeholder="คำถาม" style="width: 85%; margin-top: 0;" value="' + currentQ + '">' +
+                    '<div style="text-align: left; margin-top: 15px; margin-bottom: 5px; font-weight: 500;">คำตอบ:</div>' +
+                    '<textarea id="swal-faq-a" class="swal2-textarea" placeholder="คำตอบ" style="width: 85%; height: 100px; margin-top: 0;">' + currentA + '</textarea>',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'บันทึกการแก้ไข',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#64748b',
+                preConfirm: () => {
+                    let q = document.getElementById('swal-faq-q').value.trim();
+                    let a = document.getElementById('swal-faq-a').value.trim();
+                    if(!q || !a) {
+                        Swal.showValidationMessage('กรุณากรอกคำถามและคำตอบให้ครบถ้วน');
+                        return false;
+                    }
+                    return { question: q, answer: a }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    try {
+                        update(ref(db, `faqs/${key}`), {
+                            question: result.value.question,
+                            answer: result.value.answer
+                        });
+                        logAdminActivity(`แก้ไขข้อมูล FAQ`);
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไข FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
+                    } catch(e) {
+                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
+                    }
+                }
+            });
         }
 
         // --- จัดการประกาศหน้าแรก (Announcement) ---
@@ -1561,7 +1597,6 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
 
         // --- จัดการข่าวประชาสัมพันธ์ (PR News) ---
         const prRef = ref(db, 'pr_news');
-
         window.togglePrImageSource = function() {
             const source = document.getElementById('prImageSource').value;
             if (source === 'url') {
@@ -1582,12 +1617,21 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             if (data) {
                 const prArray = Object.keys(data).map(key => ({ key, ...data[key] })).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
                 prArray.forEach(item => {
+                    const safeTitle = item.title ? item.title.replace(/"/g, '&quot;').replace(/'/g, "\\'") : '';
+                    const safeContent = item.content ? item.content.replace(/"/g, '&quot;').replace(/'/g, "\\'") : '';
+                    const safeImg = item.imageUrl ? item.imageUrl.replace(/"/g, '&quot;').replace(/'/g, "\\'") : '';
+
                     tbody.innerHTML += `
                         <tr>
                             <td data-label="รูปภาพ:"><img src="${item.imageUrl}" style="width: 100%; max-width: 150px; border-radius: 8px; object-fit: cover; aspect-ratio: 1.414 / 1;"></td>
                             <td data-label="หัวข้อหลัก:"><b>${item.title}</b></td>
                             <td data-label="เนื้อหา:"><div style="max-height: 80px; overflow-y: auto; font-size: 13px; white-space: pre-wrap;">${item.content}</div></td>
-                            <td data-label="จัดการ:"><button class="btn-red" onclick="deletePrNews('${item.key}')">ลบ</button></td>
+                            <td data-label="จัดการ:">
+                                <div style="display:flex; flex-direction:column; gap:8px;">
+                                    <button class="btn-blue" style="background:#eab308; padding: 6px 10px;" onclick="editPrNews('${item.key}', '${safeTitle}', '${safeContent}', '${safeImg}')"><i class="fas fa-edit"></i> แก้ไข</button>
+                                    <button class="btn-red" style="padding: 6px 10px;" onclick="deletePrNews('${item.key}')"><i class="fas fa-trash"></i> ลบ</button>
+                                </div>
+                            </td>
                         </tr>
                     `;
                 });
@@ -1601,13 +1645,13 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
             const content = document.getElementById('prContent').value.trim();
             const source = document.getElementById('prImageSource').value;
             let imageUrl = "";
-
+            
             if(!title || !content) {
                 return Swal.fire('แจ้งเตือน', 'กรุณากรอกหัวข้อและเนื้อหาให้ครบถ้วน', 'warning');
             }
 
             Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-
+            
             try {
                 if (source === 'url') {
                     imageUrl = document.getElementById('prImageUrl').value.trim();
@@ -1638,7 +1682,7 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                     imageUrl: imageUrl,
                     createdAt: new Date().toISOString()
                 });
-
+                
                 logAdminActivity(`เพิ่มข่าวประชาสัมพันธ์เรื่อง: ${title}`);
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่มข่าวประชาสัมพันธ์สำเร็จ', showConfirmButton: false, timer: 2000 });
                 
@@ -1667,10 +1711,79 @@ text-align: center; background: #f8fafc; margin-top: 15px; position: relative; o
                         logAdminActivity(`ลบข่าวประชาสัมพันธ์ออกจากระบบ`);
                         Swal.fire('ลบสำเร็จ', 'ลบข่าวประชาสัมพันธ์เรียบร้อยแล้ว', 'success');
                     } catch(e) {
-                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบข้อมูลได้', 'error');
+                         Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถลบข้อมูลได้', 'error');
                     }
                 }
             })
+        }
+
+        window.editPrNews = function(key, currentTitle, currentContent, currentImg) {
+            Swal.fire({
+                title: 'แก้ไขข่าวประชาสัมพันธ์',
+                width: '600px',
+                html: `
+                    <div style="text-align: left; margin-bottom: 5px; font-weight: 500;">หัวข้อ:</div>
+                    <input id="swal-pr-title" class="swal2-input" placeholder="หัวข้อข่าว" style="width: 85%; margin-top: 0;" value="${currentTitle}">
+                    
+                    <div style="text-align: left; margin-top: 15px; margin-bottom: 5px; font-weight: 500;">เนื้อหา:</div>
+                    <textarea id="swal-pr-content" class="swal2-textarea" placeholder="เนื้อหาข่าว" style="width: 85%; height: 120px; margin-top: 0;">${currentContent}</textarea>
+                    
+                    <div style="text-align: left; margin-top: 15px; margin-bottom: 5px; font-weight: 500;">URL รูปภาพ (ถ้ามี):</div>
+                    <input id="swal-pr-image-url" class="swal2-input" placeholder="วางลิงก์รูปภาพที่นี่" style="width: 85%; margin-top: 0;" value="${currentImg.startsWith('data:') ? '' : currentImg}">
+                    
+                    <div style="text-align: left; margin-top: 15px; margin-bottom: 5px; font-weight: 500; color: #1e3a8a;">หรืออัปโหลดไฟล์รูปใหม่ (จะใช้ไฟล์นี้แทน URL ทันที):</div>
+                    <input type="file" id="swal-pr-image-file" class="swal2-file" accept="image/*" style="width: 85%; font-size: 14px;">
+                `,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'บันทึกการแก้ไข',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#64748b',
+                preConfirm: async () => {
+                    let title = document.getElementById('swal-pr-title').value.trim();
+                    let content = document.getElementById('swal-pr-content').value.trim();
+                    let urlInput = document.getElementById('swal-pr-image-url').value.trim();
+                    let fileInput = document.getElementById('swal-pr-image-file');
+                    
+                    if(!title || !content) {
+                        Swal.showValidationMessage('กรุณากรอกหัวข้อและเนื้อหาให้ครบถ้วน');
+                        return false;
+                    }
+                    
+                    let finalImage = urlInput || currentImg;
+                    
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        if (file.size > 3145728) {
+                            Swal.showValidationMessage('ขนาดไฟล์รูปภาพเกิน 3MB');
+                            return false;
+                        }
+                        const reader = new FileReader();
+                        finalImage = await new Promise((resolve) => {
+                            reader.onload = (e) => resolve(e.target.result);
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                    
+                    return { title, content, finalImage };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    try {
+                        update(ref(db, `pr_news/${key}`), {
+                            title: result.value.title,
+                            content: result.value.content,
+                            imageUrl: result.value.finalImage,
+                            updatedAt: new Date().toISOString()
+                        });
+                        logAdminActivity(`แก้ไขข้อมูลข่าวประชาสัมพันธ์: ${result.value.title}`);
+                        Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไขข้อมูลสำเร็จ', showConfirmButton: false, timer: 2000 });
+                    } catch(e) {
+                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
+                    }
+                }
+            });
         }
     </script>
 </body>
