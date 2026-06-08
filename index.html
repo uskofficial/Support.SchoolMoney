@@ -942,17 +942,17 @@
         function setupPresence(email) {
             if(myAdminPresenceRef) removePresence();
             myAdminPresenceRef = ref(db, `admin_presence/${encodeEmail(email)}`);
-            
-            // บังคับให้สถานะออนไลน์ทันทีที่ถูกเรียก (ครอบคลุมกรณีปิดแท็บแล้วกลับมาใหม่)
-            try {
-                set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
-            } catch(e) {}
 
             onValue(connectedRef, (snap) => {
                 if (snap.val() === true) {
                     try {
-                        set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
-                        onDisconnect(myAdminPresenceRef).set({ status: 'offline', last_seen: serverTimestamp() });
+                        // แก้ปัญหา Race Condition: ลงทะเบียนคำสั่งเมื่อปิดหน้าเว็บ (onDisconnect) ให้เสร็จสมบูรณ์ก่อน
+                        const disconnectRef = onDisconnect(myAdminPresenceRef);
+                        disconnectRef.set({ status: 'offline', last_seen: serverTimestamp() }).then(() => {
+                            // เมื่อลงทะเบียนสำเร็จ ค่อยเขียนสถานะ "ออนไลน์" ทับลงไป
+                            // ป้องกันบั๊กเวลารีเฟรชแล้วสถานะกลายเป็นออฟไลน์ (สีเทา) และทำให้เช็คออนไลน์พร้อมกันได้เสถียรขึ้น
+                            set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
+                        });
                     } catch(e) {}
                 }
              });
@@ -961,7 +961,8 @@
         function removePresence() {
             if(myAdminPresenceRef) { 
                 try {
-                    update(myAdminPresenceRef, { status: 'offline', last_seen: serverTimestamp() });
+                    onDisconnect(myAdminPresenceRef).cancel(); // ยกเลิก onDisconnect เก่า
+                    set(myAdminPresenceRef, { status: 'offline', last_seen: serverTimestamp() });
                 } catch(e) {}
                 myAdminPresenceRef = null;
             }
@@ -977,7 +978,7 @@
                 localStorage.setItem('adminLastActivity', now.toString()); // Sync ข้ามแท็บ/รีเฟรชหน้า
                 startAutoLogoutTimer(); // รีเซ็ตเวลาล็อกเอาท์อัตโนมัติ (5 ชั่วโมง)
                 if (myAdminPresenceRef) {
-                    try { update(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
+                    try { set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
                     } catch(e){}
                 }
             }
