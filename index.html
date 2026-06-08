@@ -99,6 +99,13 @@
         .mobile-header { display: none; }
         .sidebar-close-btn { display: none; }
 
+        /* --- Visitor Stats Grid --- */
+        .stats-grid { display: flex; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; background: #fff;}
+        .stat-item { flex: 1; text-align: center; padding: 20px 10px; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center;}
+        .stat-item:last-child { border-right: none; }
+        .stat-title { font-size: 14px; color: #64748b; margin-bottom: 5px; font-weight: 500;}
+        .stat-value { font-size: 24px; font-weight: 600; color: #333; }
+
         @media screen and (max-width: 768px) {
             .mobile-header { display: flex; align-items: center; justify-content: space-between; background: #1e3a8a; color: white; padding: 15px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
             .mobile-header .toggle-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
@@ -158,6 +165,10 @@
             .chat-container.mobile-chat-active .chat-main { display: flex !important; }
             
             .chat-input-area { padding: 10px; width: 100%; box-sizing: border-box; }
+
+            /* Mobile Visitor Stats Grid */
+            .stats-grid { flex-wrap: wrap; border: none; background: transparent; gap: 10px;}
+            .stat-item { flex: 1 1 30%; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; min-width: 100px; padding: 15px 5px;}
         }
     </style>
 </head>
@@ -189,6 +200,7 @@
         <h2>Admin Panel</h2>
         
         <div style="flex: 1; margin-top: 10px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;">
+            <button class="nav-btn" onclick="switchTab('database_display')"><i class="fas fa-database"></i> ฐานข้อมูล/แสดงผล</button>
             <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา <span id="navRepBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('livechat')"><i class="fas fa-comments"></i> พิมพ์ข้อความสด <span id="navChatBadge" class="badge-red" style="display:none;">0</span></button>
           
@@ -213,6 +225,65 @@
                 <i class="fas fa-users"></i> ผู้ใช้งานพร้อมกัน: <span id="onlineCountDesktop">0</span>
             </div>
             <i class="fas fa-bell notification-bell" id="notiBell" title="มีรายการใหม่!" style="font-size: 24px;"></i>
+        </div>
+
+        <div id="database_display" class="section">
+            <h2>ฐานข้อมูล และ การแสดงผล</h2>
+            
+            <div class="card" id="dbSelectorContainer">
+                <h3 style="margin-top: 0; color: #1e3a8a;"><i class="fas fa-link"></i> เลือกรายการที่ต้องการเข้าถึง</h3>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn-blue" style="padding: 15px; font-size: 16px; flex: 1; min-width: 250px;" onclick="openEmbeddedLink('https://docs.google.com/spreadsheets/d/12du2ynPvO0EtQ5wpeanstg4Q61Xx-rCHVfvKSpPd1bM/edit?usp=sharing', 'ฐานข้อมูลนักเรียนและสถานะการจ่าย')">
+                        <i class="fas fa-table"></i> ฐานข้อมูลนักเรียนและสถานะการจ่าย
+                    </button>
+                    <button class="btn-green" style="padding: 15px; font-size: 16px; flex: 1; min-width: 250px;" onclick="openEmbeddedLink('https://uskofficial.github.io/SCHOOLMONNY.USK/', 'การแสดงผลของระบบ')">
+                        <i class="fas fa-desktop"></i> การแสดงผลของระบบ
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" id="visitorStatsContainer">
+                <h3 style="margin-top: 0; margin-bottom: 15px; color: #1e3a8a;"><i class="fas fa-chart-line"></i> จำนวนผู้เข้าชม (ระบบหน้าบ้าน)</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-title">วันนี้</div>
+                        <div class="stat-value" id="statToday">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">สัปดาห์นี้</div>
+                        <div class="stat-value" id="statThisWeek">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">สัปดาห์ที่แล้ว</div>
+                        <div class="stat-value" id="statLastWeek">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">เดือนนี้</div>
+                        <div class="stat-value" id="statThisMonth">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">เดือนที่แล้ว</div>
+                        <div class="stat-value" id="statLastMonth">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-title">ตลอดเวลา</div>
+                        <div class="stat-value" id="statAllTime">0</div>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #ef4444; margin-top: 15px; margin-bottom: 0;"><i class="fas fa-info-circle"></i> การนับผู้เข้าชม: ระบบจะนับการเข้าชมจากหน้าบ้าน โดยมีเงื่อนไขคือ หากกลับเข้ามาใหม่หรือรีเฟรชภายใน 3 นาที จะไม่ถูกนับเพิ่มซ้ำ เพื่อให้ได้ตัวเลขผู้ใช้งานที่แท้จริง</p>
+            </div>
+
+            <div class="card" id="dbIframeContainer" style="display: none; padding: 0; overflow: hidden; height: 75vh; position: relative;">
+                <div style="background: #f8fafc; padding: 10px 15px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <button class="btn-red" style="padding: 6px 12px;" onclick="closeEmbeddedLink()"><i class="fas fa-chevron-left"></i> ย้อนกลับ</button>
+                        <button class="btn-blue" style="padding: 6px 12px; margin-left: 5px; background: #10b981;" onclick="refreshEmbeddedLink()"><i class="fas fa-sync-alt"></i> รีเฟรชข้อมูล</button>
+                        <span style="margin-left: 15px; font-weight: 600; color: #1e3a8a;" id="embeddedTitle">กำลังแสดงผล...</span>
+                    </div>
+                    <a href="#" id="embeddedExternalLink" target="_blank" style="color: #3b82f6; font-size: 14px; text-decoration: none;"><i class="fas fa-external-link-alt"></i> เปิดหน้าต่างใหม่</a>
+                </div>
+                <iframe id="embeddedIframe" src="" style="width: 100%; height: calc(100% - 53px); border: none;"></iframe>
+            </div>
         </div>
 
         <div id="reports" class="section active">
@@ -531,8 +602,8 @@
     <script type="module">
         // --- ส่วนเชื่อมต่อ Firebase และ Supabase ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        // นำเข้า serverTimestamp สำหรับความแม่นยำของสถานะออนไลน์
-        import { getDatabase, ref, onValue, update, push, set, remove, get, onChildAdded, onChildChanged, onChildRemoved, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        // นำเข้า serverTimestamp และ increment สำหรับความแม่นยำของสถานะออนไลน์และตัวนับ
+        import { getDatabase, ref, onValue, update, push, set, remove, get, onChildAdded, onChildChanged, onChildRemoved, onDisconnect, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
         // Supabase Auth
@@ -737,7 +808,7 @@
             // พยายามอัปเดตใน Supabase ด้วย (ถ้ามี Session)
             await supabase.auth.updateUser({ password: newPassword });
             
-            Swal.close(); // ปิดโหลดก่อนแสดง Popup สำเร็จ
+            Swal.close(); // ปิดโหลดก่อนแสดง Popup สำเร็จเพื่อแก้บั๊กโหลดค้าง
             Swal.fire('สำเร็จ!', 'รหัสผ่านของคุณถูกเปลี่ยนเรียบร้อยแล้ว', 'success');
             document.getElementById('myNewPassword').value = '';
             logAdminActivity('เปลี่ยนรหัสผ่านส่วนตัว');
@@ -758,7 +829,7 @@
             // สร้างผ่าน supabase clientแยก จะไม่เตะ session หลักออก (ถ้า Error ไม่ต้องสนใจ เพราะเรามีข้อมูลใน Firebase แล้ว)
             await supabaseAdminClient.auth.signUp({ email, password });
             
-            Swal.close(); // ปิดโหลดก่อนแสดง Popup สำเร็จ
+            Swal.close(); // ปิดโหลดก่อนแสดง Popup สำเร็จเพื่อแก้บั๊กโหลดค้าง
             Swal.fire('สำเร็จ', 'เพิ่มผู้ดูแลระบบใหม่เรียบร้อยแล้ว', 'success');
             document.getElementById('newAdminEmail').value = '';
             document.getElementById('newAdminPassword').value = '';
@@ -872,7 +943,7 @@
             }
         }
         
-        // ตรวจจับ Event การเคลื่อนไหวต่างๆ
+        // ตรวจจับ Event การเคลื่อนไหวต่างๆ ของแอดมิน
         window.addEventListener('mousemove', trackActivity);
         window.addEventListener('keypress', trackActivity);
         window.addEventListener('click', trackActivity);
@@ -1130,6 +1201,119 @@
                 document.getElementById('mainSidebar').classList.remove('active-mobile');
             }
         }
+
+        // --- ฟังก์ชันสำหรับเปิด/ปิด/รีเฟรช Embedded Web (Iframe) ---
+        window.openEmbeddedLink = function(url, titleText) {
+            document.getElementById('dbSelectorContainer').style.display = 'none';
+            document.getElementById('visitorStatsContainer').style.display = 'none';
+            document.getElementById('dbIframeContainer').style.display = 'block';
+            document.getElementById('embeddedIframe').src = url;
+            document.getElementById('embeddedTitle').innerText = titleText;
+            document.getElementById('embeddedExternalLink').href = url; // เผื่อกรณีเบราว์เซอร์บล็อก iframe ให้เปิดหน้าใหม่แทน
+        }
+
+        window.closeEmbeddedLink = function() {
+            document.getElementById('dbIframeContainer').style.display = 'none';
+            document.getElementById('embeddedIframe').src = ''; // เคลียร์เพื่อไม่ให้โหลดค้าง
+            document.getElementById('dbSelectorContainer').style.display = 'block';
+            document.getElementById('visitorStatsContainer').style.display = 'block';
+        }
+
+        window.refreshEmbeddedLink = function() {
+            const iframe = document.getElementById('embeddedIframe');
+            if(iframe.src) {
+                Swal.fire({ title: 'กำลังรีเฟรชข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                iframe.src = iframe.src;
+                setTimeout(() => { Swal.close(); }, 1000);
+            }
+        }
+
+        // --- ระบบนับจำนวนผู้เข้าชมหน้าบ้าน (Visitor Stats) ---
+        // ฟังก์ชันช่วยจัดรูปแบบตัวเลขให้อ่านง่าย (แปลงเป็น K หรือ M)
+        function formatStatNumber(num) {
+            if (!num) return '0';
+            if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+            return num.toString();
+        }
+
+        // ฟังก์ชันคำนวณหาสัปดาห์ปัจจุบันแบบมาตรฐาน (ISO Week)
+        function getWeekYear(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+            const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+            return `${d.getUTCFullYear()}-W${weekNo.toString().padStart(2, '0')}`;
+        }
+
+        // อัปเดตข้อมูลผู้เข้าชมจาก Firebase แบบเรียลไทม์มาแสดงบนตาราง
+        const visitorStatsRef = ref(db, 'visitor_stats');
+        onValue(visitorStatsRef, (snapshot) => {
+            const data = snapshot.val() || {};
+            const d = new Date();
+            
+            // สร้าง Key ค้นหาเวลาปัจจุบัน
+            const todayKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+            const monthKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}`;
+            const thisWeekKey = getWeekYear(d);
+            
+            // สร้าง Key หาเวลาของเดือนที่แล้ว
+            const lmDate = new Date(d); lmDate.setMonth(lmDate.getMonth() - 1);
+            const lastMonthKey = `${lmDate.getFullYear()}-${(lmDate.getMonth()+1).toString().padStart(2,'0')}`;
+            
+            // สร้าง Key หาเวลาของสัปดาห์ที่แล้ว
+            const lwDate = new Date(d); lwDate.setDate(lwDate.getDate() - 7);
+            const lastWeekKey = getWeekYear(lwDate);
+
+            // แยกหมวดหมู่ข้อมูล
+            const daily = data.daily || {};
+            const weekly = data.weekly || {};
+            const monthly = data.monthly || {};
+            
+            // นำข้อมูลไปโชว์ใน HTML
+            document.getElementById('statToday').innerText = formatStatNumber(daily[todayKey]);
+            document.getElementById('statThisWeek').innerText = formatStatNumber(weekly[thisWeekKey]);
+            document.getElementById('statLastWeek').innerText = formatStatNumber(weekly[lastWeekKey]);
+            document.getElementById('statThisMonth').innerText = formatStatNumber(monthly[monthKey]);
+            document.getElementById('statLastMonth').innerText = formatStatNumber(monthly[lastMonthKey]);
+            document.getElementById('statAllTime').innerText = formatStatNumber(data.total);
+        }, (error) => { console.warn("ไม่สามารถโหลดข้อมูลสถิติผู้เข้าชมได้: ", error); });
+
+        // ---------------------------------------------------------------------------------------------------------
+        // [ข้อแนะนำสำหรับใช้งาน] 
+        // ฟังก์ชันข้างล่างนี้ คือตัวที่เอาไว้ "บวกเลข" ผู้เข้าชม
+        // *** เพื่อให้ระบบหน้าบ้านนับจริง กรุณาก๊อปปี้โค้ดฟังก์ชัน trackFrontendVisitor() ลงไปวางในไฟล์ HTML ของหน้าบ้านด้วยครับ ***
+        // ---------------------------------------------------------------------------------------------------------
+        window.trackFrontendVisitor = function() {
+            // ดึงเวลาล่าสุดที่ผู้ใช้เคยเข้าเว็บ (เก็บในเครื่องผู้ใช้ชั่วคราว)
+            const lastVisit = localStorage.getItem('last_visit_time_frontend');
+            const now = Date.now();
+            
+            // หากเข้าครั้งแรก หรือ ครั้งล่าสุดเกิน 3 นาทีที่แล้ว (180,000 มิลลิวินาที) จึงจะบวกเพิ่ม 1 วิว
+            if (!lastVisit || now - parseInt(lastVisit) > 180000) {
+                // บันทึกเวลาล่าสุดทับลงไป เพื่อไม่ให้นับซ้ำถ้ารีเฟรชรัวๆ
+                localStorage.setItem('last_visit_time_frontend', now.toString());
+                
+                const d = new Date();
+                const todayKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+                const monthKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}`;
+                const thisWeekKey = getWeekYear(d);
+                
+                // สั่งเพิ่มค่าขึ้นทีละ 1 แบบปลอดภัยในฐานข้อมูล
+                const updates = {};
+                updates[`visitor_stats/daily/${todayKey}`] = increment(1);
+                updates[`visitor_stats/weekly/${thisWeekKey}`] = increment(1);
+                updates[`visitor_stats/monthly/${monthKey}`] = increment(1);
+                updates[`visitor_stats/total`] = increment(1);
+                
+                update(ref(db), updates).catch(err => console.warn("Visitor Tracking Error:", err));
+            }
+        }
+        
+        // ทดสอบรันการนับวิว หากแอดมินโหลดหน้านี้ (คุณสามารถลบหรือคอมเมนต์บรรทัดล่างทิ้งได้ หากไม่ต้องการให้แอดมินไปเพิ่มยอดเข้าชม)
+        trackFrontendVisitor();
+
 
         let allReportsMap = new Map();
         let allPendingData = []; let allRepliedData = [];
@@ -1643,7 +1827,7 @@
                 }
 
                 if (isActive && !mediaUrl) { 
-                    Swal.close(); // ปิดโหลดก่อนโชว์ error
+                    Swal.close(); // ปิดโหลดก่อนแสดง Error
                     Swal.fire('เกิดข้อผิดพลาด', 'กรุณาระบุลิงก์ หรือ แนบไฟล์สื่อเพื่อแสดงผล', 'error');
                     return; 
                 }
@@ -1651,12 +1835,12 @@
                 await set(annRef, { isActive: isActive, mediaType: mediaType, mediaUrl: mediaUrl, duration: duration, updatedAt: new Date().toISOString() });
                 logAdminActivity(`อัปเดตการตั้งค่าประกาศหน้าแรก`);
                 
-                Swal.close(); // ปิดโหลดก่อนโชว์แจ้งเตือนสำเร็จ
+                Swal.close(); // ปิดโหลดก่อนโชว์แจ้งเตือนสำเร็จเพื่อแก้บั๊ก
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'บันทึกการตั้งค่าสำเร็จ', showConfirmButton: false, timer: 2000 });
                 document.getElementById('annUrl').value = '';
                 document.getElementById('annFile').value = '';
             } catch (error) { 
-                Swal.close(); 
+                Swal.close();
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error'); 
             }
         };
@@ -1675,7 +1859,7 @@
 
         // --- จัดการข่าวประชาสัมพันธ์ (PR News) ---
         const prRef = ref(db, 'pr_news');
-        window.globalPrData = {}; // เก็บข้อมูลไว้สำหรับเรียกใช้ตอนแก้ไข โดยไม่ต้องยัดลง HTML Attribute
+        window.globalPrData = {}; // เก็บข้อมูลไว้สำหรับเรียกใช้ตอนแก้ไข โดยไม่ต้องยัดลง HTML Attribute เพื่อแก้บั๊กข้อมูลล้น
         
         window.togglePrImageSource = function() {
             const source = document.getElementById('prImageSource').value;
@@ -1698,6 +1882,7 @@
             if (data) {
                 const prArray = Object.keys(data).map(key => ({ key, ...data[key] })).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
                 prArray.forEach(item => {
+                    // ไม่ต้องฝัง string ยาวๆ ลงใน onclick อีกต่อไป เรียกใช้ข้อมูลผ่าน key แทน
                     tbody.innerHTML += `
                         <tr>
                             <td data-label="รูปภาพ:"><img src="${item.imageUrl}" style="width: 100%; max-width: 150px; border-radius: 8px; object-fit: cover; aspect-ratio: 1.414 / 1;"></td>
@@ -1762,7 +1947,7 @@
                 });
                 
                 logAdminActivity(`เพิ่มข่าวประชาสัมพันธ์เรื่อง: ${title}`);
-                Swal.close(); // ปิดโหลด
+                Swal.close(); // ปิดโหลดก่อนโชว์ความสำเร็จเพื่อแก้บั๊กโหลดค้าง
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'เพิ่มข่าวประชาสัมพันธ์สำเร็จ', showConfirmButton: false, timer: 2000 });
                 
                 document.getElementById('prTitle').value = '';
@@ -1770,7 +1955,7 @@
                 document.getElementById('prImageUrl').value = '';
                 document.getElementById('prImageFile').value = '';
             } catch (error) {
-                Swal.close(); // ปิดโหลด
+                Swal.close();
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
             }
         };
