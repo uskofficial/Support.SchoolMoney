@@ -204,6 +204,7 @@
     </div>
 
     <div class="sidebar" id="mainSidebar">
+      
         <button class="sidebar-close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
         <h2>Admin Panel</h2>
         
@@ -468,7 +469,7 @@
                     </thead>
                     <tbody id="prTableBody">
                         <tr><td colspan="4" style="text-align:center;">กำลังโหลดข้อมูล...</td></tr>
-                     </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -681,7 +682,6 @@
                 document.getElementById('currentUserDisplay').innerText = "";
                 stopAutoLogoutTimer();
                 removePresence();
-                
                 Swal.fire({
                     icon: 'info',
                     title: 'หมดเวลาเชื่อมต่อ',
@@ -701,7 +701,7 @@
                 setupPresence(currentAdminEmail);
                 
                 try {
-                    update(ref(db, `admin_users/${encodeEmail(currentAdminEmail)}`), { email: currentAdminEmail });
+                    supabase.from('admin_users').upsert({ email: currentAdminEmail }).then();
                 } catch(e) {}
                 
                 if(currentAdminEmail === 'admin@usk.ac.th') {
@@ -724,7 +724,7 @@
                 setupPresence(currentAdminEmail);
                 
                 try {
-                    update(ref(db, `admin_users/${encodeEmail(currentAdminEmail)}`), { email: currentAdminEmail });
+                    supabase.from('admin_users').upsert({ email: currentAdminEmail }).then();
                 } catch(e) {}
                 
                 if(currentAdminEmail === 'admin@usk.ac.th') {
@@ -764,22 +764,22 @@
                     if (!error && data.user) {
                         loginSuccess = true;
                     } else {
-                        // 3. Fallback: ถ้าไม่มีใน Supabase ค่อยลองดึงจาก Firebase แบบมี Try-Catch ป้องกันระบบค้าง
+                        // 3. Fallback: ถ้าไม่มีใน Supabase ค่อยลองดึงจาก Supabase DB โต้งๆ
                         try {
-                            const snapshot = await get(ref(db, `admin_users/${encEmail}`));
-                            if (snapshot.exists() && snapshot.val().password === password) {
+                            const { data: userRecord, error: userError } = await supabase.from('admin_users').select('*').eq('email', email).single();
+                            if (userRecord && userRecord.password === password) {
                                 loginSuccess = true;
                             }
-                        } catch (fbError) {
-                            console.warn("ข้ามการเช็ค Firebase เนื่องจากติดสิทธิ์การเข้าถึง");
+                        } catch (err) {
+                            console.warn("ข้ามการเช็ค Supabase DB เนื่องจากติดสิทธิ์การเข้าถึง");
                         }
                     }
                 }
 
                 if (loginSuccess) {
-                    // ซิงค์ข้อมูลเข้า Firebase แบบเงียบๆ ป้องกัน Error เด้งกวนใจ
+                    // ซิงค์ข้อมูลเข้า Supabase แบบเงียบๆ ป้องกัน Error เด้งกวนใจ
                     try {
-                        update(ref(db, `admin_users/${encEmail}`), { email: email, password: password });
+                        supabase.from('admin_users').upsert({ email: email, password: password }).then();
                     } catch(e) {}
 
                     // บันทึก Session กันหลุดตอนรีเฟรช และเริ่มบันทึกเวลา
@@ -821,7 +821,8 @@
             document.getElementById('loginOverlay').style.display = 'flex';
             Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'ออกจากระบบแล้ว', showConfirmButton: false, timer: 1500 });
             
-            removePresence(); // <--- เรียกฟังก์ชันเพื่อออกจากห้อง Supabase ทันที
+            removePresence();
+            // <--- เรียกฟังก์ชันเพื่อออกจากห้อง Supabase ทันที
             
             currentAdminEmail = "";
             document.getElementById('currentUserDisplay').innerText = "";
@@ -836,8 +837,8 @@
             
             Swal.fire({ title: 'กำลังอัปเดต...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             try {
-                // อัปเดตใน Firebase
-                update(ref(db, `admin_users/${encodeEmail(currentAdminEmail)}`), { password: newPassword });
+                // อัปเดตใน Supabase
+                supabase.from('admin_users').update({ password: newPassword }).eq('email', currentAdminEmail).then();
             } catch(e) {}
             // พยายามอัปเดตใน Supabase ด้วย (ถ้ามี Session)
             await supabase.auth.updateUser({ password: newPassword });
@@ -855,10 +856,10 @@
             if(password.length < 6) return Swal.fire('แจ้งเตือน', 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', 'warning');
             Swal.fire({ title: 'กำลังเพิ่มบัญชี...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             try {
-                // บันทึกเข้า DB ของ Firebase
-                await set(ref(db, `admin_users/${encodeEmail(email)}`), { email: email, password: password });
+                // บันทึกเข้า DB ของ Supabase
+                await supabase.from('admin_users').upsert({ email: email, password: password });
             } catch(e) {}
-            // สร้างผ่าน supabase clientแยก จะไม่เตะ session หลักออก (ถ้า Error ไม่ต้องสนใจ เพราะเรามีข้อมูลใน Firebase แล้ว)
+            // สร้างผ่าน supabase clientแยก จะไม่เตะ session หลักออก (ถ้า Error ไม่ต้องสนใจ เพราะเรามีข้อมูลใน DB แล้ว)
             await supabaseAdminClient.auth.signUp({ email, password });
             Swal.close(); // ปิดโหลดก่อนแสดง Popup สำเร็จเพื่อแก้บั๊กโหลดค้าง
             Swal.fire('สำเร็จ', 'เพิ่มผู้ดูแลระบบใหม่เรียบร้อยแล้ว', 'success');
@@ -879,8 +880,9 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     try {
-                        remove(ref(db, `admin_users/${encEmail}`));
-                        remove(ref(db, `admin_presence/${encEmail}`));
+                        const rawEmail = decodeEmail(encEmail);
+                        supabase.from('admin_users').delete().eq('email', rawEmail).then();
+                        supabase.from('admin_presence').delete().eq('email', rawEmail).then();
                     } catch(e) {}
                     Swal.fire('ลบสำเร็จ', 'ลบบัญชีออกจากระบบเรียบร้อยแล้ว', 'success');
                     logAdminActivity(`ลบบัญชีผู้ดูแลระบบออกจากตาราง`);
@@ -894,8 +896,8 @@
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
-
-        // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ---
+        
+        // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ยึดตาม Firebase เหมือนเดิม ---
         const logsRef = ref(db, 'admin_logs');
         function logAdminActivity(actionDetail) {
             if(!currentAdminEmail) return;
@@ -946,7 +948,6 @@
             }
             
             const encEmail = encodeEmail(email);
-
             // 1. สร้าง Channel ของ Supabase เพื่อรองรับการเปิดหลายแท็บและรีเฟรชหน้า
             adminChannel = supabase.channel('admin_presence_room', {
                 config: {
@@ -955,7 +956,6 @@
                     },
                 },
             });
-
             // 2. รับฟังสถานะของแอดมินทุกคนแบบเรียลไทม์ (รวมถึงตัวเราเองด้วย)
             adminChannel
                 .on('presence', { event: 'sync' }, () => {
@@ -974,7 +974,7 @@
                     // ถ้าพบว่าตัวเราเองกลับมาออนไลน์ ให้ลบป้ายแดง (force_offline) ในฐานข้อมูลทิ้ง
                     if (onlineSet.has(currentAdminEmail)) {
                         try {
-                            update(ref(db, `admin_presence/${encEmail}`), { force_offline: false });
+                            supabase.from('admin_presence').upsert({ email: currentAdminEmail, force_offline: false }).then();
                         } catch(e) {}
                     }
 
@@ -986,7 +986,6 @@
                             adminOnlineCount++;
                         }
                     });
-                    
                     const dElem = document.getElementById('onlineCountDesktop');
                     const mElem = document.getElementById('onlineCountMobile');
                     if(dElem) dElem.innerText = adminOnlineCount;
@@ -1003,15 +1002,15 @@
                         });
                     }
                 });
-
-            // 4. ยังต้องอัปเดต "เวลาขยับเมาส์ล่าสุด" ลง Firebase เพื่อคำนวณว่าคนที่ออกไปแล้ว ออกไปกี่นาที
+            // 4. ยังต้องอัปเดต "เวลาขยับเมาส์ล่าสุด" ลง Supabase เพื่อคำนวณว่าคนที่ออกไปแล้ว ออกไปกี่นาที
             if(heartbeatInterval) clearInterval(heartbeatInterval);
             heartbeatInterval = setInterval(() => {
                 if (currentAdminEmail) {
                     try {
-                        update(ref(db, `admin_presence/${encEmail}`), { 
+                        supabase.from('admin_presence').upsert({ 
+                            email: currentAdminEmail,
                             last_active: Date.now() 
-                        });
+                        }).then();
                     } catch(e) {}
                 }
             }, 5000);
@@ -1031,7 +1030,11 @@
                  const encEmail = encodeEmail(currentAdminEmail);
                  try {
                      // แปะป้ายว่ากดปุ่มล็อกเอาท์ตั้งใจออกจริงๆ (บังคับออฟไลน์)
-                     update(ref(db, `admin_presence/${encEmail}`), { force_offline: true, last_active: Date.now() });
+                     supabase.from('admin_presence').upsert({ 
+                        email: currentAdminEmail, 
+                        force_offline: true, 
+                        last_active: Date.now() 
+                     }).then();
                  } catch(e) {}
                  window.currentOnlineAdmins.delete(currentAdminEmail);
             }
@@ -1050,9 +1053,10 @@
                 startAutoLogoutTimer(); // รีเซ็ตตัวจับเวลาล็อกเอาท์ 5 ชั่วโมง
                 
                 try { 
-                    update(ref(db, `admin_presence/${encodeEmail(currentAdminEmail)}`), { 
+                    supabase.from('admin_presence').upsert({ 
+                        email: currentAdminEmail,
                         last_active: Date.now() 
-                    });
+                    }).then();
                 } catch(e){}
             }
         }
@@ -1148,7 +1152,7 @@
                 userPresenceMap.forEach(user => {
                     if(user.status === 'online') {
                         onlineUniqueNames.add(user.name);
-                     }
+                    }
                 });
                 let count = onlineUniqueNames.size;
                 updateOnlineCountsUI(count);
@@ -1220,20 +1224,55 @@
             selectChatUser(userName);
         }
 
-        // --- ระบบจัดการรายชื่อผู้ดูแลระบบในเมนูตั้งค่า ---
+        // --- ระบบจัดการรายชื่อผู้ดูแลระบบในเมนูตั้งค่า (เปลี่ยนมาใช้ Supabase) ---
         let allAdminsData = {};
         let allAdminsPresence = {};
         
-        onValue(ref(db, 'admin_users'), (snapshot) => {
-            allAdminsData = snapshot.exists() ? snapshot.val() : {};
-            window.renderAdminTable();
-        }, (error) => { console.warn(error); });
+        // ฟังก์ชันโหลดข้อมูลจาก Supabase แทน Firebase
+        const loadSupabaseAdminData = async () => {
+            try {
+                const { data: users } = await supabase.from('admin_users').select('*');
+                if(users) {
+                    allAdminsData = {};
+                    users.forEach(u => {
+                        if(u.email) allAdminsData[encodeEmail(u.email)] = u;
+                    });
+                }
+                
+                const { data: presence } = await supabase.from('admin_presence').select('*');
+                if(presence) {
+                    allAdminsPresence = {};
+                    presence.forEach(p => {
+                        if(p.email) allAdminsPresence[encodeEmail(p.email)] = p;
+                    });
+                }
+                window.renderAdminTable();
+            } catch (err) {
+                console.warn(err);
+            }
+        };
 
-        // โหลดข้อมูลเวลาเข้าออกล่าสุดมาประกอบตาราง
-        onValue(ref(db, 'admin_presence'), (snapshot) => {
-            allAdminsPresence = snapshot.exists() ? snapshot.val() : {};
-            window.renderAdminTable();
-        }, (error) => { console.warn(error); });
+        loadSupabaseAdminData();
+
+        // สมัครรับการเปลี่ยนแปลง (Realtime) จาก Supabase สำหรับแสดงสถานะแบบสดๆ
+        supabase.channel('admin_db_changes_room')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_users' }, payload => {
+                if (payload.eventType === 'DELETE') {
+                    if(payload.old && payload.old.email) delete allAdminsData[encodeEmail(payload.old.email)];
+                } else {
+                    if(payload.new && payload.new.email) allAdminsData[encodeEmail(payload.new.email)] = payload.new;
+                }
+                window.renderAdminTable();
+            })
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_presence' }, payload => {
+                if (payload.eventType === 'DELETE') {
+                    if(payload.old && payload.old.email) delete allAdminsPresence[encodeEmail(payload.old.email)];
+                } else {
+                    if(payload.new && payload.new.email) allAdminsPresence[encodeEmail(payload.new.email)] = payload.new;
+                }
+                window.renderAdminTable();
+            })
+            .subscribe();
 
         // เพิ่มการรีเฟรชตารางของตัวเราเองอัตโนมัติ ทุก 5 วิ เพื่อให้เห็นเวลาคนอื่นออฟไลน์เพิ่มขึ้นเรื่อยๆ
         setInterval(() => {
@@ -1276,11 +1315,10 @@
                     statusText = `กำลังใช้งานอยู่ในระบบ`;
                 } else {
                     if (lastActive > 0) {
-                        const diffMs = Math.max(0, now - lastActive); 
+                        const diffMs = Math.max(0, now - lastActive);
                         const diffMins = Math.floor(diffMs / 60000);
                         const diffHours = Math.floor(diffMins / 60);
                         const diffDays = Math.floor(diffHours / 24);
-                        
                         let offlineText = '';
                         if (diffDays > 0) {
                             offlineText = `${diffDays} วัน ${diffHours % 24} ชั่วโมง`;
@@ -1394,7 +1432,7 @@
             // สร้าง Key ค้นหาเวลาปัจจุบัน
             const todayKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
             const monthKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}`;
-             const thisWeekKey = getWeekYear(d);
+            const thisWeekKey = getWeekYear(d);
             
             // สร้าง Key หาเวลาของเดือนที่แล้ว
             const lmDate = new Date(d); lmDate.setMonth(lmDate.getMonth() - 1);
@@ -1470,7 +1508,7 @@
                     allPendingData.push(r);
                 } else {
                     allRepliedData.push(r);
-                 }
+                }
             });
             updateGlobalNotification();
             renderTable('pending', currentPendingPage);
@@ -1506,9 +1544,8 @@
             
             if(window.currentReplyKey === snapshot.key) {
                 renderReplyList(data.replies);
-              }
+            }
         });
-        
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
         // --- จัดการข้อมูล Live Chat ---
         const chatsRef = ref(db, 'chats');
@@ -1529,7 +1566,6 @@
             renderChatUserList();
             if(activeChatUser && allChatsMap.has(activeChatUser)) renderChatMessages(activeChatUser);
         }, (error) => { console.warn(error); });
-        
         function renderChatUserList() {
             const listEl = document.getElementById('adminChatList');
             listEl.innerHTML = '';
@@ -1559,7 +1595,7 @@
                         ${unreadBadge}
                     </div>
                 `;
-             });
+            });
         }
 
         window.selectChatUser = function(userName) {
@@ -1829,7 +1865,6 @@
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
         }, (error) => { console.warn(error); });
-
         document.getElementById('btnAddFaq').addEventListener('click', () => {
             const q = document.getElementById('faqQ').value.trim();
             const a = document.getElementById('faqA').value.trim();
@@ -1842,7 +1877,6 @@
                 Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเพิ่มข้อมูลได้', 'error');
             });
         });
-
         window.deleteFaq = function(key) {
             if(confirm('ต้องการลบคำถามนี้หรือไม่?')) {
                 try {
@@ -1929,7 +1963,6 @@
                 document.getElementById('annActive').value = "false";
             }
         }, (error) => { console.warn(error); });
-
         window.saveAnnouncement = async function() {
             const isActive = document.getElementById('annActive').value === "true";
             const mediaType = document.getElementById('annType').value;
@@ -1953,8 +1986,7 @@
                 }
 
                 if (isActive && !mediaUrl) { 
-                    Swal.close();
-                    // ปิดโหลดก่อนแสดง Error
+                    Swal.close(); // ปิดโหลดก่อนแสดง Error
                     Swal.fire('เกิดข้อผิดพลาด', 'กรุณาระบุลิงก์ หรือ แนบไฟล์สื่อเพื่อแสดงผล', 'error');
                     return; 
                 }
@@ -1971,7 +2003,6 @@
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error'); 
             }
         };
-
         window.deleteAnnouncement = async function() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
                 try { 
@@ -1983,7 +2014,6 @@
                 }
             }
         };
-
         // --- จัดการข่าวประชาสัมพันธ์ (PR News) ---
         const prRef = ref(db, 'pr_news');
         window.globalPrData = {}; // เก็บข้อมูลไว้สำหรับเรียกใช้ตอนแก้ไข โดยไม่ต้องยัดลง HTML Attribute เพื่อแก้บั๊กข้อมูลล้น
@@ -2084,7 +2114,6 @@
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
             }
         };
-
         window.deletePrNews = function(key) {
             Swal.fire({
                 title: 'ยืนยันการลบ?',
@@ -2213,7 +2242,6 @@
                 document.getElementById('streamActive').value = "false";
             }
         }, (error) => { console.warn(error); });
-
         window.saveStreaming = async function() {
             const isActive = document.getElementById('streamActive').value === "true";
             const platform = document.getElementById('streamPlatform').value;
