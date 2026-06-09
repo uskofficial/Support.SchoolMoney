@@ -810,6 +810,12 @@
         // -----------------------------------------------------------
 
         window.logoutAdmin = async function() {
+            if(currentAdminEmail) {
+                try {
+                    update(ref(db, `admin_presence/${encodeEmail(currentAdminEmail)}`), { status: 'offline', last_seen: serverTimestamp() });
+                } catch(e) {}
+            }
+            
             // ลบ LocalStorage
             localStorage.removeItem('adminSessionEmail');
             localStorage.removeItem('adminLastActivity');
@@ -818,21 +824,10 @@
             document.getElementById('loginOverlay').style.display = 'flex';
             Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'ออกจากระบบแล้ว', showConfirmButton: false, timer: 1500 });
             
-            // เตะออฟไลน์ทันทีเมื่อกดปุ่ม (force_offline) ไม่ให้ติด Grace period
-            if(myAdminPresenceRef) { 
-                try {
-                    onDisconnect(myAdminPresenceRef).cancel(); 
-                    update(myAdminPresenceRef, { 
-                        status: 'force_offline', 
-                        last_active: 0 // รีเซ็ตเวลาไปเลย
-                    });
-                } catch(e) {}
-                myAdminPresenceRef = null;
-            }
-            
             currentAdminEmail = "";
             document.getElementById('currentUserDisplay').innerText = "";
             stopAutoLogoutTimer();
+            removePresence();
         }
 
         window.changeMyPassword = async function() {
@@ -939,37 +934,26 @@
             });
         }, (error) => { console.warn('ไม่สามารถโหลดประวัติกิจกรรมได้', error); });
 
-        // --- ระบบการติดตามแอดมินแบบ Firebase มาตรฐาน (Presence) ---
+        // --- ระบบการติดตามแอดมิน (แยกจากผู้ใช้หน้าบ้าน) ---
         const connectedRef = ref(db, ".info/connected");
         const onlineUsersRef = ref(db, "presence");
         let myAdminPresenceRef = null;
 
         function setupPresence(email) {
             if(myAdminPresenceRef) removePresence();
-            
-            const encEmail = encodeEmail(email);
-            myAdminPresenceRef = ref(db, `admin_presence/${encEmail}`);
-
-            // 1. ทันทีที่ล็อกอินหรือรีเฟรช ให้ประทับออนไลน์ทันที
-            update(myAdminPresenceRef, { 
-                status: 'online', 
-                last_seen: serverTimestamp(), 
-                last_active: serverTimestamp() 
-            });
+            myAdminPresenceRef = ref(db, `admin_presence/${encodeEmail(email)}`);
 
             onValue(connectedRef, (snap) => {
                 if (snap.val() === true) {
-                    // เมื่อเน็ตต่อติด ให้จองคำสั่ง offline ไว้ล่วงหน้า 
-                    // (คำสั่งนี้จะทำงานเฉพาะตอนที่ปิดเบราว์เซอร์ไปจริงๆ หรือเน็ตหลุด)
-                    onDisconnect(myAdminPresenceRef).update({ 
-                        status: 'offline' 
-                    });
-                    
-                    // ย้ำสถานะ online อีกรอบ เพื่อความชัวร์หลังเชื่อมต่อติด
-                    update(myAdminPresenceRef, { 
-                        status: 'online', 
-                        last_active: serverTimestamp() 
-                    });
+                    try {
+                        // แก้ปัญหา Race Condition: ลงทะเบียนคำสั่งเมื่อปิดหน้าเว็บ (onDisconnect) ให้เสร็จสมบูรณ์ก่อน
+                        const disconnectRef = onDisconnect(myAdminPresenceRef);
+                        disconnectRef.set({ status: 'offline', last_seen: serverTimestamp() }).then(() => {
+                            // เมื่อลงทะเบียนสำเร็จ ค่อยเขียนสถานะ "ออนไลน์" ทับลงไป
+                            // ป้องกันบั๊กเวลารีเฟรชแล้วสถานะกลายเป็นออฟไลน์ (สีเทา) และทำให้เช็คออนไลน์พร้อมกันได้เสถียรขึ้น
+                            set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
+                        });
+                    } catch(e) {}
                 }
              });
         }
@@ -977,40 +961,30 @@
         function removePresence() {
             if(myAdminPresenceRef) { 
                 try {
-                    // ยกเลิกคำสั่งออฟไลน์อัตโนมัติ ป้องกันการทับซ้อน
-                    onDisconnect(myAdminPresenceRef).cancel(); 
-                    // อัปเดตสถานะออฟไลน์ทันที
-                    update(myAdminPresenceRef, { 
-                        status: 'offline'
-                    });
+                    onDisconnect(myAdminPresenceRef).cancel(); // ยกเลิก onDisconnect เก่า
+                    set(myAdminPresenceRef, { status: 'offline', last_seen: serverTimestamp() });
                 } catch(e) {}
                 myAdminPresenceRef = null;
             }
         }
 
         // --- ระบบติดตามการเคลื่อนไหวของแอดมิน เพื่อรีเซ็ตเวลา 5 ชั่วโมงและอัปเดตสถานะออนไลน์ ---
-        let lastInteraction = 0;
+        let lastInteraction = Date.now();
         function trackActivity() {
-            if (!currentAdminEmail || !myAdminPresenceRef) return;
+            if (!currentAdminEmail) return;
             const now = Date.now();
-            
-            // อัปเดตการเคลื่อนไหวทุกๆ 3 วินาที (เพื่อให้หน้าจออื่นเห็นว่าคนนี้ขยับแล้ว และโชว์ออนไลน์พร้อมกันเสมอ)
-            if (now - lastInteraction > 3000) { 
+            if (now - lastInteraction > 60000) { // อัปเดตทุกๆ 1 นาที เพื่อลดภาระเซิร์ฟเวอร์
                 lastInteraction = now;
-                localStorage.setItem('adminLastActivity', now.toString()); // Sync เวลาข้ามแท็บ
-                startAutoLogoutTimer(); // รีเซ็ต 5 ชม.
-                
-                try { 
-                    // ยิงเฉพาะสถานะออนไลน์และการขยับ ไม่แตะ last_seen (เวลาเข้าสู่ระบบ)
-                    update(myAdminPresenceRef, { 
-                        status: 'online', 
-                        last_active: serverTimestamp() 
-                    });
-                } catch(e){}
+                localStorage.setItem('adminLastActivity', now.toString()); // Sync ข้ามแท็บ/รีเฟรชหน้า
+                startAutoLogoutTimer(); // รีเซ็ตเวลาล็อกเอาท์อัตโนมัติ (5 ชั่วโมง)
+                if (myAdminPresenceRef) {
+                    try { set(myAdminPresenceRef, { status: 'online', last_seen: serverTimestamp() });
+                    } catch(e){}
+                }
             }
         }
         
-        // ตรวจจับ Event การเคลื่อนไหวต่างๆ ของแอดมินแบบเรียลไทม์
+        // ตรวจจับ Event การเคลื่อนไหวต่างๆ ของแอดมิน
         window.addEventListener('mousemove', trackActivity);
         window.addEventListener('keypress', trackActivity);
         window.addEventListener('click', trackActivity);
@@ -1185,13 +1159,9 @@
             allAdminsPresence = snapshot.exists() ? snapshot.val() : {};
             window.renderAdminTable();
             
-            // นำยอดออนไลน์ไปโชว์ที่ Header
             let adminOnlineCount = 0;
-            const now = Date.now();
             Object.values(allAdminsPresence).forEach(pres => {
-                const diffAct = Math.max(0, now - (pres.last_active || 0));
-                // ถ้าระบบบอกว่า online หรือเพิ่งขยับเมาส์ไม่เกิน 15 วินาที นับเป็น online 
-                if((pres.status === 'online' || diffAct < 15000) && pres.status !== 'force_offline') {
+                if(pres.status === 'online') {
                     adminOnlineCount++;
                 }
             });
@@ -1214,25 +1184,12 @@
 
             Object.keys(allAdminsData).forEach(encEmail => {
                 const adminData = allAdminsData[encEmail];
-                const pres = allAdminsPresence[encEmail] || { status: 'offline', last_seen: 0, last_active: 0 };
+                const pres = allAdminsPresence[encEmail] || { status: 'offline', last_seen: 0 };
                 
-                const offlineTime = pres.last_active > 0 ? pres.last_active : (pres.last_seen > 0 ? pres.last_seen : 0);
-                const now = Date.now();
-                const diffMs = Math.max(0, now - offlineTime); 
-                
-                // ใช้ระบบ Grace Period (15 วินาที) กันกระพริบตอนรีเฟรชหน้าเว็บ หรือเน็ตกระตุก
-                let isActuallyOnline = false;
-                if (pres.status === 'online' || diffMs < 15000) {
-                    // แต่ถ้าถูกบังคับออฟไลน์ไปแล้วตอนล็อกเอาท์ ก็ถือว่าไม่ออนไลน์
-                    if(pres.status !== 'force_offline') { 
-                        isActuallyOnline = true;
-                    }
-                }
-
                 let dotClass = 'status-offline';
                 let statusText = 'ยังไม่เคยเข้าระบบ';
                 
-                if (isActuallyOnline) {
+                if(pres.status === 'online') {
                     dotClass = 'status-online';
                     let onlineTimeStr = '-';
                     if (pres.last_seen > 0) {
@@ -1240,7 +1197,9 @@
                     }
                     statusText = `เข้าสู่ระบบเมื่อ: ${onlineTimeStr}`;
                 } else {
-                    if (offlineTime > 0) {
+                    if (pres.last_seen > 0) {
+                        const now = Date.now();
+                        const diffMs = now - pres.last_seen;
                         const diffMins = Math.floor(diffMs / 60000);
                         const diffHours = Math.floor(diffMins / 60);
                         const diffDays = Math.floor(diffHours / 24);
