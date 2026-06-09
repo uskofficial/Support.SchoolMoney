@@ -639,9 +639,6 @@
         function encodeEmail(email) { return email.replace(/\./g, ','); }
         function decodeEmail(encoded) { return encoded.replace(/,/g, '.'); }
 
-        // --- ตัวแปรแบบ Global สำหรับ Supabase Presence ---
-        window.currentOnlineAdmins = new Set(); // เก็บรายชื่ออีเมลที่กำลังออนไลน์จริงๆ
-
         // --- ระบบ Authentication & เตะออกเมื่อไม่มีการเคลื่อนไหว 5 ชั่วโมง ---
         let currentAdminEmail = "";
         let autoLogoutTimer = null;
@@ -821,7 +818,17 @@
             document.getElementById('loginOverlay').style.display = 'flex';
             Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'ออกจากระบบแล้ว', showConfirmButton: false, timer: 1500 });
             
-            removePresence(); // <--- เรียกฟังก์ชันเพื่อออกจากห้อง Supabase ทันที
+            // เตะออฟไลน์ทันทีเมื่อกดปุ่ม (force_offline) ไม่ให้ติด Grace period
+            if(myAdminPresenceRef) { 
+                try {
+                    onDisconnect(myAdminPresenceRef).cancel(); 
+                    update(myAdminPresenceRef, { 
+                        status: 'force_offline', 
+                        last_active: 0 // รีเซ็ตเวลาไปเลย
+                    });
+                } catch(e) {}
+                myAdminPresenceRef = null;
+            }
             
             currentAdminEmail = "";
             document.getElementById('currentUserDisplay').innerText = "";
@@ -932,132 +939,78 @@
             });
         }, (error) => { console.warn('ไม่สามารถโหลดประวัติกิจกรรมได้', error); });
 
-        // =====================================================================================
-        // ระบบติดตามการเข้าสู่ระบบแบบใหม่ด้วย SUPABASE PRESENCE (แก้ปัญหา Race Condition รีเฟรช)
-        // =====================================================================================
-        let adminChannel = null;
-        let heartbeatInterval = null;
+        // --- ระบบการติดตามแอดมินแบบ Firebase มาตรฐาน (Presence) ---
+        const connectedRef = ref(db, ".info/connected");
+        const onlineUsersRef = ref(db, "presence");
+        let myAdminPresenceRef = null;
 
         function setupPresence(email) {
-            // ล้างข้อมูลเก่าก่อน
-            if(adminChannel) {
-                adminChannel.untrack();
-                supabase.removeChannel(adminChannel);
-            }
+            if(myAdminPresenceRef) removePresence();
             
             const encEmail = encodeEmail(email);
+            myAdminPresenceRef = ref(db, `admin_presence/${encEmail}`);
 
-            // 1. สร้าง Channel ของ Supabase เพื่อรองรับการเปิดหลายแท็บและรีเฟรชหน้า
-            adminChannel = supabase.channel('admin_presence_room', {
-                config: {
-                    presence: {
-                        key: email, // ให้ Supabase รู้ว่าแท็บไหนเป็นของใคร โดยใช้อีเมลเป็นคีย์หลัก
-                    },
-                },
+            // 1. ทันทีที่ล็อกอินหรือรีเฟรช ให้ประทับออนไลน์ทันที
+            update(myAdminPresenceRef, { 
+                status: 'online', 
+                last_seen: serverTimestamp(), 
+                last_active: serverTimestamp() 
             });
 
-            // 2. รับฟังสถานะของแอดมินทุกคนแบบเรียลไทม์ (รวมถึงตัวเราเองด้วย)
-            adminChannel
-                .on('presence', { event: 'sync' }, () => {
-                    const newState = adminChannel.presenceState();
-                    const onlineSet = new Set();
-                    
-                    // newState จะรวมอุปกรณ์/แท็บทั้งหมดที่กำลังต่ออยู่เข้าด้วยกัน
-                    for (const userEmail in newState) {
-                        if (newState[userEmail].length > 0) {
-                            onlineSet.add(userEmail); // ถ้ามีอย่างน้อย 1 เครื่องที่ต่ออยู่ ถือว่ารอด (แก้บั๊กหลุด)
-                        }
-                    }
-                    
-                    window.currentOnlineAdmins = onlineSet; // เซฟลงตัวแปรกลางไปใช้กับตาราง
-                    
-                    // ถ้าพบว่าตัวเราเองกลับมาออนไลน์ ให้ลบป้ายแดง (force_offline) ในฐานข้อมูลทิ้ง
-                    if (onlineSet.has(currentAdminEmail)) {
-                        try {
-                            update(ref(db, `admin_presence/${encEmail}`), { force_offline: false });
-                        } catch(e) {}
-                    }
-
-                    // อัปเดตตัวเลขแอดมินที่กำลังออนไลน์ขึ้น Header ทันที
-                    let adminOnlineCount = 0;
-                    window.currentOnlineAdmins.forEach(em => {
-                        const enc = encodeEmail(em);
-                        if (!allAdminsPresence[enc] || !allAdminsPresence[enc].force_offline) {
-                            adminOnlineCount++;
-                        }
+            onValue(connectedRef, (snap) => {
+                if (snap.val() === true) {
+                    // เมื่อเน็ตต่อติด ให้จองคำสั่ง offline ไว้ล่วงหน้า 
+                    // (คำสั่งนี้จะทำงานเฉพาะตอนที่ปิดเบราว์เซอร์ไปจริงๆ หรือเน็ตหลุด)
+                    onDisconnect(myAdminPresenceRef).update({ 
+                        status: 'offline' 
                     });
                     
-                    const dElem = document.getElementById('onlineCountDesktop');
-                    const mElem = document.getElementById('onlineCountMobile');
-                    if(dElem) dElem.innerText = adminOnlineCount;
-                    if(mElem) mElem.innerText = adminOnlineCount;
-
-                    window.renderAdminTable();
-                })
-                .subscribe(async (status) => {
-                    if (status === 'SUBSCRIBED') {
-                        // 3. ทันทีที่ต่อติด (หรือรีเฟรชเสร็จ) ให้รายงานตัวเข้าห้อง
-                        await adminChannel.track({
-                            email: email,
-                            online_at: Date.now()
-                        });
-                    }
-                });
-
-            // 4. ยังต้องอัปเดต "เวลาขยับเมาส์ล่าสุด" ลง Firebase เพื่อคำนวณว่าคนที่ออกไปแล้ว ออกไปกี่นาที
-            if(heartbeatInterval) clearInterval(heartbeatInterval);
-            heartbeatInterval = setInterval(() => {
-                if (currentAdminEmail) {
-                    try {
-                        update(ref(db, `admin_presence/${encEmail}`), { 
-                            last_active: Date.now() 
-                        });
-                    } catch(e) {}
+                    // ย้ำสถานะ online อีกรอบ เพื่อความชัวร์หลังเชื่อมต่อติด
+                    update(myAdminPresenceRef, { 
+                        status: 'online', 
+                        last_active: serverTimestamp() 
+                    });
                 }
-            }, 5000);
+             });
         }
 
         function removePresence() {
-            if (adminChannel) {
-                adminChannel.untrack();
-                supabase.removeChannel(adminChannel);
-                adminChannel = null;
+            if(myAdminPresenceRef) { 
+                try {
+                    // ยกเลิกคำสั่งออฟไลน์อัตโนมัติ ป้องกันการทับซ้อน
+                    onDisconnect(myAdminPresenceRef).cancel(); 
+                    // อัปเดตสถานะออฟไลน์ทันที
+                    update(myAdminPresenceRef, { 
+                        status: 'offline'
+                    });
+                } catch(e) {}
+                myAdminPresenceRef = null;
             }
-            if (heartbeatInterval) {
-                clearInterval(heartbeatInterval);
-                heartbeatInterval = null;
-            }
-            if (currentAdminEmail) {
-                 const encEmail = encodeEmail(currentAdminEmail);
-                 try {
-                     // แปะป้ายว่ากดปุ่มล็อกเอาท์ตั้งใจออกจริงๆ (บังคับออฟไลน์)
-                     update(ref(db, `admin_presence/${encEmail}`), { force_offline: true, last_active: Date.now() });
-                 } catch(e) {}
-                 window.currentOnlineAdmins.delete(currentAdminEmail);
-            }
-            window.renderAdminTable();
         }
 
-        // --- ระบบติดตามการเคลื่อนไหวของแอดมิน เพื่อรีเซ็ตเวลา 5 ชั่วโมง ---
+        // --- ระบบติดตามการเคลื่อนไหวของแอดมิน เพื่อรีเซ็ตเวลา 5 ชั่วโมงและอัปเดตสถานะออนไลน์ ---
         let lastInteraction = 0;
         function trackActivity() {
-            if (!currentAdminEmail || !adminChannel) return;
+            if (!currentAdminEmail || !myAdminPresenceRef) return;
             const now = Date.now();
             
-            if (now - lastInteraction > 5000) { 
+            // อัปเดตการเคลื่อนไหวทุกๆ 3 วินาที (เพื่อให้หน้าจออื่นเห็นว่าคนนี้ขยับแล้ว และโชว์ออนไลน์พร้อมกันเสมอ)
+            if (now - lastInteraction > 3000) { 
                 lastInteraction = now;
                 localStorage.setItem('adminLastActivity', now.toString()); // Sync เวลาข้ามแท็บ
-                startAutoLogoutTimer(); // รีเซ็ตตัวจับเวลาล็อกเอาท์ 5 ชั่วโมง
+                startAutoLogoutTimer(); // รีเซ็ต 5 ชม.
                 
                 try { 
-                    update(ref(db, `admin_presence/${encodeEmail(currentAdminEmail)}`), { 
-                        last_active: Date.now() 
+                    // ยิงเฉพาะสถานะออนไลน์และการขยับ ไม่แตะ last_seen (เวลาเข้าสู่ระบบ)
+                    update(myAdminPresenceRef, { 
+                        status: 'online', 
+                        last_active: serverTimestamp() 
                     });
                 } catch(e){}
             }
         }
         
-        // ตรวจจับ Event การเคลื่อนไหวต่างๆ ของแอดมิน
+        // ตรวจจับ Event การเคลื่อนไหวต่างๆ ของแอดมินแบบเรียลไทม์
         window.addEventListener('mousemove', trackActivity);
         window.addEventListener('keypress', trackActivity);
         window.addEventListener('click', trackActivity);
@@ -1077,7 +1030,6 @@
         }
 
         // --- ระบบดึงข้อมูลผู้ใช้งานหน้าบ้าน (ออนไลน์) ---
-        const onlineUsersRef = ref(db, "presence");
         onValue(onlineUsersRef, (snapshot) => {
             let userPresenceMap = new Map();
             let onlineUniqueNames = new Set();
@@ -1229,18 +1181,26 @@
             window.renderAdminTable();
         }, (error) => { console.warn(error); });
 
-        // โหลดข้อมูลเวลาเข้าออกล่าสุดมาประกอบตาราง
         onValue(ref(db, 'admin_presence'), (snapshot) => {
             allAdminsPresence = snapshot.exists() ? snapshot.val() : {};
             window.renderAdminTable();
+            
+            // นำยอดออนไลน์ไปโชว์ที่ Header
+            let adminOnlineCount = 0;
+            const now = Date.now();
+            Object.values(allAdminsPresence).forEach(pres => {
+                const diffAct = Math.max(0, now - (pres.last_active || 0));
+                // ถ้าระบบบอกว่า online หรือเพิ่งขยับเมาส์ไม่เกิน 15 วินาที นับเป็น online 
+                if((pres.status === 'online' || diffAct < 15000) && pres.status !== 'force_offline') {
+                    adminOnlineCount++;
+                }
+            });
+            
+            const dElem = document.getElementById('onlineCountDesktop');
+            const mElem = document.getElementById('onlineCountMobile');
+            if(dElem) dElem.innerText = adminOnlineCount;
+             if(mElem) mElem.innerText = adminOnlineCount;
         }, (error) => { console.warn(error); });
-
-        // เพิ่มการรีเฟรชตารางของตัวเราเองอัตโนมัติ ทุก 5 วิ เพื่อให้เห็นเวลาคนอื่นออฟไลน์เพิ่มขึ้นเรื่อยๆ
-        setInterval(() => {
-            if(document.getElementById('system_mgmt').classList.contains('active')) {
-                window.renderAdminTable();
-            }
-        }, 5000);
 
         window.renderAdminTable = function() {
             const tbody = document.getElementById('adminUsersTableBody');
@@ -1254,18 +1214,19 @@
 
             Object.keys(allAdminsData).forEach(encEmail => {
                 const adminData = allAdminsData[encEmail];
-                const rawEmail = adminData.email;
-                const pres = allAdminsPresence[encEmail] || { last_active: 0 };
+                const pres = allAdminsPresence[encEmail] || { status: 'offline', last_seen: 0, last_active: 0 };
                 
+                const offlineTime = pres.last_active > 0 ? pres.last_active : (pres.last_seen > 0 ? pres.last_seen : 0);
                 const now = Date.now();
-                const lastActive = pres.last_active || 0;
+                const diffMs = Math.max(0, now - offlineTime); 
                 
-                // ตรวจสอบความถูกต้อง: ถาม Supabase ว่าตกลงคนนี้ออนไลน์อยู่จริงๆ ใช่ไหม
-                let isActuallyOnline = window.currentOnlineAdmins && window.currentOnlineAdmins.has(rawEmail);
-                
-                // ถ้าระบบเจอว่าคนนี้จงใจกดออกจากระบบไปแล้ว (ปุ่ม logout)
-                if (pres.force_offline === true) {
-                    isActuallyOnline = false;
+                // ใช้ระบบ Grace Period (15 วินาที) กันกระพริบตอนรีเฟรชหน้าเว็บ หรือเน็ตกระตุก
+                let isActuallyOnline = false;
+                if (pres.status === 'online' || diffMs < 15000) {
+                    // แต่ถ้าถูกบังคับออฟไลน์ไปแล้วตอนล็อกเอาท์ ก็ถือว่าไม่ออนไลน์
+                    if(pres.status !== 'force_offline') { 
+                        isActuallyOnline = true;
+                    }
                 }
 
                 let dotClass = 'status-offline';
@@ -1273,10 +1234,13 @@
                 
                 if (isActuallyOnline) {
                     dotClass = 'status-online';
-                    statusText = `กำลังใช้งานอยู่ในระบบ`;
+                    let onlineTimeStr = '-';
+                    if (pres.last_seen > 0) {
+                        onlineTimeStr = new Date(pres.last_seen).toLocaleString('th-TH');
+                    }
+                    statusText = `เข้าสู่ระบบเมื่อ: ${onlineTimeStr}`;
                 } else {
-                    if (lastActive > 0) {
-                        const diffMs = Math.max(0, now - lastActive); 
+                    if (offlineTime > 0) {
                         const diffMins = Math.floor(diffMs / 60000);
                         const diffHours = Math.floor(diffMins / 60);
                         const diffDays = Math.floor(diffHours / 24);
@@ -1290,9 +1254,9 @@
                             offlineText = `${diffMins} นาที`;
                         }
 
-                        if(diffMs < 60000) { 
+                        if(diffMs < 5 * 60 * 1000) { 
                             dotClass = 'status-recent';
-                            statusText = `เพิ่งออก (ไม่ถึง 1 นาที)`;
+                            statusText = `เพิ่งออก (${offlineText}ที่แล้ว)`;
                         } else {
                             dotClass = 'status-offline';
                             statusText = `ออกจากระบบไปแล้ว ${offlineText}`;
