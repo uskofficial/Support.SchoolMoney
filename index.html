@@ -204,7 +204,6 @@
     </div>
 
     <div class="sidebar" id="mainSidebar">
-      
         <button class="sidebar-close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
         <h2>Admin Panel</h2>
         
@@ -310,7 +309,7 @@
                         </tr>
                     </thead>
                     <tbody id="pendingReportsTableBody">
-                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="pendingPagination"></div>
@@ -330,7 +329,7 @@
                         </tr>
                     </thead>
                     <tbody id="repliedReportsTableBody">
-                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="repliedPagination"></div>
@@ -358,7 +357,7 @@
         <div id="faqs" class="section">
             <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
             <div class="card">
-                <h3>เพิ่มคำถามใหม่</h3>
+                 <h3>เพิ่มคำถามใหม่</h3>
                 <input type="text" id="faqQ" placeholder="คำถาม...">
                 <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
                 <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
@@ -821,8 +820,7 @@
             document.getElementById('loginOverlay').style.display = 'flex';
             Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'ออกจากระบบแล้ว', showConfirmButton: false, timer: 1500 });
             
-            removePresence();
-            // <--- เรียกฟังก์ชันเพื่อออกจากห้อง Supabase ทันที
+            removePresence(); // <--- เรียกฟังก์ชันเพื่อออกจากห้อง Supabase ทันที
             
             currentAdminEmail = "";
             document.getElementById('currentUserDisplay').innerText = "";
@@ -896,7 +894,7 @@
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
-        
+
         // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ยึดตาม Firebase เหมือนเดิม ---
         const logsRef = ref(db, 'admin_logs');
         function logAdminActivity(actionDetail) {
@@ -956,6 +954,7 @@
                     },
                 },
             });
+
             // 2. รับฟังสถานะของแอดมินทุกคนแบบเรียลไทม์ (รวมถึงตัวเราเองด้วย)
             adminChannel
                 .on('presence', { event: 'sync' }, () => {
@@ -974,7 +973,7 @@
                     // ถ้าพบว่าตัวเราเองกลับมาออนไลน์ ให้ลบป้ายแดง (force_offline) ในฐานข้อมูลทิ้ง
                     if (onlineSet.has(currentAdminEmail)) {
                         try {
-                            supabase.from('admin_presence').upsert({ email: currentAdminEmail, force_offline: false }).then();
+                             supabase.from('admin_presence').upsert({ email: currentAdminEmail, force_offline: false }).then();
                         } catch(e) {}
                     }
 
@@ -984,7 +983,7 @@
                         const enc = encodeEmail(em);
                         if (!allAdminsPresence[enc] || !allAdminsPresence[enc].force_offline) {
                             adminOnlineCount++;
-                        }
+                         }
                     });
                     const dElem = document.getElementById('onlineCountDesktop');
                     const mElem = document.getElementById('onlineCountMobile');
@@ -1002,6 +1001,7 @@
                         });
                     }
                 });
+
             // 4. ยังต้องอัปเดต "เวลาขยับเมาส์ล่าสุด" ลง Supabase เพื่อคำนวณว่าคนที่ออกไปแล้ว ออกไปกี่นาที
             if(heartbeatInterval) clearInterval(heartbeatInterval);
             heartbeatInterval = setInterval(() => {
@@ -1080,44 +1080,72 @@
             if(tabElem) tabElem.innerText = count;
         }
 
-        // --- ระบบดึงข้อมูลผู้ใช้งานหน้าบ้าน (ออนไลน์) ---
+        // --- ระบบดึงข้อมูลผู้ใช้งานหน้าบ้าน (ออนไลน์) --- แบบ Real-time ทันที
         const onlineUsersRef = ref(db, "presence");
-        onValue(onlineUsersRef, (snapshot) => {
+        let frontendUsersState = new Map();
+
+        function processFrontendUserRealtime(snapshot) {
+            if(!snapshot.exists()) return;
+            let data = snapshot.val();
+            let key = snapshot.key;
+            let userName = data.name || data.email || key;
+
+            if(!userName || userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
+
+            let isOnline = data.status === 'online';
+            let lastSeen = data.timestamp || data.last_seen || 0;
+
+            frontendUsersState.set(key, {
+                key: key,
+                name: userName,
+                status: isOnline ? 'online' : 'offline',
+                last_seen: lastSeen
+            });
+
+            updateFrontendTableRealtime();
+        }
+
+        function removeFrontendUserRealtime(snapshot) {
+            frontendUsersState.delete(snapshot.key);
+            updateFrontendTableRealtime();
+        }
+
+        function updateFrontendTableRealtime() {
             let userPresenceMap = new Map();
             let onlineUniqueNames = new Set();
-            
-            if(snapshot.exists()) {
-                snapshot.forEach(child => {
-                    let data = child.val();
-                    let userName = data.name || data.email || child.key;
-                    
-                    if(userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
 
-                    let isOnline = data.status === 'online';
-                    let lastSeen = data.timestamp || data.last_seen || 0;
-
-                    if(!userPresenceMap.has(userName)) {
-                        userPresenceMap.set(userName, { name: userName, status: isOnline ? 'online' : 'offline', last_seen: lastSeen });
-                    } else {
-                        let existing = userPresenceMap.get(userName);
-                        if(isOnline) existing.status = 'online';
-                        if(new Date(lastSeen) > new Date(existing.last_seen)) {
-                            existing.last_seen = lastSeen;
+            frontendUsersState.forEach(data => {
+                let userName = data.name;
+                if(!userPresenceMap.has(userName)) {
+                    userPresenceMap.set(userName, { name: userName, status: data.status, last_seen: data.last_seen });
+                } else {
+                    let existing = userPresenceMap.get(userName);
+                    if(data.status === 'online') existing.status = 'online';
+                    if(new Date(data.last_seen) > new Date(existing.last_seen)) {
+                        existing.last_seen = data.last_seen;
+                        // ถ้าเจอเวลาใหม่กว่าแล้วออฟไลน์ และไม่มี session อื่นกวน
+                        if (data.status === 'offline' && existing.status !== 'online') {
+                            existing.status = 'offline';
                         }
                     }
-                });
-            }
+                }
+            });
 
             userPresenceMap.forEach(user => {
                 if(user.status === 'online') {
                     onlineUniqueNames.add(user.name);
                 }
             });
+
             let count = onlineUniqueNames.size;
-            
             updateOnlineCountsUI(count);
             renderFrontendUsersTable(userPresenceMap);
-        }, (error) => { console.warn('โหลดข้อมูลออนไลน์หน้าบ้านไม่สำเร็จ', error); });
+        }
+
+        // ใช้ Child Listeners เพื่อตอบสนองต่อการเข้า-ออกของผู้ใช้อย่างรวดเร็ว (Real-time ทันใจ ไม่ต้องรอโหลดใหม่ทั้งหมด)
+        onChildAdded(onlineUsersRef, processFrontendUserRealtime);
+        onChildChanged(onlineUsersRef, processFrontendUserRealtime);
+        onChildRemoved(onlineUsersRef, removeFrontendUserRealtime);
 
         window.refreshFrontendUsers = async function() {
             const tbody = document.getElementById('frontendUsersTableBody');
@@ -1125,38 +1153,29 @@
             
             try {
                 const snapshot = await get(onlineUsersRef);
-                let userPresenceMap = new Map();
-                let onlineUniqueNames = new Set();
+                frontendUsersState.clear(); // เคลียร์ของเก่าทิ้งดึงใหม่หมด
+                
                 if(snapshot.exists()) {
                     snapshot.forEach(child => {
                         let data = child.val();
-                        let userName = data.name || data.email || child.key;
-                   
-                        if(userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
+                        let key = child.key;
+                        let userName = data.name || data.email || key;
+                        
+                        if(!userName || userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
 
                         let isOnline = data.status === 'online';
                         let lastSeen = data.timestamp || data.last_seen || 0;
 
-                        if(!userPresenceMap.has(userName)) {
-                            userPresenceMap.set(userName, { name: userName, status: isOnline ? 'online' : 'offline', last_seen: lastSeen });
-                        } else {
-                            let existing = userPresenceMap.get(userName);
-                            if(isOnline) existing.status = 'online';
-                            if(new Date(lastSeen) > new Date(existing.last_seen)) {
-                                existing.last_seen = lastSeen;
-                            }
-                        }
+                        frontendUsersState.set(key, {
+                            key: key,
+                            name: userName,
+                            status: isOnline ? 'online' : 'offline',
+                            last_seen: lastSeen
+                        });
                     });
                 }
                 
-                userPresenceMap.forEach(user => {
-                    if(user.status === 'online') {
-                        onlineUniqueNames.add(user.name);
-                    }
-                });
-                let count = onlineUniqueNames.size;
-                updateOnlineCountsUI(count);
-                renderFrontendUsersTable(userPresenceMap);
+                updateFrontendTableRealtime();
                 Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'รีเฟรชข้อมูลล่าสุดแล้ว', showConfirmButton: false, timer: 1500 });
             } catch (error) {
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถดึงข้อมูลได้', 'error');
@@ -1179,6 +1198,7 @@
                 if(a.status !== 'online' && b.status === 'online') return 1;
                 return new Date(b.last_seen) - new Date(a.last_seen);
             });
+            
             usersArray.forEach(user => {
                 let dotClass = user.status === 'online' ? 'status-online' : 'status-recent';
                 let statusText = user.status === 'online' ? 'กำลังใช้งาน (อยู่ในระบบ)' : 'ออกจากระบบแล้ว';
@@ -1253,7 +1273,6 @@
         };
 
         loadSupabaseAdminData();
-
         // สมัครรับการเปลี่ยนแปลง (Realtime) จาก Supabase สำหรับแสดงสถานะแบบสดๆ
         supabase.channel('admin_db_changes_room')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_users' }, payload => {
@@ -1384,8 +1403,7 @@
             document.getElementById('dbIframeContainer').style.display = 'block';
             document.getElementById('embeddedIframe').src = url;
             document.getElementById('embeddedTitle').innerText = titleText;
-            document.getElementById('embeddedExternalLink').href = url;
-            // เผื่อกรณีเบราว์เซอร์บล็อก iframe ให้เปิดหน้าใหม่แทน
+            document.getElementById('embeddedExternalLink').href = url; // เผื่อกรณีเบราว์เซอร์บล็อก iframe ให้เปิดหน้าใหม่แทน
         }
 
         window.closeEmbeddedLink = function() {
@@ -1487,6 +1505,7 @@
         
         // ทดสอบรันการนับวิว หากแอดมินโหลดหน้านี้ (คุณสามารถลบหรือคอมเมนต์บรรทัดล่างทิ้งได้ หากไม่ต้องการให้แอดมินไปเพิ่มยอดเข้าชม)
         trackFrontendVisitor();
+
         let allReportsMap = new Map();
         let allPendingData = []; let allRepliedData = [];
         let currentPendingPage = 1;
@@ -1494,9 +1513,11 @@
         const ITEMS_PER_PAGE = 10;
         let isFirstLoadComplete = false;
         let unreadRepCount = 0;
+
         let allChatsMap = new Map();
         let unreadChatCount = 0;
         let activeChatUser = null;
+
         // --- จัดการข้อมูล Reports ---
         function updateListsAndRender() {
             allPendingData = [];
@@ -1508,7 +1529,7 @@
                     allPendingData.push(r);
                 } else {
                     allRepliedData.push(r);
-                }
+                 }
             });
             updateGlobalNotification();
             renderTable('pending', currentPendingPage);
@@ -1530,6 +1551,7 @@
 
         const reportsRef = ref(db, 'reports');
         get(reportsRef).then((snapshot) => { isFirstLoadComplete = true; updateListsAndRender(); }).catch(() => { isFirstLoadComplete = true; });
+
         onChildAdded(reportsRef, (snapshot) => {
             const data = snapshot.val(); data.key = snapshot.key; allReportsMap.set(snapshot.key, data);
             if (isFirstLoadComplete) {
@@ -1544,9 +1566,10 @@
             
             if(window.currentReplyKey === snapshot.key) {
                 renderReplyList(data.replies);
-            }
+             }
         });
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
+
         // --- จัดการข้อมูล Live Chat ---
         const chatsRef = ref(db, 'chats');
         onValue(chatsRef, (snapshot) => {
@@ -1566,6 +1589,7 @@
             renderChatUserList();
             if(activeChatUser && allChatsMap.has(activeChatUser)) renderChatMessages(activeChatUser);
         }, (error) => { console.warn(error); });
+
         function renderChatUserList() {
             const listEl = document.getElementById('adminChatList');
             listEl.innerHTML = '';
@@ -1595,7 +1619,7 @@
                         ${unreadBadge}
                     </div>
                 `;
-            });
+             });
         }
 
         window.selectChatUser = function(userName) {
@@ -1643,7 +1667,7 @@
 
                     if(msg.sender === 'user' && !msg.adminRead) {
                         try {
-                            update(ref(db, `chats/${userName}/messages/${key}`), { adminRead: true });
+                             update(ref(db, `chats/${userName}/messages/${key}`), { adminRead: true });
                         } catch(e) {}
                     }
                 });
@@ -1713,14 +1737,14 @@
             }).then((result) => {
                 if(result.isConfirmed) {
                     try {
-                        push(ref(db, `reports/${key}/replies`), {
+                         push(ref(db, `reports/${key}/replies`), {
                             sender: 'admin',
                             message: 'แอดมินได้รับเรื่องและดำเนินการตรวจสอบปัญหาของท่านเรียบร้อยแล้ว',
                             timestamp: new Date().toISOString(),
                             userRead: false
                         });
                         update(ref(db, `reports/${key}`), { status: 'replied' });
-                        logAdminActivity(`กดรับทราบรายงานปัญหา (ID: ${key})`);
+                         logAdminActivity(`กดรับทราบรายงานปัญหา (ID: ${key})`);
                         Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'อัปเดตสถานะเรียบร้อย', showConfirmButton: false, timer: 2000 });
                     } catch(e) {
                         Swal.fire('ข้อผิดพลาด', 'ไม่สามารถอัปเดตสถานะได้', 'error');
@@ -1753,7 +1777,8 @@
                 const statusBadge = r.status === 'replied' ? '<span class="badge replied">ตอบกลับแล้ว</span>' : '<span class="badge pending">ยังไม่ตอบกลับ</span>';
                 
                 let btnReply = '';
-                if(r.status === 'pending') {
+               
+                 if(r.status === 'pending') {
                     btnReply = `
                         <div style="display:flex; gap:5px; flex-wrap:wrap;">
                             <button class="btn-blue" style="background:#3b82f6;" onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับทราบ</button>
@@ -1766,7 +1791,7 @@
                 
                 const rowHtml = `
                     <tr>
-                        <td data-label="สถานะ:">${statusBadge}</td>
+                         <td data-label="สถานะ:">${statusBadge}</td>
                         <td data-label="เวลาที่เกิดเหตุ:">${new Date(r.timestamp).toLocaleString('th-TH')}</td>
                         <td data-label="ชื่อ-สกุล:">${r.name}</td>
                         <td data-label="ประเภทปัญหา:"><b>${r.type}</b><br><span style="font-size:12px; color:#666;">${r.description}</span></td>
@@ -1776,7 +1801,7 @@
                 `;
                 tbody.innerHTML += rowHtml;
             });
-            paginationDiv.innerHTML = generateUttayanPagination(dataList.length, page, type);
+             paginationDiv.innerHTML = generateUttayanPagination(dataList.length, page, type);
         };
         
         // --- ระบบตอบกลับ Report Modal ---
@@ -1853,9 +1878,9 @@
                             <td data-label="คำถาม:">${item.question}</td>
                             <td data-label="คำตอบ:">${item.answer}</td>
                             <td data-label="จัดการ:">
-                                <div style="display:flex; gap:5px;">
+                                 <div style="display:flex; gap:5px;">
                                     <button class="btn-blue" style="background:#eab308;" onclick="editFaq('${key}', '${safeQ}', '${safeA}')"><i class="fas fa-edit"></i> แก้ไข</button>
-                                    <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
+                                     <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
                                 </div>
                             </td>
                         </tr>
@@ -1865,6 +1890,7 @@
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
         }, (error) => { console.warn(error); });
+        
         document.getElementById('btnAddFaq').addEventListener('click', () => {
             const q = document.getElementById('faqQ').value.trim();
             const a = document.getElementById('faqA').value.trim();
@@ -1877,6 +1903,7 @@
                 Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเพิ่มข้อมูลได้', 'error');
             });
         });
+
         window.deleteFaq = function(key) {
             if(confirm('ต้องการลบคำถามนี้หรือไม่?')) {
                 try {
@@ -1912,14 +1939,14 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     try {
-                        update(ref(db, `faqs/${key}`), {
+                         update(ref(db, `faqs/${key}`), {
                             question: result.value.question,
                             answer: result.value.answer
-                        });
+                         });
                         logAdminActivity(`แก้ไขข้อมูล FAQ`);
                         Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไข FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
                     } catch(e) {
-                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
+                         Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
                     }
                 }
             });
@@ -1963,6 +1990,7 @@
                 document.getElementById('annActive').value = "false";
             }
         }, (error) => { console.warn(error); });
+
         window.saveAnnouncement = async function() {
             const isActive = document.getElementById('annActive').value === "true";
             const mediaType = document.getElementById('annType').value;
@@ -2003,6 +2031,7 @@
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error'); 
             }
         };
+
         window.deleteAnnouncement = async function() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
                 try { 
@@ -2014,6 +2043,7 @@
                 }
             }
         };
+
         // --- จัดการข่าวประชาสัมพันธ์ (PR News) ---
         const prRef = ref(db, 'pr_news');
         window.globalPrData = {}; // เก็บข้อมูลไว้สำหรับเรียกใช้ตอนแก้ไข โดยไม่ต้องยัดลง HTML Attribute เพื่อแก้บั๊กข้อมูลล้น
@@ -2114,6 +2144,7 @@
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
             }
         };
+
         window.deletePrNews = function(key) {
             Swal.fire({
                 title: 'ยืนยันการลบ?',
@@ -2126,7 +2157,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     try {
-                        remove(ref(db, `pr_news/${key}`));
+                         remove(ref(db, `pr_news/${key}`));
                         logAdminActivity(`ลบข่าวประชาสัมพันธ์ออกจากระบบ`);
                         Swal.fire('ลบสำเร็จ', 'ลบข่าวประชาสัมพันธ์เรียบร้อยแล้ว', 'success');
                     } catch(e) {
@@ -2232,6 +2263,7 @@
                 else if(data.platform === 'facebook') platformIcon = '<i class="fab fa-facebook"></i> Facebook';
                 else if(data.platform === 'youtube') platformIcon = '<i class="fab fa-youtube"></i> YouTube';
                 else if(data.platform === 'instagram') platformIcon = '<i class="fab fa-instagram"></i> Instagram';
+                
                 previewBox.innerHTML = `
                     ${badge}
                     <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #1e3a8a;">${platformIcon}</div>
@@ -2242,6 +2274,7 @@
                 document.getElementById('streamActive').value = "false";
             }
         }, (error) => { console.warn(error); });
+
         window.saveStreaming = async function() {
             const isActive = document.getElementById('streamActive').value === "true";
             const platform = document.getElementById('streamPlatform').value;
@@ -2270,8 +2303,7 @@
                     timer: 2000
                 });
             } catch (error) { 
-                Swal.close();
-                // ปิด Loading ก่อนโชว์ Error
+                Swal.close(); // ปิด Loading ก่อนโชว์ Error
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
             }
         };
