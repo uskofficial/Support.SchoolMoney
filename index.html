@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Admin - ระบบจัดการ School Money Support</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -105,6 +106,59 @@
         .stat-item:last-child { border-right: none; }
         .stat-title { font-size: 14px; color: #64748b; margin-bottom: 5px; font-weight: 500;}
         .stat-value { font-size: 24px; font-weight: 600; color: #333; }
+
+        /* --- Receipt Styles (Admin View) --- */
+        .receipt-wrapper { font-family: 'Sarabun', sans-serif; background-color: #f0f2f5; color: #333; display: block; padding: 15px; text-align: left; overflow-x: auto; width: 100%; border-radius: 12px; -webkit-overflow-scrolling: touch; }
+        .receipt-container { width: 800px; min-width: 800px; background-color: #ffffff; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; overflow: hidden; margin: 0 auto; box-sizing: border-box; }
+        .receipt-container .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .receipt-container .logos { display: flex; gap: 15px; }
+        .receipt-container .logos img { height: 70px; width: 70px; object-fit: contain; }
+        .receipt-container .receipt-title { text-align: right; }
+        .receipt-container .receipt-title h1 { font-size: 32px; font-weight: 700; color: #000; line-height: 1.2; margin:0; }
+        .receipt-container .receipt-title h2 { font-size: 24px; font-weight: 700; color: #2b7bb9; line-height: 1.2; margin:0;}
+        .receipt-container .info-box { background-color: #f5f5f5; border-radius: 10px; padding: 20px; display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; }
+        .receipt-container .info-left { flex: 1; }
+        .receipt-container .info-right { text-align: right; min-width: 200px; }
+        .receipt-container .info-row { display: flex; margin-bottom: 8px; }
+        .receipt-container .info-row:last-child { margin-bottom: 0; }
+        .receipt-container .info-label { font-weight: 600; width: 90px; flex-shrink: 0; text-align: left; }
+        .receipt-container .dynamic-data { color: #000000; font-weight: 500; text-align: left; }
+        .receipt-container .table-container { position: relative; margin-bottom: 20px; min-height: 200px; }
+        .receipt-container .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.04; width: 400px; z-index: 0; pointer-events: none; }
+        
+        /* ป้องกัน CSS มือถือของ Admin มาทำลายตารางใบเสร็จ */
+        .receipt-container table { width: 100% !important; border-collapse: collapse !important; position: relative !important; z-index: 1 !important; text-align: center !important; display: table !important; margin-top: 0 !important; }
+        .receipt-container thead { display: table-header-group !important; }
+        .receipt-container tbody { display: table-row-group !important; }
+        .receipt-container tr { display: table-row !important; background: transparent !important; border: none !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
+        .receipt-container th { display: table-cell !important; background-color: #5b92d6 !important; color: white !important; padding: 12px !important; font-weight: 600 !important; font-size: 16px !important; border: none !important; border-left: 1px solid #7baae0 !important; border-right: 1px solid #7baae0 !important; }
+        .receipt-container th:first-child { border-top-left-radius: 10px !important; border-left: none !important; width: 10% !important; }
+        .receipt-container th:last-child { border-top-right-radius: 10px !important; border-right: none !important; width: 20% !important; }
+        .receipt-container th:nth-child(2) { width: 45% !important; text-align: left !important; padding-left: 20px !important; }
+        .receipt-container td { display: table-cell !important; padding: 12px !important; border: none !important; border-left: 1px solid #e0e0e0 !important; border-right: 1px solid #e0e0e0 !important; border-bottom: 1px solid #e0e0e0 !important; font-size: 15px !important; text-align: center !important; }
+        .receipt-container td:first-child { border-left: none !important; }
+        .receipt-container td:last-child { border-right: none !important; }
+        .receipt-container td:nth-child(2) { text-align: left !important; padding-left: 20px !important; }
+        .receipt-container td::before { display: none !important; }
+        
+        .receipt-container .table-wrapper { border: 1px solid #e0e0e0; border-radius: 10px; border-top: none; }
+        .receipt-container .summary-container { display: flex; flex-direction: column; align-items: flex-end; margin-bottom: 30px; padding-right: 10px; }
+        .receipt-container .summary-row { display: flex; align-items: center; justify-content: flex-end; width: 350px; margin-bottom: 10px; font-size: 16px; }
+        .receipt-container .summary-label { margin-right: 20px; }
+        .receipt-container .summary-label.bold { font-weight: 700; font-size: 18px; }
+        .receipt-container .summary-value { width: 120px; text-align: center; }
+        .receipt-container .pill-box { border: 1px solid #2b7bb9; border-radius: 20px; padding: 5px 15px; background-color: #f8fbff; font-weight: 700; }
+        .receipt-container .signature-container { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; padding: 0 20px; }
+        .receipt-container .stamp-area { text-align: center; position: relative; }
+        .receipt-container .stamp-img { width: 120px; opacity: 0.8; transform: rotate(-5deg); margin-bottom: -15px; position: relative; z-index: 0; }
+        .receipt-container .stamp-text { font-size: 14px; font-weight: 600; position: relative; z-index: 1; }
+        .receipt-container .qr-area { text-align: right; }
+        .receipt-container .qr-area img { width: 100px; height: 100px; object-fit: contain; border: 1px solid #eee; padding: 5px; border-radius: 5px; }
+        .receipt-container .footer-notes { background-color: #5b92d6; color: #ffffff; border-radius: 12px; padding: 20px 25px; font-size: 12px; line-height: 1.6; position: relative; overflow: hidden; text-align: left; }
+        .receipt-container .footer-notes h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; margin-top: 0; }
+        .receipt-container .footer-notes ol { padding-left: 20px; margin: 0; }
+        .receipt-container .footer-notes li { margin-bottom: 4px; }
+        .receipt-container .footer-pattern { position: absolute; bottom: 0; left: 0; width: 100%; height: 40px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 100%); pointer-events: none; }
 
         @media screen and (max-width: 768px) {
             .mobile-header { display: flex; align-items: center; justify-content: space-between; background: #1e3a8a; color: white; padding: 15px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -209,6 +263,7 @@
         
         <div style="flex: 1; margin-top: 10px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;">
             <button class="nav-btn" onclick="switchTab('database_display')"><i class="fas fa-database"></i> ฐานข้อมูล/แสดงผล</button>
+            <button class="nav-btn" onclick="switchTab('receipts')"><i class="fas fa-file-invoice-dollar"></i> ใบเสร็จการเงิน</button>
             <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา <span id="navRepBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('livechat')"><i class="fas fa-comments"></i> พิมพ์ข้อความสด <span id="navChatBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
@@ -292,6 +347,20 @@
                 <iframe id="embeddedIframe" src="" style="width: 100%; height: calc(100% - 53px); border: none;"></iframe>
             </div>
         </div>
+        
+        <div id="receipts" class="section">
+            <h2>ค้นหาใบเสร็จการเงิน (Receipts)</h2>
+            <div class="card">
+                <h3 style="margin-top: 0; color: #1e3a8a;"><i class="fas fa-search"></i> ค้นหาด้วยเลขที่ใบแจ้งหนี้</h3>
+                <div style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;">
+                    <input type="text" id="searchInvoiceNo" placeholder="กรอกเลขที่ใบแจ้งหนี้ (ตัวอย่าง: INV-123456)" style="flex:1; min-width:200px; margin-bottom: 0;" onkeypress="if(event.key==='Enter') searchReceipt()">
+                    <button class="btn-blue" style="font-size: 16px; padding: 0 20px;" onclick="searchReceipt()"><i class="fas fa-search"></i> ค้นหาใบเสร็จ</button>
+                </div>
+            </div>
+            
+            <div id="receiptResultArea" style="display:none; margin-top:20px;" class="card">
+            </div>
+        </div>
 
         <div id="reports" class="section active">
             <h2>ตรวจสอบรายงานปัญหาจากระบบ</h2>
@@ -357,7 +426,7 @@
         <div id="faqs" class="section">
             <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
             <div class="card">
-                 <h3>เพิ่มคำถามใหม่</h3>
+                <h3>เพิ่มคำถามใหม่</h3>
                 <input type="text" id="faqQ" placeholder="คำถาม...">
                 <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
                 <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
@@ -894,6 +963,163 @@
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
+        
+        // --- ระบบค้นหาและแสดงใบเสร็จ ---
+        window.searchReceipt = async function() {
+            const invoiceNo = document.getElementById('searchInvoiceNo').value.trim();
+            if(!invoiceNo) return Swal.fire('แจ้งเตือน', 'กรุณากรอกเลขที่ใบแจ้งหนี้ก่อนค้นหา', 'warning');
+
+            Swal.fire({ title: 'กำลังค้นหา...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            try {
+                const { data, error } = await supabase
+                    .from('receipts')
+                    .select('*')
+                    .eq('invoice_no', invoiceNo)
+                    .single();
+
+                if (error || !data) {
+                    Swal.close();
+                    return Swal.fire('ไม่พบข้อมูล', 'ไม่พบใบเสร็จที่ตรงกับเลขที่ใบแจ้งหนี้นี้', 'error');
+                }
+
+                Swal.close();
+                renderReceiptResult(data);
+            } catch (err) {
+                Swal.close();
+                Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้: ' + err.message, 'error');
+            }
+        }
+
+        function renderReceiptResult(data) {
+            const dateStr = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            // ดึงข้อมูลและจัดการแสดงผล
+            const studentName = data.student_name || "-";
+            const phone = data.phone || "093-537-7270";
+            const address = data.address || "เลขที่ 114/1 หมู่ 2 ตำบลคลองเขม้า อำเภอเหนือคลอง จังหวัดกระบี่ 81130";
+            const invoiceNo = data.invoice_no || "-";
+            
+            const paymentDate = (data.payment_date && data.payment_date !== "undefined" && data.payment_date.trim() !== "") ? data.payment_date : "อ้างอิงตามสลิปโอนเงิน";
+            const itemName = data.item_name || "-";
+            
+            let parsedAmt = parseFloat(data.amount);
+            let displayAmt = !isNaN(parsedAmt) ? parsedAmt.toLocaleString() + '.-' : data.amount + '.-';
+            if(displayAmt === "ตรวจสอบในสลิป.-") displayAmt = "ตามสลิป.-";
+            
+            const qrData = data.slip_url ? data.slip_url : "https://usk.ac.th";
+
+            const receiptHtml = `
+            <div class="receipt-wrapper">
+                <div class="receipt-container">
+                    <div class="header">
+                        <div class="logos">
+                            <img src="https://i.postimg.cc/g2TMtSVd/IMG-7790.png" alt="School Logo">
+                            <img src="https://i.postimg.cc/SQ6vQGhW/Untitled-design.png" alt="JSK Logo">
+                        </div>
+                        <div class="receipt-title">
+                            <h1>ใบเสร็จรับเงิน</h1>
+                            <h2>RECEIPT</h2>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-left">
+                            <div class="info-row">
+                                <span class="info-label">วันที่ :</span>
+                                <span class="dynamic-data">${paymentDate}</span> 
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">ชื่อนักเรียน :</span>
+                                <span class="dynamic-data">${studentName}</span> 
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">โทรศัพท์ :</span>
+                                <span class="dynamic-data">${phone}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">ที่อยู่ :</span>
+                                <span class="dynamic-data">${address}</span>
+                            </div>
+                        </div>
+                        <div class="info-right">
+                            <div class="info-row" style="justify-content: flex-end;">
+                                <span class="info-label" style="width: auto; margin-right: 5px;">เลขที่ใบแจ้งหนี้ :</span>
+                                <span class="dynamic-data">${invoiceNo}</span> 
+                            </div>
+                            <div class="info-row" style="justify-content: flex-end;">
+                                <span class="info-label" style="width: auto; margin-right: 5px;">วันที่ :</span>
+                                <span class="dynamic-data">${dateStr}</span> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <img src="https://i.postimg.cc/5NmTgSK0/n-ange-n-laea-khaw-re-ybng-ay-bi-ser-c-xeksar-2.png" alt="Watermark" class="watermark">
+                        
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>รายการ</th>
+                                        <th>จำนวนเงิน</th>
+                                        <th>ยอดรวม</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="dynamic-data">1.</td>
+                                        <td class="dynamic-data">${itemName}</td>
+                                        <td class="dynamic-data">${displayAmt}</td>
+                                        <td class="dynamic-data">${displayAmt}</td>
+                                    </tr>
+                                    <tr><td><br></td><td></td><td></td><td></td></tr>
+                                    <tr><td><br></td><td></td><td></td><td></td></tr>
+                                    <tr><td><br></td><td></td><td></td><td></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="summary-container">
+                        <div class="summary-row">
+                            <span class="summary-label">ภาษี ณ ที่จ่าย 0%</span>
+                            <span class="summary-value dynamic-data">0.-</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label bold">ยอดที่จ่ายทั้งหมด</span>
+                            <span class="summary-value pill-box dynamic-data">${displayAmt}</span>
+                        </div>
+                    </div>
+
+                    <div class="signature-container">
+                        <div class="stamp-area">
+                            <img src="https://i.postimg.cc/5NmTgSK0/n-ange-n-laea-khaw-re-ybng-ay-bi-ser-c-xeksar-2.png" alt="Stamp" class="stamp-img">
+                            <div class="stamp-text">โรงเรียนอุทยานศึกษากระบี่</div>
+                        </div>
+                        <div class="qr-area">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}" alt="QR Code"> 
+                        </div>
+                    </div>
+
+                    <div class="footer-notes">
+                        <h4>หมายเหตุ</h4>
+                        <ol>
+                            <li>ใบเสร็จรับเงินฉบับนี้จะสมบูรณ์ถูกต้องต่อเมื่อมีตราประทับของทางโรงเรียน พร้อมลายมือชื่อของผู้รับเงินหรือเจ้าหน้าที่ผู้มีอำนาจครบถ้วน</li>
+                            <li>เงินค่าธรรมเนียมหอพักและค่าอาหารที่ชำระเรียบร้อยแล้ว ทางโรงเรียนขอสงวนสิทธิ์ในการคืนเงินหรือโอนสิทธิ์ให้ผู้อื่นในทุกกรณี</li>
+                            <li>ขอความกรุณาผู้ปกครองโปรดเก็บรักษาเอกสารฉบับนี้ไว้เป็นหลักฐานสำคัญ เพื่อใช้ในการตรวจสอบหรือยื่นเบิกสวัสดิการทางการศึกษา</li>
+                            <li>กรุณาชำระเงินภายในห้วงเวลาที่โรงเรียนกำหนด หากพ้นกำหนดแล้ว ใคร่ขอความร่วมมือติดต่อฝ่ายการเงินเพื่อดำเนินการตามระเบียบต่อไป</li>
+                        </ol>
+                        <div class="footer-pattern"></div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            const resArea = document.getElementById('receiptResultArea');
+            resArea.style.display = 'block';
+            resArea.innerHTML = receiptHtml + '<div style="text-align:center; margin-top:20px;"><button class="btn-green" style="padding:10px 30px; font-size:16px;" onclick="window.print()"><i class="fas fa-print"></i> พิมพ์ใบเสร็จ</button></div>';
+        }
 
         // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ยึดตาม Firebase เหมือนเดิม ---
         const logsRef = ref(db, 'admin_logs');
@@ -954,7 +1180,6 @@
                     },
                 },
             });
-
             // 2. รับฟังสถานะของแอดมินทุกคนแบบเรียลไทม์ (รวมถึงตัวเราเองด้วย)
             adminChannel
                 .on('presence', { event: 'sync' }, () => {
@@ -983,7 +1208,7 @@
                         const enc = encodeEmail(em);
                         if (!allAdminsPresence[enc] || !allAdminsPresence[enc].force_offline) {
                             adminOnlineCount++;
-                         }
+                        }
                     });
                     const dElem = document.getElementById('onlineCountDesktop');
                     const mElem = document.getElementById('onlineCountMobile');
@@ -1001,7 +1226,6 @@
                         });
                     }
                 });
-
             // 4. ยังต้องอัปเดต "เวลาขยับเมาส์ล่าสุด" ลง Supabase เพื่อคำนวณว่าคนที่ออกไปแล้ว ออกไปกี่นาที
             if(heartbeatInterval) clearInterval(heartbeatInterval);
             heartbeatInterval = setInterval(() => {
@@ -1089,7 +1313,6 @@
             let data = snapshot.val();
             let key = snapshot.key;
             let userName = data.name || data.email || key;
-
             if(!userName || userName.includes('@') || userName.toLowerCase().includes('admin') || userName === "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") return;
 
             let isOnline = data.status === 'online';
@@ -1101,7 +1324,6 @@
                 status: isOnline ? 'online' : 'offline',
                 last_seen: lastSeen
             });
-
             updateFrontendTableRealtime();
         }
 
@@ -1130,13 +1352,11 @@
                     }
                 }
             });
-
             userPresenceMap.forEach(user => {
                 if(user.status === 'online') {
                     onlineUniqueNames.add(user.name);
                 }
             });
-
             let count = onlineUniqueNames.size;
             updateOnlineCountsUI(count);
             renderFrontendUsersTable(userPresenceMap);
@@ -1198,7 +1418,6 @@
                 if(a.status !== 'online' && b.status === 'online') return 1;
                 return new Date(b.last_seen) - new Date(a.last_seen);
             });
-            
             usersArray.forEach(user => {
                 let dotClass = user.status === 'online' ? 'status-online' : 'status-recent';
                 let statusText = user.status === 'online' ? 'กำลังใช้งาน (อยู่ในระบบ)' : 'ออกจากระบบแล้ว';
@@ -1292,14 +1511,12 @@
                 window.renderAdminTable();
             })
             .subscribe();
-
         // เพิ่มการรีเฟรชตารางของตัวเราเองอัตโนมัติ ทุก 5 วิ เพื่อให้เห็นเวลาคนอื่นออฟไลน์เพิ่มขึ้นเรื่อยๆ
         setInterval(() => {
             if(document.getElementById('system_mgmt').classList.contains('active')) {
                 window.renderAdminTable();
             }
         }, 5000);
-
         window.renderAdminTable = function() {
             const tbody = document.getElementById('adminUsersTableBody');
             if(!tbody) return;
@@ -1403,7 +1620,8 @@
             document.getElementById('dbIframeContainer').style.display = 'block';
             document.getElementById('embeddedIframe').src = url;
             document.getElementById('embeddedTitle').innerText = titleText;
-            document.getElementById('embeddedExternalLink').href = url; // เผื่อกรณีเบราว์เซอร์บล็อก iframe ให้เปิดหน้าใหม่แทน
+            document.getElementById('embeddedExternalLink').href = url;
+            // เผื่อกรณีเบราว์เซอร์บล็อก iframe ให้เปิดหน้าใหม่แทน
         }
 
         window.closeEmbeddedLink = function() {
@@ -1513,7 +1731,6 @@
         const ITEMS_PER_PAGE = 10;
         let isFirstLoadComplete = false;
         let unreadRepCount = 0;
-
         let allChatsMap = new Map();
         let unreadChatCount = 0;
         let activeChatUser = null;
@@ -1529,7 +1746,7 @@
                     allPendingData.push(r);
                 } else {
                     allRepliedData.push(r);
-                 }
+                }
             });
             updateGlobalNotification();
             renderTable('pending', currentPendingPage);
@@ -1541,9 +1758,11 @@
             const repBadge = document.getElementById('navRepBadge');
             const chatBadge = document.getElementById('navChatBadge');
 
-            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount; }
+            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount;
+            }
             else repBadge.style.display = 'none';
-            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount; }
+            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount;
+            }
             else chatBadge.style.display = 'none';
             if(unreadRepCount + unreadChatCount > 0) bell.style.display = 'block';
             else bell.style.display = 'none';
@@ -1551,7 +1770,6 @@
 
         const reportsRef = ref(db, 'reports');
         get(reportsRef).then((snapshot) => { isFirstLoadComplete = true; updateListsAndRender(); }).catch(() => { isFirstLoadComplete = true; });
-
         onChildAdded(reportsRef, (snapshot) => {
             const data = snapshot.val(); data.key = snapshot.key; allReportsMap.set(snapshot.key, data);
             if (isFirstLoadComplete) {
@@ -1566,7 +1784,7 @@
             
             if(window.currentReplyKey === snapshot.key) {
                 renderReplyList(data.replies);
-             }
+            }
         });
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
 
@@ -1619,7 +1837,7 @@
                         ${unreadBadge}
                     </div>
                 `;
-             });
+            });
         }
 
         window.selectChatUser = function(userName) {
@@ -1667,7 +1885,7 @@
 
                     if(msg.sender === 'user' && !msg.adminRead) {
                         try {
-                             update(ref(db, `chats/${userName}/messages/${key}`), { adminRead: true });
+                            update(ref(db, `chats/${userName}/messages/${key}`), { adminRead: true });
                         } catch(e) {}
                     }
                 });
@@ -1719,7 +1937,8 @@
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #FBBC05;">N</div><div class="g-num"></div></div>`;
             
             if (currentPage < totalPages) {
-                html += `<a class="g-col" href="#" onclick="renderTable('${type}', ${currentPage + 1}); return false;" style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-size: 20px; display: flex; align-items: flex-end; height: 100%; padding-bottom: 2px;"><i class="fas fa-chevron-right"></i></div><div class="g-num">Next</div></a>`;
+                html += `<a class="g-col" href="#" onclick="renderTable('${type}', ${currentPage + 1}); return false;"
+style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-size: 20px; display: flex; align-items: flex-end; height: 100%; padding-bottom: 2px;"><i class="fas fa-chevron-right"></i></div><div class="g-num">Next</div></a>`;
             }
             html += '</div>';
             return html;
@@ -1744,7 +1963,7 @@
                             userRead: false
                         });
                         update(ref(db, `reports/${key}`), { status: 'replied' });
-                         logAdminActivity(`กดรับทราบรายงานปัญหา (ID: ${key})`);
+                        logAdminActivity(`กดรับทราบรายงานปัญหา (ID: ${key})`);
                         Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'อัปเดตสถานะเรียบร้อย', showConfirmButton: false, timer: 2000 });
                     } catch(e) {
                         Swal.fire('ข้อผิดพลาด', 'ไม่สามารถอัปเดตสถานะได้', 'error');
@@ -1760,7 +1979,8 @@
             
             tbody.innerHTML = '';
             if (dataList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ? 'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ?
+'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
                 paginationDiv.innerHTML = generateUttayanPagination(0, 1, type);
                 return;
             }
@@ -1781,7 +2001,8 @@
                  if(r.status === 'pending') {
                     btnReply = `
                         <div style="display:flex; gap:5px; flex-wrap:wrap;">
-                            <button class="btn-blue" style="background:#3b82f6;" onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับทราบ</button>
+                            <button class="btn-blue" style="background:#3b82f6;" 
+onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับทราบ</button>
                             <button class="btn-green" onclick="openReplyModal('${key}')"><i class="fas fa-reply"></i> ตอบกลับ</button>
                         </div>
                     `;
@@ -1803,7 +2024,6 @@
             });
              paginationDiv.innerHTML = generateUttayanPagination(dataList.length, page, type);
         };
-        
         // --- ระบบตอบกลับ Report Modal ---
         window.currentReplyKey = null;
         window.openReplyModal = function(key) {
@@ -1878,9 +2098,9 @@
                             <td data-label="คำถาม:">${item.question}</td>
                             <td data-label="คำตอบ:">${item.answer}</td>
                             <td data-label="จัดการ:">
-                                 <div style="display:flex; gap:5px;">
+                                  <div style="display:flex; gap:5px;">
                                     <button class="btn-blue" style="background:#eab308;" onclick="editFaq('${key}', '${safeQ}', '${safeA}')"><i class="fas fa-edit"></i> แก้ไข</button>
-                                     <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
+                                    <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
                                 </div>
                             </td>
                         </tr>
@@ -1890,7 +2110,6 @@
                 tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">ไม่มีคำถาม</td></tr>';
             }
         }, (error) => { console.warn(error); });
-        
         document.getElementById('btnAddFaq').addEventListener('click', () => {
             const q = document.getElementById('faqQ').value.trim();
             const a = document.getElementById('faqA').value.trim();
@@ -1903,7 +2122,6 @@
                 Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเพิ่มข้อมูลได้', 'error');
             });
         });
-
         window.deleteFaq = function(key) {
             if(confirm('ต้องการลบคำถามนี้หรือไม่?')) {
                 try {
@@ -1942,7 +2160,7 @@
                          update(ref(db, `faqs/${key}`), {
                             question: result.value.question,
                             answer: result.value.answer
-                         });
+                        });
                         logAdminActivity(`แก้ไขข้อมูล FAQ`);
                         Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไข FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
                     } catch(e) {
@@ -1990,13 +2208,13 @@
                 document.getElementById('annActive').value = "false";
             }
         }, (error) => { console.warn(error); });
-
         window.saveAnnouncement = async function() {
             const isActive = document.getElementById('annActive').value === "true";
             const mediaType = document.getElementById('annType').value;
             const source = document.getElementById('annSource').value;
             const duration = parseInt(document.getElementById('annDuration').value) || 0;
-            let mediaUrl = currentAnnData ? currentAnnData.mediaUrl : "";
+            let mediaUrl = currentAnnData ?
+                currentAnnData.mediaUrl : "";
 
             Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             try {
@@ -2014,7 +2232,8 @@
                 }
 
                 if (isActive && !mediaUrl) { 
-                    Swal.close(); // ปิดโหลดก่อนแสดง Error
+                    Swal.close();
+                    // ปิดโหลดก่อนแสดง Error
                     Swal.fire('เกิดข้อผิดพลาด', 'กรุณาระบุลิงก์ หรือ แนบไฟล์สื่อเพื่อแสดงผล', 'error');
                     return; 
                 }
@@ -2031,7 +2250,6 @@
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error'); 
             }
         };
-
         window.deleteAnnouncement = async function() {
             if(confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลประกาศทั้งหมด?')) {
                 try { 
@@ -2043,7 +2261,6 @@
                 }
             }
         };
-
         // --- จัดการข่าวประชาสัมพันธ์ (PR News) ---
         const prRef = ref(db, 'pr_news');
         window.globalPrData = {}; // เก็บข้อมูลไว้สำหรับเรียกใช้ตอนแก้ไข โดยไม่ต้องยัดลง HTML Attribute เพื่อแก้บั๊กข้อมูลล้น
@@ -2144,7 +2361,6 @@
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
             }
         };
-
         window.deletePrNews = function(key) {
             Swal.fire({
                 title: 'ยืนยันการลบ?',
@@ -2157,7 +2373,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     try {
-                         remove(ref(db, `pr_news/${key}`));
+                        remove(ref(db, `pr_news/${key}`));
                         logAdminActivity(`ลบข่าวประชาสัมพันธ์ออกจากระบบ`);
                         Swal.fire('ลบสำเร็จ', 'ลบข่าวประชาสัมพันธ์เรียบร้อยแล้ว', 'success');
                     } catch(e) {
@@ -2263,7 +2479,6 @@
                 else if(data.platform === 'facebook') platformIcon = '<i class="fab fa-facebook"></i> Facebook';
                 else if(data.platform === 'youtube') platformIcon = '<i class="fab fa-youtube"></i> YouTube';
                 else if(data.platform === 'instagram') platformIcon = '<i class="fab fa-instagram"></i> Instagram';
-                
                 previewBox.innerHTML = `
                     ${badge}
                     <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #1e3a8a;">${platformIcon}</div>
@@ -2274,7 +2489,6 @@
                 document.getElementById('streamActive').value = "false";
             }
         }, (error) => { console.warn(error); });
-
         window.saveStreaming = async function() {
             const isActive = document.getElementById('streamActive').value === "true";
             const platform = document.getElementById('streamPlatform').value;
@@ -2303,7 +2517,8 @@
                     timer: 2000
                 });
             } catch (error) { 
-                Swal.close(); // ปิด Loading ก่อนโชว์ Error
+                Swal.close();
+                // ปิด Loading ก่อนโชว์ Error
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
             }
         };
