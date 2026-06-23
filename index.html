@@ -6,6 +6,8 @@
     <title>Admin - ระบบจัดการ School Money Support</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -107,59 +109,6 @@
         .stat-title { font-size: 14px; color: #64748b; margin-bottom: 5px; font-weight: 500;}
         .stat-value { font-size: 24px; font-weight: 600; color: #333; }
 
-        /* --- Receipt Styles (Admin View) --- */
-        .receipt-wrapper { font-family: 'Sarabun', sans-serif; background-color: #f0f2f5; color: #333; display: block; padding: 15px; text-align: left; overflow-x: auto; width: 100%; border-radius: 12px; -webkit-overflow-scrolling: touch; }
-        .receipt-container { width: 800px; min-width: 800px; background-color: #ffffff; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; overflow: hidden; margin: 0 auto; box-sizing: border-box; }
-        .receipt-container .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .receipt-container .logos { display: flex; gap: 15px; }
-        .receipt-container .logos img { height: 70px; width: 70px; object-fit: contain; }
-        .receipt-container .receipt-title { text-align: right; }
-        .receipt-container .receipt-title h1 { font-size: 32px; font-weight: 700; color: #000; line-height: 1.2; margin:0; }
-        .receipt-container .receipt-title h2 { font-size: 24px; font-weight: 700; color: #2b7bb9; line-height: 1.2; margin:0;}
-        .receipt-container .info-box { background-color: #f5f5f5; border-radius: 10px; padding: 20px; display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; }
-        .receipt-container .info-left { flex: 1; }
-        .receipt-container .info-right { text-align: right; min-width: 200px; }
-        .receipt-container .info-row { display: flex; margin-bottom: 8px; }
-        .receipt-container .info-row:last-child { margin-bottom: 0; }
-        .receipt-container .info-label { font-weight: 600; width: 90px; flex-shrink: 0; text-align: left; }
-        .receipt-container .dynamic-data { color: #000000; font-weight: 500; text-align: left; }
-        .receipt-container .table-container { position: relative; margin-bottom: 20px; min-height: 200px; }
-        .receipt-container .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.04; width: 400px; z-index: 0; pointer-events: none; }
-        
-        /* ป้องกัน CSS มือถือของ Admin มาทำลายตารางใบเสร็จ */
-        .receipt-container table { width: 100% !important; border-collapse: collapse !important; position: relative !important; z-index: 1 !important; text-align: center !important; display: table !important; margin-top: 0 !important; }
-        .receipt-container thead { display: table-header-group !important; }
-        .receipt-container tbody { display: table-row-group !important; }
-        .receipt-container tr { display: table-row !important; background: transparent !important; border: none !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
-        .receipt-container th { display: table-cell !important; background-color: #5b92d6 !important; color: white !important; padding: 12px !important; font-weight: 600 !important; font-size: 16px !important; border: none !important; border-left: 1px solid #7baae0 !important; border-right: 1px solid #7baae0 !important; }
-        .receipt-container th:first-child { border-top-left-radius: 10px !important; border-left: none !important; width: 10% !important; }
-        .receipt-container th:last-child { border-top-right-radius: 10px !important; border-right: none !important; width: 20% !important; }
-        .receipt-container th:nth-child(2) { width: 45% !important; text-align: left !important; padding-left: 20px !important; }
-        .receipt-container td { display: table-cell !important; padding: 12px !important; border: none !important; border-left: 1px solid #e0e0e0 !important; border-right: 1px solid #e0e0e0 !important; border-bottom: 1px solid #e0e0e0 !important; font-size: 15px !important; text-align: center !important; }
-        .receipt-container td:first-child { border-left: none !important; }
-        .receipt-container td:last-child { border-right: none !important; }
-        .receipt-container td:nth-child(2) { text-align: left !important; padding-left: 20px !important; }
-        .receipt-container td::before { display: none !important; }
-        
-        .receipt-container .table-wrapper { border: 1px solid #e0e0e0; border-radius: 10px; border-top: none; }
-        .receipt-container .summary-container { display: flex; flex-direction: column; align-items: flex-end; margin-bottom: 30px; padding-right: 10px; }
-        .receipt-container .summary-row { display: flex; align-items: center; justify-content: flex-end; width: 350px; margin-bottom: 10px; font-size: 16px; }
-        .receipt-container .summary-label { margin-right: 20px; }
-        .receipt-container .summary-label.bold { font-weight: 700; font-size: 18px; }
-        .receipt-container .summary-value { width: 120px; text-align: center; }
-        .receipt-container .pill-box { border: 1px solid #2b7bb9; border-radius: 20px; padding: 5px 15px; background-color: #f8fbff; font-weight: 700; }
-        .receipt-container .signature-container { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; padding: 0 20px; }
-        .receipt-container .stamp-area { text-align: center; position: relative; }
-        .receipt-container .stamp-img { width: 120px; opacity: 0.8; transform: rotate(-5deg); margin-bottom: -15px; position: relative; z-index: 0; }
-        .receipt-container .stamp-text { font-size: 14px; font-weight: 600; position: relative; z-index: 1; }
-        .receipt-container .qr-area { text-align: right; }
-        .receipt-container .qr-area img { width: 100px; height: 100px; object-fit: contain; border: 1px solid #eee; padding: 5px; border-radius: 5px; }
-        .receipt-container .footer-notes { background-color: #5b92d6; color: #ffffff; border-radius: 12px; padding: 20px 25px; font-size: 12px; line-height: 1.6; position: relative; overflow: hidden; text-align: left; }
-        .receipt-container .footer-notes h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; margin-top: 0; }
-        .receipt-container .footer-notes ol { padding-left: 20px; margin: 0; }
-        .receipt-container .footer-notes li { margin-bottom: 4px; }
-        .receipt-container .footer-pattern { position: absolute; bottom: 0; left: 0; width: 100%; height: 40px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 100%); pointer-events: none; }
-
         @media screen and (max-width: 768px) {
             .mobile-header { display: flex; align-items: center; justify-content: space-between; background: #1e3a8a; color: white; padding: 15px 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
             .mobile-header .toggle-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
@@ -179,17 +128,17 @@
             .card { padding: 15px; }
             
             /* ใช้กับตารางอื่นๆ เป็นแบบ Card (ยกเว้น frontend_users และ activity_logs) */
-            .section:not(#frontend_users):not(#activity_logs) table, 
-            .section:not(#frontend_users):not(#activity_logs) thead, 
-            .section:not(#frontend_users):not(#activity_logs) tbody, 
-            .section:not(#frontend_users):not(#activity_logs) th, 
-            .section:not(#frontend_users):not(#activity_logs) td, 
-            .section:not(#frontend_users):not(#activity_logs) tr { display: block; }
-            .section:not(#frontend_users):not(#activity_logs) thead { display: none; }
-            .section:not(#frontend_users):not(#activity_logs) tr { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-            .section:not(#frontend_users):not(#activity_logs) td { border: none; border-bottom: 1px dashed #e2e8f0; padding: 10px 0; text-align: left; position: relative; }
-            .section:not(#frontend_users):not(#activity_logs) td:last-child { border-bottom: none; padding-bottom: 0; }
-            .section:not(#frontend_users):not(#activity_logs) td::before { content: attr(data-label); display: block; font-weight: 600; color: #1e3a8a; margin-bottom: 6px; font-size: 14px; }
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) table, 
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) thead, 
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) tbody, 
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) th, 
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) td, 
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) tr { display: block; }
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) thead { display: none; }
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) tr { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) td { border: none; border-bottom: 1px dashed #e2e8f0; padding: 10px 0; text-align: left; position: relative; }
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) td:last-child { border-bottom: none; padding-bottom: 0; }
+            .section:not(#frontend_users):not(#activity_logs):not(#usktube) td::before { content: attr(data-label); display: block; font-weight: 600; color: #1e3a8a; margin-bottom: 6px; font-size: 14px; }
             
             /* เฉพาะตารางผู้ใช้งานหน้าบ้าน และประวัติกิจกรรม ให้อยู่แบบแนวนอน (ตารางปกติ) */
             #frontend_users .card, #activity_logs .card { padding: 10px; overflow-x: auto; }
@@ -233,6 +182,66 @@
             .stats-grid { flex-wrap: wrap; border: none; background: transparent; gap: 10px;}
             .stat-item { flex: 1 1 30%; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; min-width: 100px; padding: 15px 5px;}
         }
+
+        /* --- USKTube Styles --- */
+        #usktube { font-family: 'Prompt', sans-serif; color: #1e293b; line-height: 1.5; }
+        #usktube .usk-topbar { background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        #usktube .usk-logo-area { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; color: #0f172a; letter-spacing: -0.3px; }
+        #usktube .usk-logo-area img { height: 28px; border-radius: 4px; }
+        #usktube .usk-user-badge-top { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; background: #f1f5f9; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; }
+        #usktube .usk-container { display: flex; flex-direction: column; gap: 32px; }
+        #usktube .usk-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        #usktube .usk-stat-card { background: #ffffff; border-radius: 10px; padding: 20px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        #usktube .usk-stat-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+        #usktube .usk-icon-navy { background: #f1f5f9; color: #0f172a; }
+        #usktube .usk-icon-blue { background: #eff6ff; color: #2563eb; }
+        #usktube .usk-icon-indigo { background: #eef2ff; color: #4f46e5; }
+        #usktube .usk-icon-amber { background: #fffbeb; color: #d97706; }
+        #usktube .usk-stat-info { display: flex; flex-direction: column; }
+        #usktube .usk-stat-title { font-size: 12px; color: #64748b; font-weight: 500; }
+        #usktube .usk-stat-value { font-size: 24px; font-weight: 700; color: #0f172a; line-height: 1.2; margin-top: 2px; }
+        #usktube .usk-form-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px; }
+        #usktube .usk-panel { background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
+        #usktube .usk-panel-header { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+        #usktube .usk-input-group { margin-bottom: 18px; }
+        #usktube .usk-input-label { display: block; font-size: 13px; font-weight: 500; color: #334155; margin-bottom: 8px; }
+        #usktube .usk-input-field { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background: #ffffff; font-size: 14px; outline: none; transition: 0.15s; color: #0f172a; }
+        #usktube .usk-input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        #usktube .usk-checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #475569; cursor: pointer; margin-bottom: 20px; user-select: none; }
+        #usktube .usk-checkbox-label input { width: 16px; height: 16px; cursor: pointer; }
+        #usktube .usk-btn { width: 100%; padding: 10px 16px; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.15s; }
+        #usktube .usk-btn-primary { background: #1e3a8a; color: #ffffff; }
+        #usktube .usk-btn-primary:hover { background: #172554; }
+        #usktube .usk-btn-secondary { background: #d97706; color: #ffffff; }
+        #usktube .usk-btn-secondary:hover { background: #b45309; }
+        #usktube .usk-btn-outline-danger { background: #ffffff; color: #dc2626; border: 1px solid #f87171; width: auto; padding: 4px 10px; font-size: 12px; border-radius: 4px; cursor: pointer;}
+        #usktube .usk-btn-outline-danger:hover { background: #fef2f2; border-color: #dc2626; }
+        #usktube .usk-btn-outline-normal { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; width: auto; padding: 4px 10px; font-size: 12px; border-radius: 4px; cursor: pointer;}
+        #usktube .usk-btn-outline-normal:hover { background: #e2e8f0; color: #0f172a; }
+        #usktube .usk-record-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        #usktube .usk-record-master { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+        #usktube .usk-thumb-box { width: 140px; aspect-ratio: 16/9; background: #cbd5e1; border-radius: 4px; overflow: hidden; flex-shrink: 0; position: relative; border: 1px solid #e2e8f0; }
+        #usktube .usk-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+        #usktube .usk-tag-shorts { position: absolute; bottom: 4px; right: 4px; background: #dc2626; color: #ffffff; font-size: 9px; padding: 1px 4px; border-radius: 2px; font-weight: 600; letter-spacing: 0.5px; }
+        #usktube .usk-record-info { flex: 1; }
+        #usktube .usk-record-title { font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 6px; }
+        #usktube .usk-record-meta { display: flex; gap: 16px; font-size: 12px; color: #64748b; }
+        #usktube .usk-meta-item { display: flex; align-items: center; gap: 4px; }
+        #usktube .usk-sub-panel { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 8px; padding: 16px; margin-top: 8px; }
+        #usktube .usk-sub-panel-title { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        #usktube .usk-comment-item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #e2e8f0; }
+        #usktube .usk-comment-item:last-child { border-bottom: none; }
+        #usktube .usk-avatar-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; flex-shrink: 0; }
+        #usktube .usk-avatar-txt { width: 28px; height: 28px; border-radius: 50%; background: #e2e8f0; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+        #usktube .usk-reply-drawer { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
+        #usktube .usk-directory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+        #usktube .usk-directory-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; display: flex; gap: 16px; align-items: center; }
+        #usktube .usk-contact-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; }
+
+        @media (max-width: 768px) {
+            #usktube .usk-form-section { grid-template-columns: 1fr; }
+            #usktube .usk-record-master { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
@@ -258,12 +267,13 @@
     </div>
 
     <div class="sidebar" id="mainSidebar">
+      
         <button class="sidebar-close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
         <h2>Admin Panel</h2>
         
         <div style="flex: 1; margin-top: 10px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;">
             <button class="nav-btn" onclick="switchTab('database_display')"><i class="fas fa-database"></i> ฐานข้อมูล/แสดงผล</button>
-            <button class="nav-btn" onclick="switchTab('receipts')"><i class="fas fa-file-invoice-dollar"></i> ใบเสร็จการเงิน</button>
+            <button class="nav-btn" onclick="switchTab('usktube')"><i class="fab fa-youtube"></i> USKTube</button>
             <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา <span id="navRepBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('livechat')"><i class="fas fa-comments"></i> พิมพ์ข้อความสด <span id="navChatBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
@@ -348,17 +358,111 @@
             </div>
         </div>
         
-        <div id="receipts" class="section">
-            <h2>ค้นหาใบเสร็จการเงิน (Receipts)</h2>
-            <div class="card">
-                <h3 style="margin-top: 0; color: #1e3a8a;"><i class="fas fa-search"></i> ค้นหาด้วยเลขที่ใบแจ้งหนี้</h3>
-                <div style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap;">
-                    <input type="text" id="searchInvoiceNo" placeholder="กรอกเลขที่ใบแจ้งหนี้ (ตัวอย่าง: INV-123456)" style="flex:1; min-width:200px; margin-bottom: 0;" onkeypress="if(event.key==='Enter') searchReceipt()">
-                    <button class="btn-blue" style="font-size: 16px; padding: 0 20px;" onclick="searchReceipt()"><i class="fas fa-search"></i> ค้นหาใบเสร็จ</button>
+        <div id="usktube" class="section">
+            <div class="usk-topbar">
+                <div class="usk-logo-area">
+                    <img src="https://i.postimg.cc/PJ0mbct4/IMG-7790.png" alt="USK Logo">
+                    <span>ระบบจัดการสารสนเทศ (USKTube Management System)</span>
+                </div>
+                <div class="usk-user-badge-top">
+                    <span class="material-symbols-outlined" style="font-size: 16px; color:#1e3a8a;">shield_person</span>
+                    <span>บัญชีผู้ดูแลระบบ: <strong>USK Official</strong></span>
                 </div>
             </div>
-            
-            <div id="receiptResultArea" style="display:none; margin-top:20px;" class="card">
+
+            <div class="usk-container">
+                <div class="usk-stats-grid">
+                    <div class="usk-stat-card">
+                        <div class="usk-stat-icon usk-icon-navy"><span class="material-symbols-outlined">manage_accounts</span></div>
+                        <div class="usk-stat-info"><span class="usk-stat-title">บัญชีผู้ใช้งานระบบ</span><span class="usk-stat-value" id="count-users">0</span></div>
+                    </div>
+                    <div class="usk-stat-card">
+                        <div class="usk-stat-icon usk-icon-blue"><span class="material-symbols-outlined">person_add</span></div>
+                        <div class="usk-stat-info"><span class="usk-stat-title">ผู้กดติดตามช่อง</span><span class="usk-stat-value" id="count-subs">0</span></div>
+                    </div>
+                    <div class="usk-stat-card">
+                        <div class="usk-stat-icon usk-icon-indigo"><span class="material-symbols-outlined">video_library</span></div>
+                        <div class="usk-stat-info"><span class="usk-stat-title">วิดีโอสารสนเทศ</span><span class="usk-stat-value" id="count-videos">0</span></div>
+                    </div>
+                    <div class="usk-stat-card">
+                        <div class="usk-stat-card" style="border:none; padding:0; box-shadow:none; width:100%;">
+                            <div class="usk-stat-icon usk-icon-amber"><span class="material-symbols-outlined">campaign</span></div>
+                            <div class="usk-stat-info"><span class="usk-stat-title">ประกาศข่าวสาร</span><span class="usk-stat-value" id="count-posts">0</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usk-form-section">
+                    <div class="usk-panel">
+                        <div class="usk-panel-header">
+                            <span class="material-symbols-outlined" style="color:#1e3a8a;">upload_file</span>
+                            <span>บันทึกข้อมูลวิดีโอใหม่</span>
+                        </div>
+                        <div class="usk-input-group">
+                            <label class="usk-input-label">ชื่อหัวข้อวิดีโอ (Title)</label>
+                            <input type="text" id="vid-title" class="usk-input-field" placeholder="ระบุชื่อหัวข้อวิดีโอ...">
+                        </div>
+                        <div class="usk-input-group">
+                            <label class="usk-input-label">ลิงก์ต้นทาง (YouTube URL)</label>
+                            <input type="text" id="vid-url" class="usk-input-field" placeholder="https://www.youtube.com/watch?v=...">
+                        </div>
+                        <div class="usk-input-group">
+                            <label class="usk-input-label">คำอธิบายรายละเอียด (Description)</label>
+                            <textarea id="vid-desc" class="usk-input-field" rows="3" placeholder="ระบุเนื้อหาหรือรายละเอียดโดยสังเขป..."></textarea>
+                        </div>
+                        <label class="usk-checkbox-label">
+                            <input type="checkbox" id="vid-is-vertical"> 
+                            <span>กำหนดเป็นรูปแบบวิดีโอแนวตั้ง (9:16)</span>
+                        </label>
+                        <button class="usk-btn usk-btn-primary" onclick="execUploadVideo()">
+                            <span class="material-symbols-outlined" style="font-size:18px;">save</span>
+                            บันทึกข้อมูลเข้าสู่ระบบ
+                        </button>
+                    </div>
+
+                    <div class="usk-panel">
+                        <div class="usk-panel-header">
+                            <span class="material-symbols-outlined" style="color:#d97706;">announcement</span>
+                            <span>สร้างประกาศข่าวสารชุมชน</span>
+                        </div>
+                        <div class="usk-input-group">
+                            <label class="usk-input-label">เนื้อหาประกาศ</label>
+                            <textarea id="post-content" class="usk-input-field" rows="4" placeholder="ระบุข้อความที่ต้องการประชาสัมพันธ์..."></textarea>
+                        </div>
+                        <div class="usk-input-group">
+                            <label class="usk-input-label">ลิงก์รูปภาพประกอบ (URL - ไม่บังคับ)</label>
+                            <input type="text" id="post-img" class="usk-input-field" placeholder="https://i.postimg.cc/...">
+                        </div>
+                        <button class="usk-btn usk-btn-secondary" style="margin-top: 36px;" onclick="execCreatePost()">
+                            <span class="material-symbols-outlined" style="font-size:18px;">broadcast_on_home</span>
+                            เผยแพร่ประกาศ
+                        </button>
+                    </div>
+                </div>
+
+                <div class="usk-panel" style="padding: 24px;">
+                    <div class="usk-panel-header" style="margin-bottom: 16px;">
+                        <span class="material-symbols-outlined" style="color:#1e3a8a;">video_settings</span>
+                        <span>คลังวิดีโอสารสนเทศ และการจัดการความคิดเห็น</span>
+                    </div>
+                    <div id="video-list-container">กำลังโหลดข้อมูลสารสนเทศ...</div>
+                </div>
+
+                <div class="usk-panel" style="padding: 24px;">
+                    <div class="usk-panel-header" style="margin-bottom: 16px;">
+                        <span class="material-symbols-outlined" style="color:#d97706;">forum</span>
+                        <span>ประวัติการเผยแพร่ประกาศชุมชน</span>
+                    </div>
+                    <div id="post-list-container">กำลังโหลดข้อมูลประกาศ...</div>
+                </div>
+
+                <div class="usk-panel" style="padding: 24px;">
+                    <div class="usk-panel-header" style="margin-bottom: 16px;">
+                        <span class="material-symbols-outlined" style="color:#0f172a;">folder_shared</span>
+                        <span>ทำเนียบข้อมูลผู้ใช้งาน และช่องทางการติดต่อ</span>
+                    </div>
+                    <div id="user-profile-grid" class="usk-directory-grid">กำลังโหลดทำเนียบข้อมูล...</div>
+                </div>
             </div>
         </div>
 
@@ -378,13 +482,13 @@
                         </tr>
                     </thead>
                     <tbody id="pendingReportsTableBody">
-                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="pendingPagination"></div>
             </div>
 
-            <div class="card">
+             <div class="card">
                  <h3 style="margin-top: 0; color: #16a34a;"><i class="fas fa-check-circle"></i> รายงานที่ตอบกลับแล้ว</h3>
                 <table>
                     <thead>
@@ -398,14 +502,14 @@
                         </tr>
                     </thead>
                     <tbody id="repliedReportsTableBody">
-                         <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
+                        <tr><td colspan="6" style="text-align:center;">กำลังโหลด...</td></tr>
                     </tbody>
                 </table>
                 <div id="repliedPagination"></div>
             </div>
         </div>
 
-        <div id="livechat" class="section">
+         <div id="livechat" class="section">
             <h2>พิมพ์ข้อความสด (Live Chat)</h2>
             <div class="chat-container" id="chatContainer">
                 <div class="chat-sidebar" id="adminChatList"></div>
@@ -426,18 +530,18 @@
         <div id="faqs" class="section">
             <h2>จัดการคำถามที่พบบ่อย (FAQ)</h2>
             <div class="card">
-                <h3>เพิ่มคำถามใหม่</h3>
+                 <h3>เพิ่มคำถามใหม่</h3>
                 <input type="text" id="faqQ" placeholder="คำถาม...">
                 <textarea id="faqA" rows="3" placeholder="คำตอบ..."></textarea>
                 <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
             </div>
             
-            <div class="card">
+             <div class="card">
                 <h3>รายการคำถามปัจจุบัน</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>คำถาม</th>
+                             <th>คำถาม</th>
                             <th>คำตอบ</th>
                             <th width="150">จัดการ</th>
                         </tr>
@@ -449,7 +553,7 @@
 
         <div id="announcement" class="section">
             <h2>จัดการประกาศแจ้งเตือนหน้าแรก (Startup Popup)</h2>
-            <div class="card">
+             <div class="card">
                 <h3>ตั้งค่าการแสดงผล</h3>
                 <label style="font-weight: 500; font-size: 14px;">สถานะการแสดงผล:</label>
                 <select id="annActive">
@@ -524,7 +628,7 @@
                 </div>
             </div>
 
-            <div class="card">
+             <div class="card">
                 <h3>รายการข่าวประชาสัมพันธ์ทั้งหมด</h3>
                 <table>
                     <thead>
@@ -963,8 +1067,8 @@
                 document.getElementById('loginOverlay').style.display = 'flex';
             }
         });
-        
-        // --- ระบบค้นหาและแสดงใบเสร็จ ---
+
+        // --- ระบบค้นหาและแสดงใบเสร็จ (คงไว้ตามคำสั่งไม่แก้โค้ดที่ไม่เกี่ยวข้อง) ---
         window.searchReceipt = async function() {
             const invoiceNo = document.getElementById('searchInvoiceNo').value.trim();
             if(!invoiceNo) return Swal.fire('แจ้งเตือน', 'กรุณากรอกเลขที่ใบแจ้งหนี้ก่อนค้นหา', 'warning');
@@ -992,7 +1096,6 @@
 
         function renderReceiptResult(data) {
             const dateStr = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-            
             // ดึงข้อมูลและจัดการแสดงผล
             const studentName = data.student_name || "-";
             const phone = data.phone || "093-537-7270";
@@ -1017,41 +1120,41 @@
                             <img src="https://i.postimg.cc/SQ6vQGhW/Untitled-design.png" alt="JSK Logo">
                         </div>
                         <div class="receipt-title">
-                            <h1>ใบเสร็จรับเงิน</h1>
+                             <h1>ใบเสร็จรับเงิน</h1>
                             <h2>RECEIPT</h2>
                         </div>
                     </div>
 
-                    <div class="info-box">
+                     <div class="info-box">
                         <div class="info-left">
                             <div class="info-row">
                                 <span class="info-label">วันที่ :</span>
                                 <span class="dynamic-data">${paymentDate}</span> 
                             </div>
                             <div class="info-row">
-                                <span class="info-label">ชื่อนักเรียน :</span>
+                                 <span class="info-label">ชื่อนักเรียน :</span>
                                 <span class="dynamic-data">${studentName}</span> 
                             </div>
-                            <div class="info-row">
+                           <div class="info-row">
                                 <span class="info-label">โทรศัพท์ :</span>
                                 <span class="dynamic-data">${phone}</span>
-                            </div>
+                             </div>
                             <div class="info-row">
                                 <span class="info-label">ที่อยู่ :</span>
                                 <span class="dynamic-data">${address}</span>
                             </div>
                         </div>
                         <div class="info-right">
-                            <div class="info-row" style="justify-content: flex-end;">
+                             <div class="info-row" style="justify-content: flex-end;">
                                 <span class="info-label" style="width: auto; margin-right: 5px;">เลขที่ใบแจ้งหนี้ :</span>
                                 <span class="dynamic-data">${invoiceNo}</span> 
                             </div>
                             <div class="info-row" style="justify-content: flex-end;">
-                                <span class="info-label" style="width: auto; margin-right: 5px;">วันที่ :</span>
+                                 <span class="info-label" style="width: auto; margin-right: 5px;">วันที่ :</span>
                                 <span class="dynamic-data">${dateStr}</span> 
                             </div>
                         </div>
-                    </div>
+                     </div>
 
                     <div class="table-container">
                         <img src="https://i.postimg.cc/5NmTgSK0/n-ange-n-laea-khaw-re-ybng-ay-bi-ser-c-xeksar-2.png" alt="Watermark" class="watermark">
@@ -1059,48 +1162,48 @@
                         <div class="table-wrapper">
                             <table>
                                 <thead>
-                                    <tr>
+                                   <tr>
                                         <th>ลำดับ</th>
                                         <th>รายการ</th>
-                                        <th>จำนวนเงิน</th>
+                                     <th>จำนวนเงิน</th>
                                         <th>ยอดรวม</th>
                                     </tr>
-                                </thead>
+                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="dynamic-data">1.</td>
+                                       <td class="dynamic-data">1.</td>
                                         <td class="dynamic-data">${itemName}</td>
-                                        <td class="dynamic-data">${displayAmt}</td>
+                                         <td class="dynamic-data">${displayAmt}</td>
                                         <td class="dynamic-data">${displayAmt}</td>
                                     </tr>
+                                   <tr><td><br></td><td></td><td></td><td></td></tr>
                                     <tr><td><br></td><td></td><td></td><td></td></tr>
-                                    <tr><td><br></td><td></td><td></td><td></td></tr>
-                                    <tr><td><br></td><td></td><td></td><td></td></tr>
+                                     <tr><td><br></td><td></td><td></td><td></td></tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                     </div>
 
                     <div class="summary-container">
                         <div class="summary-row">
                             <span class="summary-label">ภาษี ณ ที่จ่าย 0%</span>
-                            <span class="summary-value dynamic-data">0.-</span>
+                             <span class="summary-value dynamic-data">0.-</span>
                         </div>
                         <div class="summary-row">
                             <span class="summary-label bold">ยอดที่จ่ายทั้งหมด</span>
-                            <span class="summary-value pill-box dynamic-data">${displayAmt}</span>
+                             <span class="summary-value pill-box dynamic-data">${displayAmt}</span>
                         </div>
                     </div>
 
                     <div class="signature-container">
-                        <div class="stamp-area">
+                         <div class="stamp-area">
                             <img src="https://i.postimg.cc/5NmTgSK0/n-ange-n-laea-khaw-re-ybng-ay-bi-ser-c-xeksar-2.png" alt="Stamp" class="stamp-img">
                             <div class="stamp-text">โรงเรียนอุทยานศึกษากระบี่</div>
-                        </div>
+                         </div>
                         <div class="qr-area">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}" alt="QR Code"> 
                         </div>
-                    </div>
+                     </div>
 
                     <div class="footer-notes">
                         <h4>หมายเหตุ</h4>
@@ -1109,16 +1212,17 @@
                             <li>เงินค่าธรรมเนียมหอพักและค่าอาหารที่ชำระเรียบร้อยแล้ว ทางโรงเรียนขอสงวนสิทธิ์ในการคืนเงินหรือโอนสิทธิ์ให้ผู้อื่นในทุกกรณี</li>
                             <li>ขอความกรุณาผู้ปกครองโปรดเก็บรักษาเอกสารฉบับนี้ไว้เป็นหลักฐานสำคัญ เพื่อใช้ในการตรวจสอบหรือยื่นเบิกสวัสดิการทางการศึกษา</li>
                             <li>กรุณาชำระเงินภายในห้วงเวลาที่โรงเรียนกำหนด หากพ้นกำหนดแล้ว ใคร่ขอความร่วมมือติดต่อฝ่ายการเงินเพื่อดำเนินการตามระเบียบต่อไป</li>
-                        </ol>
+                         </ol>
                         <div class="footer-pattern"></div>
                     </div>
                 </div>
             </div>
             `;
-
             const resArea = document.getElementById('receiptResultArea');
-            resArea.style.display = 'block';
-            resArea.innerHTML = receiptHtml + '<div style="text-align:center; margin-top:20px;"><button class="btn-green" style="padding:10px 30px; font-size:16px;" onclick="window.print()"><i class="fas fa-print"></i> พิมพ์ใบเสร็จ</button></div>';
+            if(resArea) {
+                resArea.style.display = 'block';
+                resArea.innerHTML = receiptHtml + '<div style="text-align:center; margin-top:20px;"><button class="btn-green" style="padding:10px 30px; font-size:16px;" onclick="window.print()"><i class="fas fa-print"></i> พิมพ์ใบเสร็จ</button></div>';
+            }
         }
 
         // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ยึดตาม Firebase เหมือนเดิม ---
@@ -1152,7 +1256,7 @@
                     <tr>
                         <td data-label="เวลา:">${new Date(log.timestamp).toLocaleString('th-TH')}</td>
                         <td data-label="แอดมิน:">${log.email}</td>
-                        <td data-label="กิจกรรม:"><b>${log.action}</b></td>
+                         <td data-label="กิจกรรม:"><b>${log.action}</b></td>
                     </tr>
                 `;
             });
@@ -1177,7 +1281,7 @@
                 config: {
                     presence: {
                         key: email, // ให้ Supabase รู้ว่าแท็บไหนเป็นของใคร โดยใช้อีเมลเป็นคีย์หลัก
-                    },
+                   },
                 },
             });
             // 2. รับฟังสถานะของแอดมินทุกคนแบบเรียลไทม์ (รวมถึงตัวเราเองด้วย)
@@ -1185,7 +1289,7 @@
                 .on('presence', { event: 'sync' }, () => {
                     const newState = adminChannel.presenceState();
                     const onlineSet = new Set();
-                    
+                     
                     // newState จะรวมอุปกรณ์/แท็บทั้งหมดที่กำลังต่ออยู่เข้าด้วยกัน
                     for (const userEmail in newState) {
                         if (newState[userEmail].length > 0) {
@@ -1198,7 +1302,7 @@
                     // ถ้าพบว่าตัวเราเองกลับมาออนไลน์ ให้ลบป้ายแดง (force_offline) ในฐานข้อมูลทิ้ง
                     if (onlineSet.has(currentAdminEmail)) {
                         try {
-                             supabase.from('admin_presence').upsert({ email: currentAdminEmail, force_offline: false }).then();
+                               supabase.from('admin_presence').upsert({ email: currentAdminEmail, force_offline: false }).then();
                         } catch(e) {}
                     }
 
@@ -1208,7 +1312,7 @@
                         const enc = encodeEmail(em);
                         if (!allAdminsPresence[enc] || !allAdminsPresence[enc].force_offline) {
                             adminOnlineCount++;
-                        }
+                         }
                     });
                     const dElem = document.getElementById('onlineCountDesktop');
                     const mElem = document.getElementById('onlineCountMobile');
@@ -1233,11 +1337,11 @@
                     try {
                         supabase.from('admin_presence').upsert({ 
                             email: currentAdminEmail,
-                            last_active: Date.now() 
+                             last_active: Date.now() 
                         }).then();
                     } catch(e) {}
                 }
-            }, 5000);
+             }, 5000);
         }
 
         function removePresence() {
@@ -1274,7 +1378,8 @@
             if (now - lastInteraction > 5000) { 
                 lastInteraction = now;
                 localStorage.setItem('adminLastActivity', now.toString()); // Sync เวลาข้ามแท็บ
-                startAutoLogoutTimer(); // รีเซ็ตตัวจับเวลาล็อกเอาท์ 5 ชั่วโมง
+                startAutoLogoutTimer();
+                // รีเซ็ตตัวจับเวลาล็อกเอาท์ 5 ชั่วโมง
                 
                 try { 
                     supabase.from('admin_presence').upsert({ 
@@ -1341,7 +1446,7 @@
                 if(!userPresenceMap.has(userName)) {
                     userPresenceMap.set(userName, { name: userName, status: data.status, last_seen: data.last_seen });
                 } else {
-                    let existing = userPresenceMap.get(userName);
+                     let existing = userPresenceMap.get(userName);
                     if(data.status === 'online') existing.status = 'online';
                     if(new Date(data.last_seen) > new Date(existing.last_seen)) {
                         existing.last_seen = data.last_seen;
@@ -1387,7 +1492,7 @@
                         let lastSeen = data.timestamp || data.last_seen || 0;
 
                         frontendUsersState.set(key, {
-                            key: key,
+                             key: key,
                             name: userName,
                             status: isOnline ? 'online' : 'offline',
                             last_seen: lastSeen
@@ -1532,7 +1637,7 @@
                 const rawEmail = adminData.email;
                 const pres = allAdminsPresence[encEmail] || { last_active: 0 };
                 
-                const now = Date.now();
+                 const now = Date.now();
                 const lastActive = pres.last_active || 0;
                 
                 // ตรวจสอบความถูกต้อง: ถาม Supabase ว่าตกลงคนนี้ออนไลน์อยู่จริงๆ ใช่ไหม
@@ -1668,7 +1773,7 @@
             // สร้าง Key ค้นหาเวลาปัจจุบัน
             const todayKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
             const monthKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}`;
-            const thisWeekKey = getWeekYear(d);
+             const thisWeekKey = getWeekYear(d);
             
             // สร้าง Key หาเวลาของเดือนที่แล้ว
             const lmDate = new Date(d); lmDate.setMonth(lmDate.getMonth() - 1);
@@ -1723,7 +1828,6 @@
         
         // ทดสอบรันการนับวิว หากแอดมินโหลดหน้านี้ (คุณสามารถลบหรือคอมเมนต์บรรทัดล่างทิ้งได้ หากไม่ต้องการให้แอดมินไปเพิ่มยอดเข้าชม)
         trackFrontendVisitor();
-
         let allReportsMap = new Map();
         let allPendingData = []; let allRepliedData = [];
         let currentPendingPage = 1;
@@ -1734,7 +1838,6 @@
         let allChatsMap = new Map();
         let unreadChatCount = 0;
         let activeChatUser = null;
-
         // --- จัดการข้อมูล Reports ---
         function updateListsAndRender() {
             allPendingData = [];
@@ -1746,7 +1849,7 @@
                     allPendingData.push(r);
                 } else {
                     allRepliedData.push(r);
-                }
+                 }
             });
             updateGlobalNotification();
             renderTable('pending', currentPendingPage);
@@ -1758,11 +1861,9 @@
             const repBadge = document.getElementById('navRepBadge');
             const chatBadge = document.getElementById('navChatBadge');
 
-            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount;
-            }
+            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount; }
             else repBadge.style.display = 'none';
-            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount;
-            }
+            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount; }
             else chatBadge.style.display = 'none';
             if(unreadRepCount + unreadChatCount > 0) bell.style.display = 'block';
             else bell.style.display = 'none';
@@ -1784,10 +1885,9 @@
             
             if(window.currentReplyKey === snapshot.key) {
                 renderReplyList(data.replies);
-            }
+             }
         });
         onChildRemoved(reportsRef, (snapshot) => { allReportsMap.delete(snapshot.key); if (isFirstLoadComplete) updateListsAndRender(); });
-
         // --- จัดการข้อมูล Live Chat ---
         const chatsRef = ref(db, 'chats');
         onValue(chatsRef, (snapshot) => {
@@ -1807,7 +1907,6 @@
             renderChatUserList();
             if(activeChatUser && allChatsMap.has(activeChatUser)) renderChatMessages(activeChatUser);
         }, (error) => { console.warn(error); });
-
         function renderChatUserList() {
             const listEl = document.getElementById('adminChatList');
             listEl.innerHTML = '';
@@ -1832,12 +1931,12 @@
 
                 const isActive = activeChatUser === userName ? 'active' : '';
                 listEl.innerHTML += `
-                    <div class="chat-user-item ${isActive}" onclick="selectChatUser('${userName}')">
+                     <div class="chat-user-item ${isActive}" onclick="selectChatUser('${userName}')">
                         <div class="chat-user-name">${userName}</div>
                         ${unreadBadge}
                     </div>
                 `;
-            });
+             });
         }
 
         window.selectChatUser = function(userName) {
@@ -1877,7 +1976,7 @@
                     }
 
                     box.innerHTML += `
-                        <div class="reply-msg ${msgClass}" style="max-width: 70%;">
+                         <div class="reply-msg ${msgClass}" style="max-width: 70%;">
                             ${msg.message}
                             <div style="font-size:10px; opacity:0.7; text-align:right; margin-top:3px;">${timeStr} ${readStatusHtml}</div>
                         </div>
@@ -1885,7 +1984,7 @@
 
                     if(msg.sender === 'user' && !msg.adminRead) {
                         try {
-                            update(ref(db, `chats/${userName}/messages/${key}`), { adminRead: true });
+                             update(ref(db, `chats/${userName}/messages/${key}`), { adminRead: true });
                         } catch(e) {}
                     }
                 });
@@ -1937,8 +2036,7 @@
             html += `<div class="g-col no-link"><div class="g-letter" style="color: #FBBC05;">N</div><div class="g-num"></div></div>`;
             
             if (currentPage < totalPages) {
-                html += `<a class="g-col" href="#" onclick="renderTable('${type}', ${currentPage + 1}); return false;"
-style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-size: 20px; display: flex; align-items: flex-end; height: 100%; padding-bottom: 2px;"><i class="fas fa-chevron-right"></i></div><div class="g-num">Next</div></a>`;
+                html += `<a class="g-col" href="#" onclick="renderTable('${type}', ${currentPage + 1}); return false;" style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-size: 20px; display: flex; align-items: flex-end; height: 100%; padding-bottom: 2px;"><i class="fas fa-chevron-right"></i></div><div class="g-num">Next</div></a>`;
             }
             html += '</div>';
             return html;
@@ -1956,7 +2054,7 @@ style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-siz
             }).then((result) => {
                 if(result.isConfirmed) {
                     try {
-                         push(ref(db, `reports/${key}/replies`), {
+                        push(ref(db, `reports/${key}/replies`), {
                             sender: 'admin',
                             message: 'แอดมินได้รับเรื่องและดำเนินการตรวจสอบปัญหาของท่านเรียบร้อยแล้ว',
                             timestamp: new Date().toISOString(),
@@ -1979,8 +2077,7 @@ style="margin-left: 10px;"><div class="g-letter" style="color: #1a0dab; font-siz
             
             tbody.innerHTML = '';
             if (dataList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ?
-'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">${type === 'pending' ? 'ไม่มีรายงานที่รอการดำเนินการ' : 'ยังไม่มีรายงานที่ตอบกลับแล้ว'}</td></tr>`;
                 paginationDiv.innerHTML = generateUttayanPagination(0, 1, type);
                 return;
             }
@@ -2098,9 +2195,9 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                             <td data-label="คำถาม:">${item.question}</td>
                             <td data-label="คำตอบ:">${item.answer}</td>
                             <td data-label="จัดการ:">
-                                  <div style="display:flex; gap:5px;">
+                                   <div style="display:flex; gap:5px;">
                                     <button class="btn-blue" style="background:#eab308;" onclick="editFaq('${key}', '${safeQ}', '${safeA}')"><i class="fas fa-edit"></i> แก้ไข</button>
-                                    <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
+                                     <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
                                 </div>
                             </td>
                         </tr>
@@ -2157,14 +2254,14 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
             }).then((result) => {
                 if (result.isConfirmed) {
                     try {
-                         update(ref(db, `faqs/${key}`), {
+                        update(ref(db, `faqs/${key}`), {
                             question: result.value.question,
                             answer: result.value.answer
                         });
                         logAdminActivity(`แก้ไขข้อมูล FAQ`);
                         Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไข FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
                     } catch(e) {
-                         Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
+                          Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
                     }
                 }
             });
@@ -2213,8 +2310,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
             const mediaType = document.getElementById('annType').value;
             const source = document.getElementById('annSource').value;
             const duration = parseInt(document.getElementById('annDuration').value) || 0;
-            let mediaUrl = currentAnnData ?
-                currentAnnData.mediaUrl : "";
+            let mediaUrl = currentAnnData ? currentAnnData.mediaUrl : "";
 
             Swal.fire({ title: 'กำลังบันทึกข้อมูล...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             try {
@@ -2290,7 +2386,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                     tbody.innerHTML += `
                         <tr>
                             <td data-label="รูปภาพ:"><img src="${item.imageUrl}" style="width: 100%; max-width: 150px; border-radius: 8px; object-fit: cover; aspect-ratio: 1.414 / 1;"></td>
-                            <td data-label="หัวข้อหลัก:"><b>${item.title}</b></td>
+                             <td data-label="หัวข้อหลัก:"><b>${item.title}</b></td>
                             <td data-label="เนื้อหา:"><div style="max-height: 80px; overflow-y: auto; font-size: 13px; white-space: pre-wrap;">${item.content}</div></td>
                             <td data-label="จัดการ:">
                                 <div style="display:flex; flex-direction:column; gap:8px;">
@@ -2331,7 +2427,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                         imageUrl = await new Promise((resolve, reject) => {
                             const reader = new FileReader();
                             reader.readAsDataURL(fileInput);
-                            reader.onload = () => resolve(reader.result);
+                             reader.onload = () => resolve(reader.result);
                             reader.onerror = error => reject(error);
                         });
                     }
@@ -2522,6 +2618,275 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                 Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้', 'error');
             }
         };
+
+        // ==========================================
+        // --- USKTube Management System ---
+        // ==========================================
+        const SUPABASE_URL_USKTUBE = 'https://atjyqdfvrgjidrrlccos.supabase.co';
+        const SUPABASE_KEY_USKTUBE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0anlxZGZ2cmdqaWRycmxjY29zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMTYzOTAsImV4cCI6MjA5NzY5MjM5MH0.z0Armn-yavD7lSDifGi05mq9fPg1LOMFG7nMBSz9eS8';
+        const usktubeDb = createClient(SUPABASE_URL_USKTUBE, SUPABASE_KEY_USKTUBE);
+
+        const OFFICIAL_NAME = 'USK Official';
+        const OFFICIAL_LOGO = 'https://i.postimg.cc/PJ0mbct4/IMG-7790.png';
+
+        function extractVideoID(url) { 
+            const regExp = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([\w-]{11})/; 
+            const match = url.match(regExp); 
+            return match ? match[1] : null;
+        }
+
+        window.execUploadVideo = async function() {
+            const title = document.getElementById('vid-title').value.trim();
+            const url = document.getElementById('vid-url').value.trim();
+            const desc = document.getElementById('vid-desc').value.trim();
+            const isVert = document.getElementById('vid-is-vertical').checked;
+            const yt_id = extractVideoID(url);
+            if(!title || !yt_id) return alert('ข้อผิดพลาด: กรุณาระบุชื่อหัวข้อและตรวจสอบลิงก์ YouTube ให้ถูกต้อง');
+
+            const { error } = await usktubeDb.from('videos').insert([{ title: title, youtube_id: yt_id, description: desc, is_vertical: isVert }]);
+            if(error) alert('ข้อผิดพลาดจากระบบ: ' + error.message);
+            else {
+                alert('บันทึกข้อมูลวิดีโอเข้าสู่ระบบสำเร็จ');
+                document.getElementById('vid-title').value = ''; 
+                document.getElementById('vid-url').value = ''; 
+                document.getElementById('vid-desc').value = ''; 
+                document.getElementById('vid-is-vertical').checked = false;
+                window.loadVideos();
+            }
+        }
+
+        window.execCreatePost = async function() {
+            const content = document.getElementById('post-content').value.trim();
+            const img = document.getElementById('post-img').value.trim();
+
+            if(!content) return alert('ข้อผิดพลาด: กรุณาระบุเนื้อหาที่ต้องการประกาศ');
+
+            const { error } = await usktubeDb.from('community_posts').insert([{ content: content, image_url: img }]);
+            if(error) alert('ข้อผิดพลาดจากระบบ: ' + error.message);
+            else {
+                alert('เผยแพร่ประกาศชุมชนเข้าสู่ระบบสำเร็จ');
+                document.getElementById('post-content').value = ''; 
+                document.getElementById('post-img').value = '';
+                window.loadPosts();
+            }
+        }
+
+        window.loadVideos = async function() {
+            const { data } = await usktubeDb.from('videos').select('*, video_likes(user_id), comments(*)').order('created_at', { ascending: false });
+            const container = document.getElementById('video-list-container');
+            document.getElementById('count-videos').innerText = data ? data.length : 0;
+            if(!data || data.length === 0) { 
+                container.innerHTML = '<div style="text-align:center; color:#64748b; padding:24px;">ไม่พบรายการวิดีโอในระบบ</div>'; 
+                return;
+            }
+
+            container.innerHTML = data.map(v => {
+                const mainComments = v.comments ? v.comments.filter(c => !c.parent_id) : [];
+                const replies = v.comments ? v.comments.filter(c => c.parent_id) : [];
+
+                let commentsHTML = '<div style="color:#94a3b8; font-size:12px; text-align:center; padding:8px 0;">ไม่มีรายการความคิดเห็น</div>';
+                if(mainComments.length > 0) {
+                    commentsHTML = mainComments.map(c => {
+                        const isMainAdmin = c.user_name === OFFICIAL_NAME;
+                        const mainAvatarElem = isMainAdmin ? `<img src="${OFFICIAL_LOGO}" class="usk-avatar-img">` : `<div class="usk-avatar-txt">${c.user_name.charAt(0)}</div>`;
+                        
+                        const myReplies = replies.filter(r => r.parent_id === c.id);
+                        const repliesHTML = myReplies.map(r => {
+                            const isRepAdmin = r.user_name === OFFICIAL_NAME;
+                            const repAvatarElem = isRepAdmin ? `<img src="${OFFICIAL_LOGO}" class="usk-avatar-img" style="width:20px; height:20px;">` : `<div class="usk-avatar-txt" style="width:20px; height:20px; font-size:10px;">${r.user_name.charAt(0)}</div>`;
+                            const repNameDisplay = isRepAdmin 
+                                ? `<span style="color:#1e3a8a; font-weight:600;">USK Official</span> <span class="material-symbols-outlined" style="font-size:12px; color:#1e3a8a; vertical-align:middle; font-variation-settings:'FILL' 1;">verified</span>`
+                                : `@${r.user_name}`;
+
+                            return `
+                            <div class="usk-comment-item" style="margin-left: 28px; padding: 6px 12px; background: #ffffff; border-radius: 6px; border-left: 3px solid ${isRepAdmin ? '#1e3a8a' : '#94a3b8'}; margin-top: 6px;">
+                                ${repAvatarElem}
+                                <div style="flex:1; font-size:13px;">
+                                    <div>${repNameDisplay}: ${r.content}</div>
+                                </div>
+                                <button class="usk-btn-outline-danger" style="padding:2px 6px; font-size:10px;" onclick="deleteComment('${r.id}')">ลบ</button>
+                            </div>`;
+                        }).join('');
+
+                        const mainNameDisplay = isMainAdmin 
+                            ? `<span style="color:#1e3a8a; font-weight:600;">USK Official</span> <span class="material-symbols-outlined" style="font-size:14px; color:#1e3a8a; vertical-align:middle; font-variation-settings:'FILL' 1;">verified</span>`
+                            : `@${c.user_name}`;
+
+                        return `
+                        <div style="background: #ffffff; border: 1px solid #cbd5e1; padding: 14px; border-radius: 6px; margin-bottom: 10px;">
+                            <div class="usk-comment-item" style="border:none; padding:0;">
+                                ${mainAvatarElem}
+                                <div style="flex:1; font-size:13px;">
+                                    <div>${mainNameDisplay}: ${c.content}</div>
+                                </div>
+                                <button class="usk-btn-outline-normal" onclick="document.getElementById('reply-drawer-${c.id}').style.display='flex'">ตอบกลับ</button>
+                                <button class="usk-btn-outline-danger" onclick="deleteComment('${c.id}')">ลบ</button>
+                            </div>
+                            
+                            <div id="reply-drawer-${c.id}" class="usk-reply-drawer" style="display:none;">
+                                <input type="text" id="inp-reply-${c.id}" class="usk-input-field" style="padding:6px 10px; font-size:13px;" placeholder="ระบุข้อความตอบกลับในนาม USK Official...">
+                                <button class="usk-btn usk-btn-primary" style="width:auto; padding:6px 14px; font-size:12px;" onclick="execAdminReply('${v.id}', '${c.id}')">ส่งข้อมูล</button>
+                            </div>
+
+                            <div>${repliesHTML}</div>
+                        </div>`;
+                    }).join('');
+                }
+
+                return `
+                <div class="usk-record-card">
+                    <div class="usk-record-master">
+                        <div class="usk-thumb-box">
+                            <img src="https://i.ytimg.com/vi/${v.youtube_id}/mqdefault.jpg" alt="Video Thumbnail">
+                            ${v.is_vertical ? '<span class="usk-tag-shorts">SHORTS 9:16</span>' : ''}
+                        </div>
+                        <div class="usk-record-info">
+                            <div class="usk-record-title">${v.title}</div>
+                            <div class="usk-record-meta">
+                                <span class="usk-meta-item"><span class="material-symbols-outlined" style="font-size:14px;">visibility</span> จำนวนเข้าชม: ${v.views_count}</span>
+                                <span class="usk-meta-item"><span class="material-symbols-outlined" style="font-size:14px;">thumb_up</span> ถูกใจ: ${v.video_likes ? v.video_likes.length : 0}</span>
+                                <span class="usk-meta-item"><span class="material-symbols-outlined" style="font-size:14px;">forum</span> ความคิดเห็น: ${v.comments ? v.comments.length : 0}</span>
+                            </div>
+                        </div>
+                        <button class="usk-btn-outline-danger" onclick="deleteVideo('${v.id}')">
+                            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">delete</span> ลบรายการวิดีโอ
+                        </button>
+                    </div>
+                    <div class="usk-sub-panel">
+                        <div class="usk-sub-panel-title">
+                            <span class="material-symbols-outlined" style="font-size:14px;">chat</span>
+                            <span>รายการความคิดเห็นและการตอบกลับ</span>
+                        </div>
+                        ${commentsHTML}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        window.execAdminReply = async function(vidId, parentId) {
+            const inp = document.getElementById(`inp-reply-${parentId}`);
+            if(!inp || !inp.value.trim()) return alert('กรุณาระบุข้อความที่ต้องการตอบกลับ');
+            const { error } = await usktubeDb.from('comments').insert([{ video_id: vidId, content: inp.value.trim(), user_name: OFFICIAL_NAME, avatar_url: OFFICIAL_LOGO, parent_id: parentId }]);
+            if(error) alert('ข้อผิดพลาด: ' + error.message); 
+            else { 
+                inp.value = ''; 
+                window.loadVideos();
+            }
+        }
+
+        window.deleteVideo = async function(id) { 
+            if(confirm('ยืนยันการลบข้อมูลวิดีโอนี้ออกจากระบบอย่างถาวรหรือไม่?')) { 
+                await usktubeDb.from('videos').delete().eq('id', id); 
+                window.loadVideos();
+            } 
+        }
+        
+        window.deleteComment = async function(id) { 
+            if(confirm('ยืนยันการลบรายการความคิดเห็นนี้หรือไม่?')) { 
+                await usktubeDb.from('comments').delete().eq('id', id); 
+                window.loadVideos();
+            } 
+        }
+
+        window.loadPosts = async function() {
+            const { data } = await usktubeDb.from('community_posts').select('*, post_likes(user_id), post_comments(*)').order('created_at', { ascending: false });
+            const container = document.getElementById('post-list-container');
+            document.getElementById('count-posts').innerText = data ? data.length : 0;
+            if(!data || data.length === 0) { 
+                container.innerHTML = '<div style="text-align:center; color:#64748b; padding:24px;">ไม่พบรายการประกาศในระบบ</div>'; 
+                return;
+            }
+
+            container.innerHTML = data.map(p => {
+                const commentsHtml = p.post_comments && p.post_comments.length > 0 ? p.post_comments.map(c => `
+                    <div class="usk-comment-item" style="background:#ffffff; padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; margin-bottom:6px;">
+                        <div class="usk-avatar-txt" style="width:24px; height:24px; font-size:10px;">${c.user_id.charAt(5).toUpperCase()}</div>
+                        <div style="flex:1; font-size:12px;"><strong>@User${c.user_id.substr(-4)}</strong>: ${c.content}</div>
+                        <button class="usk-btn-outline-danger" style="padding:2px 6px; font-size:10px;" onclick="deletePostComment('${c.id}')">ลบ</button>
+                    </div>
+                `).join('') : '<div style="color:#94a3b8; font-size:12px; padding:4px 0;">ไม่มีรายการความคิดเห็น</div>';
+
+                return `
+                <div class="usk-record-card">
+                    <div class="usk-record-master">
+                        <div class="usk-record-info">
+                            <div style="font-size:11px; color:#64748b; margin-bottom:8px; display:flex; align-items:center; gap:4px;">
+                                <span class="material-symbols-outlined" style="font-size:13px;">calendar_today</span>
+                                <span>วันที่เผยแพร่: ${new Date(p.created_at).toLocaleString('th-TH')}</span>
+                            </div>
+                            <div style="font-size:14px; color:#0f172a; margin-bottom:12px; white-space:pre-wrap;">${p.content}</div>
+                            ${p.image_url ? `<img src="${p.image_url}" style="max-height:160px; border-radius:6px; border:1px solid #cbd5e1; display:block; margin-bottom:12px;">` : ''}
+                        </div>
+                        <button class="usk-btn-outline-danger" onclick="deletePost('${p.id}')">
+                            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">delete</span> ลบประกาศ
+                        </button>
+                    </div>
+                    <div style="font-size:12px; color:#475569; display:flex; align-items:center; gap:6px;">
+                        <span class="material-symbols-outlined" style="font-size:14px;">thumb_up</span>
+                        <span>จำนวนผู้ถูกใจ: ${p.post_likes ? p.post_likes.length : 0} บัญชี</span>
+                    </div>
+                    <div class="usk-sub-panel" style="margin-top:0;">
+                        <div class="usk-sub-panel-title">
+                            <span class="material-symbols-outlined" style="font-size:14px;">forum</span>
+                            <span>ความคิดเห็นต่อประกาศ</span>
+                        </div>
+                        ${commentsHtml}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        window.deletePost = async function(id) { 
+            if(confirm('ยืนยันการลบประกาศชุมชนนี้หรือไม่?')) { 
+                await usktubeDb.from('community_posts').delete().eq('id', id); 
+                window.loadPosts(); 
+            } 
+        }
+        
+        window.deletePostComment = async function(id) { 
+            if(confirm('ยืนยันการลบความคิดเห็นนี้หรือไม่?')) { 
+                await usktubeDb.from('post_comments').delete().eq('id', id); 
+                window.loadPosts(); 
+            } 
+        }
+
+        window.loadAudience = async function() {
+            const { data: profsData } = await usktubeDb.from('user_profiles').select('*').order('created_at', { ascending: false });
+            const { data: subs } = await usktubeDb.from('subscriptions').select('*');
+            
+            // กรองบัญชีเฉพาะนักเรียนที่กรอกชื่อแล้ว (user_id มีค่า ไม่ว่างเปล่า และไม่ใช่ 'ไม่ระบุ')
+            const profs = profsData ? profsData.filter(u => u.user_id && u.user_id.trim() !== '' && u.user_id !== 'ไม่ระบุ') : [];
+
+            document.getElementById('count-users').innerText = profs.length;
+            document.getElementById('count-subs').innerText = subs ? subs.length : 0;
+
+            const grid = document.getElementById('user-profile-grid');
+            if(profs.length === 0) { 
+                grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#64748b; padding:24px;">ไม่พบข้อมูลนักเรียนที่ลงทะเบียนในทำเนียบ</div>'; 
+                return;
+            }
+
+            grid.innerHTML = profs.map(u => `
+                <div class="usk-directory-card">
+                    <div style="width:46px; height:46px; border-radius:50%; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-weight:600; overflow:hidden; flex-shrink:0; border:1px solid #cbd5e1; font-size:16px;">
+                        ${u.avatar_url ? `<img src="${u.avatar_url}" style="width:100%; height:100%; object-fit:cover;">` : u.user_id.charAt(0).toUpperCase()}
+                    </div>
+                    <div style="overflow:hidden; flex:1;">
+                        <div style="font-size:14px; font-weight:600; color:#0f172a; text-overflow:ellipsis; overflow:hidden;">${u.user_id}</div>
+                        <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+                            <span class="usk-contact-pill"><span class="material-symbols-outlined" style="font-size:13px;">call</span> ${u.phone || 'ไม่ระบุ'}</span>
+                            <span class="usk-contact-pill"><span class="material-symbols-outlined" style="font-size:13px;">mail</span> ${u.email || 'ไม่ระบุ'}</span>
+                            <span class="usk-contact-pill" style="color:#2563eb;"><span class="material-symbols-outlined" style="font-size:13px;">public</span> ${u.social_link || 'ไม่ระบุ'}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // สั่งโหลดข้อมูล USKTube เมื่อเปิดระบบ
+        window.loadVideos();
+        window.loadPosts();
+        window.loadAudience();
 
     </script>
 </body>
