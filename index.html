@@ -183,65 +183,73 @@
             .stat-item { flex: 1 1 30%; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; min-width: 100px; padding: 15px 5px;}
         }
 
-        /* --- USKTube Styles --- */
-        #usktube { font-family: 'Prompt', sans-serif; color: #1e293b; line-height: 1.5; }
-        #usktube .usk-topbar { background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; border-radius: 10px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-        #usktube .usk-logo-area { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; color: #0f172a; letter-spacing: -0.3px; }
-        #usktube .usk-logo-area img { height: 28px; border-radius: 4px; }
-        #usktube .usk-user-badge-top { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; background: #f1f5f9; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; }
-        #usktube .usk-container { display: flex; flex-direction: column; gap: 32px; }
-        #usktube .usk-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-        #usktube .usk-stat-card { background: #ffffff; border-radius: 10px; padding: 20px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-        #usktube .usk-stat-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-        #usktube .usk-icon-navy { background: #f1f5f9; color: #0f172a; }
-        #usktube .usk-icon-blue { background: #eff6ff; color: #2563eb; }
-        #usktube .usk-icon-indigo { background: #eef2ff; color: #4f46e5; }
-        #usktube .usk-icon-amber { background: #fffbeb; color: #d97706; }
-        #usktube .usk-stat-info { display: flex; flex-direction: column; }
-        #usktube .usk-stat-title { font-size: 12px; color: #64748b; font-weight: 500; }
-        #usktube .usk-stat-value { font-size: 24px; font-weight: 700; color: #0f172a; line-height: 1.2; margin-top: 2px; }
-        #usktube .usk-form-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px; }
-        #usktube .usk-panel { background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
-        #usktube .usk-panel-header { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
-        #usktube .usk-input-group { margin-bottom: 18px; }
-        #usktube .usk-input-label { display: block; font-size: 13px; font-weight: 500; color: #334155; margin-bottom: 8px; }
-        #usktube .usk-input-field { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background: #ffffff; font-size: 14px; outline: none; transition: 0.15s; color: #0f172a; }
-        #usktube .usk-input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        #usktube .usk-checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #475569; cursor: pointer; margin-bottom: 20px; user-select: none; }
-        #usktube .usk-checkbox-label input { width: 16px; height: 16px; cursor: pointer; }
-        #usktube .usk-btn { width: 100%; padding: 10px 16px; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.15s; }
-        #usktube .usk-btn-primary { background: #1e3a8a; color: #ffffff; }
-        #usktube .usk-btn-primary:hover { background: #172554; }
-        #usktube .usk-btn-secondary { background: #d97706; color: #ffffff; }
-        #usktube .usk-btn-secondary:hover { background: #b45309; }
-        #usktube .usk-btn-outline-danger { background: #ffffff; color: #dc2626; border: 1px solid #f87171; width: auto; padding: 4px 10px; font-size: 12px; border-radius: 4px; cursor: pointer;}
-        #usktube .usk-btn-outline-danger:hover { background: #fef2f2; border-color: #dc2626; }
-        #usktube .usk-btn-outline-normal { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; width: auto; padding: 4px 10px; font-size: 12px; border-radius: 4px; cursor: pointer;}
-        #usktube .usk-btn-outline-normal:hover { background: #e2e8f0; color: #0f172a; }
-        #usktube .usk-record-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
-        #usktube .usk-record-master { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
-        #usktube .usk-thumb-box { width: 140px; aspect-ratio: 16/9; background: #cbd5e1; border-radius: 4px; overflow: hidden; flex-shrink: 0; position: relative; border: 1px solid #e2e8f0; }
-        #usktube .usk-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
-        #usktube .usk-tag-shorts { position: absolute; bottom: 4px; right: 4px; background: #dc2626; color: #ffffff; font-size: 9px; padding: 1px 4px; border-radius: 2px; font-weight: 600; letter-spacing: 0.5px; }
-        #usktube .usk-record-info { flex: 1; }
-        #usktube .usk-record-title { font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 6px; }
-        #usktube .usk-record-meta { display: flex; gap: 16px; font-size: 12px; color: #64748b; }
-        #usktube .usk-meta-item { display: flex; align-items: center; gap: 4px; }
-        #usktube .usk-sub-panel { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 8px; padding: 16px; margin-top: 8px; }
-        #usktube .usk-sub-panel-title { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        #usktube .usk-comment-item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #e2e8f0; }
-        #usktube .usk-comment-item:last-child { border-bottom: none; }
-        #usktube .usk-avatar-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; flex-shrink: 0; }
-        #usktube .usk-avatar-txt { width: 28px; height: 28px; border-radius: 50%; background: #e2e8f0; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-        #usktube .usk-reply-drawer { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
-        #usktube .usk-directory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
-        #usktube .usk-directory-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; display: flex; gap: 16px; align-items: center; }
-        #usktube .usk-contact-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; }
+        /* ----------------------------------------------------
+           USKTube Styles (Namespaced with usk- to avoid conflicts) 
+           ---------------------------------------------------- */
+        #usktube { line-height: 1.5; font-family: 'Prompt', sans-serif; padding-bottom: 60px; }
+        .usk-topbar { background-color: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 32px;}
+        .usk-logo-area { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; color: #0f172a; letter-spacing: -0.3px; }
+        .usk-logo-area img { height: 28px; border-radius: 4px; }
+        .usk-user-badge-top { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; background: #f1f5f9; padding: 6px 14px; border-radius: 20px; border: 1px solid #e2e8f0; }
 
-        @media (max-width: 768px) {
-            #usktube .usk-form-section { grid-template-columns: 1fr; }
-            #usktube .usk-record-master { flex-direction: column; }
-        }
+        .usk-container { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+
+        .usk-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .usk-stat-card { background: #ffffff; border-radius: 10px; padding: 20px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .usk-stat-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+        .usk-icon-navy { background: #f1f5f9; color: #0f172a; }
+        .usk-icon-blue { background: #eff6ff; color: #2563eb; }
+        .usk-icon-indigo { background: #eef2ff; color: #4f46e5; }
+        .usk-icon-amber { background: #fffbeb; color: #d97706; }
+        .usk-stat-info { display: flex; flex-direction: column; }
+        .usk-stat-title { font-size: 12px; color: #64748b; font-weight: 500; font-family: 'Prompt', sans-serif;}
+        .usk-stat-value { font-size: 24px; font-weight: 700; color: #0f172a; line-height: 1.2; margin-top: 2px; }
+
+        .usk-form-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px; }
+        .usk-panel { background: #ffffff; border-radius: 12px; padding: 28px; border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.03); }
+        .usk-panel-header { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+        
+        .usk-input-group { margin-bottom: 18px; }
+        .usk-input-label { display: block; font-size: 13px; font-weight: 500; color: #334155; margin-bottom: 8px; }
+        .usk-input-field { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; background: #ffffff; font-size: 14px; outline: none; transition: 0.15s; color: #0f172a; margin-bottom: 0; font-family: 'Prompt', sans-serif;}
+        .usk-input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        .usk-checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #475569; cursor: pointer; margin-bottom: 20px; user-select: none; }
+        .usk-checkbox-label input { width: 16px; height: 16px; cursor: pointer; margin-bottom: 0;}
+
+        .usk-btn { width: 100%; padding: 10px 16px; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.15s; font-family: 'Prompt', sans-serif;}
+        .usk-btn-primary { background: #1e3a8a; color: #ffffff; }
+        .usk-btn-primary:hover { background: #172554; }
+        .usk-btn-secondary { background: #d97706; color: #ffffff; }
+        .usk-btn-secondary:hover { background: #b45309; }
+        .usk-btn-outline-danger { background: #ffffff; color: #dc2626; border: 1px solid #f87171; width: auto; padding: 4px 10px; font-size: 12px; border-radius: 4px; }
+        .usk-btn-outline-danger:hover { background: #fef2f2; border-color: #dc2626; }
+        .usk-btn-outline-normal { background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; width: auto; padding: 4px 10px; font-size: 12px; border-radius: 4px; }
+        .usk-btn-outline-normal:hover { background: #e2e8f0; color: #0f172a; }
+
+        .usk-record-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .usk-record-master { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+        .usk-thumb-box { width: 140px; aspect-ratio: 16/9; background: #cbd5e1; border-radius: 4px; overflow: hidden; flex-shrink: 0; position: relative; border: 1px solid #e2e8f0; }
+        .usk-thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+        .usk-tag-shorts { position: absolute; bottom: 4px; right: 4px; background: #dc2626; color: #ffffff; font-size: 9px; padding: 1px 4px; border-radius: 2px; font-weight: 600; letter-spacing: 0.5px; }
+
+        .usk-record-info { flex: 1; }
+        .usk-record-title { font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 6px; }
+        .usk-record-meta { display: flex; gap: 16px; font-size: 12px; color: #64748b; }
+        .usk-meta-item { display: flex; align-items: center; gap: 4px; }
+
+        .usk-sub-panel { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 8px; padding: 16px; margin-top: 8px; }
+        .usk-sub-panel-title { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .usk-comment-item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #e2e8f0; }
+        .usk-comment-item:last-child { border-bottom: none; }
+        .usk-avatar-img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; flex-shrink: 0; }
+        .usk-avatar-txt { width: 28px; height: 28px; border-radius: 50%; background: #e2e8f0; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+        .usk-reply-drawer { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #cbd5e1; align-items: center; }
+
+        .usk-directory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+        .usk-directory-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; display: flex; gap: 16px; align-items: center; }
+        .usk-contact-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #475569; }
+
+        @media (max-width: 768px) { .usk-form-section { grid-template-columns: 1fr; } .usk-record-master { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -267,13 +275,12 @@
     </div>
 
     <div class="sidebar" id="mainSidebar">
-      
         <button class="sidebar-close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
         <h2>Admin Panel</h2>
         
         <div style="flex: 1; margin-top: 10px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;">
             <button class="nav-btn" onclick="switchTab('database_display')"><i class="fas fa-database"></i> ฐานข้อมูล/แสดงผล</button>
-            <button class="nav-btn" onclick="switchTab('usktube')"><i class="fab fa-youtube"></i> USKTube</button>
+            <button class="nav-btn" onclick="switchTab('usktube')"><i class="fas fa-video"></i> USKTube</button>
             <button class="nav-btn active" onclick="switchTab('reports')"><i class="fas fa-list-alt"></i> รายงานปัญหา <span id="navRepBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('livechat')"><i class="fas fa-comments"></i> พิมพ์ข้อความสด <span id="navChatBadge" class="badge-red" style="display:none;">0</span></button>
             <button class="nav-btn" onclick="switchTab('faqs')"><i class="fas fa-question-circle"></i> จัดการ FAQ</button>
@@ -371,6 +378,7 @@
             </div>
 
             <div class="usk-container">
+
                 <div class="usk-stats-grid">
                     <div class="usk-stat-card">
                         <div class="usk-stat-icon usk-icon-navy"><span class="material-symbols-outlined">manage_accounts</span></div>
@@ -403,8 +411,12 @@
                             <input type="text" id="vid-title" class="usk-input-field" placeholder="ระบุชื่อหัวข้อวิดีโอ...">
                         </div>
                         <div class="usk-input-group">
-                            <label class="usk-input-label">ลิงก์ต้นทาง (YouTube URL)</label>
-                            <input type="text" id="vid-url" class="usk-input-field" placeholder="https://www.youtube.com/watch?v=...">
+                            <label class="usk-input-label">ลิงก์ต้นทาง (YouTube, TikTok, IG, FB)</label>
+                            <input type="text" id="vid-url" class="usk-input-field" placeholder="วางลิงก์วิดีโอที่นี่...">
+                        </div>
+                        <div class="usk-input-group">
+                            <label class="usk-input-label">ลิงก์รูปภาพปก (จำเป็นสำหรับ TikTok/IG)</label>
+                            <input type="text" id="vid-cover" class="usk-input-field" placeholder="https://i.postimg.cc/... (กรณี YouTube ระบบจะดึงปกให้อัตโนมัติ)">
                         </div>
                         <div class="usk-input-group">
                             <label class="usk-input-label">คำอธิบายรายละเอียด (Description)</label>
@@ -463,6 +475,7 @@
                     </div>
                     <div id="user-profile-grid" class="usk-directory-grid">กำลังโหลดทำเนียบข้อมูล...</div>
                 </div>
+
             </div>
         </div>
 
@@ -488,7 +501,7 @@
                 <div id="pendingPagination"></div>
             </div>
 
-             <div class="card">
+            <div class="card">
                  <h3 style="margin-top: 0; color: #16a34a;"><i class="fas fa-check-circle"></i> รายงานที่ตอบกลับแล้ว</h3>
                 <table>
                     <thead>
@@ -509,7 +522,7 @@
             </div>
         </div>
 
-         <div id="livechat" class="section">
+        <div id="livechat" class="section">
             <h2>พิมพ์ข้อความสด (Live Chat)</h2>
             <div class="chat-container" id="chatContainer">
                 <div class="chat-sidebar" id="adminChatList"></div>
@@ -536,7 +549,7 @@
                 <button class="btn-blue" id="btnAddFaq">บันทึก FAQ</button>
             </div>
             
-             <div class="card">
+            <div class="card">
                 <h3>รายการคำถามปัจจุบัน</h3>
                 <table>
                     <thead>
@@ -553,7 +566,7 @@
 
         <div id="announcement" class="section">
             <h2>จัดการประกาศแจ้งเตือนหน้าแรก (Startup Popup)</h2>
-             <div class="card">
+            <div class="card">
                 <h3>ตั้งค่าการแสดงผล</h3>
                 <label style="font-weight: 500; font-size: 14px;">สถานะการแสดงผล:</label>
                 <select id="annActive">
@@ -628,7 +641,7 @@
                 </div>
             </div>
 
-             <div class="card">
+            <div class="card">
                 <h3>รายการข่าวประชาสัมพันธ์ทั้งหมด</h3>
                 <table>
                     <thead>
@@ -794,6 +807,11 @@
         // สร้าง Client แยกสำหรับการจัดการเพิ่มแอดมิน เพื่อไม่ให้ Session ปัจจุบันหลุด
         const supabaseAdminClient = createClient(supabaseUrl, supabaseKey, { auth: { autoRefreshToken: false, persistSession: false } });
 
+        // USKTube Supabase Database
+        const USK_SUPABASE_URL = 'https://atjyqdfvrgjidrrlccos.supabase.co';
+        const USK_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0anlxZGZ2cmdqaWRycmxjY29zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMTYzOTAsImV4cCI6MjA5NzY5MjM5MH0.z0Armn-yavD7lSDifGi05mq9fPg1LOMFG7nMBSz9eS8';
+        const usktubeDb = createClient(USK_SUPABASE_URL, USK_SUPABASE_KEY);
+
         // Firebase Database
         const firebaseConfig = {
             apiKey: "AIzaSyDYDkE1s6vykteDMvUpJmDxQfK_Ft-Q0lM",
@@ -813,12 +831,34 @@
         function decodeEmail(encoded) { return encoded.replace(/,/g, '.'); }
 
         // --- ตัวแปรแบบ Global สำหรับ Supabase Presence ---
-        window.currentOnlineAdmins = new Set(); // เก็บรายชื่ออีเมลที่กำลังออนไลน์จริงๆ
+        window.currentOnlineAdmins = new Set();
+        // เก็บรายชื่ออีเมลที่กำลังออนไลน์จริงๆ
 
         // --- ระบบ Authentication & เตะออกเมื่อไม่มีการเคลื่อนไหว 5 ชั่วโมง ---
         let currentAdminEmail = "";
         let autoLogoutTimer = null;
-        const FIVE_HOURS_MS = 5 * 60 * 60 * 1000; // 5 ชั่วโมง
+        const FIVE_HOURS_MS = 5 * 60 * 60 * 1000;
+        // 5 ชั่วโมง
+        
+        // --- ย้ายการสร้างตัวแปรทั้งหมดขึ้นมาด้านบนเพื่อป้องกัน ReferenceError ---
+        let adminChannel = null;
+        let heartbeatInterval = null;
+        let allAdminsData = {};
+        let allAdminsPresence = {};
+        
+        let frontendUsersState = new Map();
+        let allReportsMap = new Map();
+        let allPendingData = []; 
+        let allRepliedData = [];
+        let currentPendingPage = 1;
+        let currentRepliedPage = 1;
+        const ITEMS_PER_PAGE = 10;
+        let isFirstLoadComplete = false;
+        let unreadRepCount = 0;
+        let allChatsMap = new Map();
+        let unreadChatCount = 0;
+        let activeChatUser = null;
+        let currentAnnData = null;
 
         function startAutoLogoutTimer() {
             if(autoLogoutTimer) clearTimeout(autoLogoutTimer);
@@ -865,7 +905,8 @@
 
             // เช็คจาก LocalStorage ก่อนเป็นอันดับแรก เพื่อความเสถียร
             if (savedSession) {
-                localStorage.setItem('adminLastActivity', now.toString()); // รีเซ็ตเวลาให้เริ่มนับใหม่เมื่อเข้ามา
+                localStorage.setItem('adminLastActivity', now.toString());
+                // รีเซ็ตเวลาให้เริ่มนับใหม่เมื่อเข้ามา
                 document.getElementById('loginOverlay').style.display = 'none';
                 currentAdminEmail = savedSession;
                 document.getElementById('currentUserDisplay').innerText = `ผู้ใช้งาน: ${currentAdminEmail}`;
@@ -881,14 +922,18 @@
                 } else {
                     document.getElementById('addAdminCard').style.display = 'none';
                 }
-                renderAdminTable();
+                
+                if (typeof window.renderAdminTable === "function") {
+                    window.renderAdminTable();
+                }
                 return;
             }
 
             // ถ้าไม่มีใน LocalStorage ค่อยเช็คกับ Supabase
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-                localStorage.setItem('adminLastActivity', now.toString()); // รีเซ็ตเวลาให้เริ่มนับใหม่เมื่อเข้ามา
+                localStorage.setItem('adminLastActivity', now.toString());
+                // รีเซ็ตเวลาให้เริ่มนับใหม่เมื่อเข้ามา
                 document.getElementById('loginOverlay').style.display = 'none';
                 currentAdminEmail = session.user.email;
                 document.getElementById('currentUserDisplay').innerText = `ผู้ใช้งาน: ${currentAdminEmail}`;
@@ -904,7 +949,10 @@
                 } else {
                     document.getElementById('addAdminCard').style.display = 'none';
                 }
-                renderAdminTable();
+                
+                if (typeof window.renderAdminTable === "function") {
+                    window.renderAdminTable();
+                }
             } else {
                 document.getElementById('loginOverlay').style.display = 'flex';
                 currentAdminEmail = "";
@@ -950,6 +998,7 @@
 
                 if (loginSuccess) {
                     // ซิงค์ข้อมูลเข้า Supabase แบบเงียบๆ ป้องกัน Error เด้งกวนใจ
+                    
                     try {
                         supabase.from('admin_users').upsert({ email: email, password: password }).then();
                     } catch(e) {}
@@ -972,7 +1021,7 @@
                     } else {
                         document.getElementById('addAdminCard').style.display = 'none';
                     }
-                    renderAdminTable();
+                    if (typeof window.renderAdminTable === "function") window.renderAdminTable();
                 } else {
                     Swal.fire('ข้อผิดพลาด', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง', 'error');
                     btn.innerText = 'เข้าสู่ระบบ';
@@ -993,7 +1042,8 @@
             document.getElementById('loginOverlay').style.display = 'flex';
             Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'ออกจากระบบแล้ว', showConfirmButton: false, timer: 1500 });
             
-            removePresence(); // <--- เรียกฟังก์ชันเพื่อออกจากห้อง Supabase ทันที
+            removePresence();
+            // <--- เรียกฟังก์ชันเพื่อออกจากห้อง Supabase ทันที
             
             currentAdminEmail = "";
             document.getElementById('currentUserDisplay').innerText = "";
@@ -1061,170 +1111,6 @@
             })
         }
 
-        checkUserSession();
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_OUT' && !localStorage.getItem('adminSessionEmail')) {
-                document.getElementById('loginOverlay').style.display = 'flex';
-            }
-        });
-
-        // --- ระบบค้นหาและแสดงใบเสร็จ (คงไว้ตามคำสั่งไม่แก้โค้ดที่ไม่เกี่ยวข้อง) ---
-        window.searchReceipt = async function() {
-            const invoiceNo = document.getElementById('searchInvoiceNo').value.trim();
-            if(!invoiceNo) return Swal.fire('แจ้งเตือน', 'กรุณากรอกเลขที่ใบแจ้งหนี้ก่อนค้นหา', 'warning');
-
-            Swal.fire({ title: 'กำลังค้นหา...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            try {
-                const { data, error } = await supabase
-                    .from('receipts')
-                    .select('*')
-                    .eq('invoice_no', invoiceNo)
-                    .single();
-
-                if (error || !data) {
-                    Swal.close();
-                    return Swal.fire('ไม่พบข้อมูล', 'ไม่พบใบเสร็จที่ตรงกับเลขที่ใบแจ้งหนี้นี้', 'error');
-                }
-
-                Swal.close();
-                renderReceiptResult(data);
-            } catch (err) {
-                Swal.close();
-                Swal.fire('ข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้: ' + err.message, 'error');
-            }
-        }
-
-        function renderReceiptResult(data) {
-            const dateStr = new Date().toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
-            // ดึงข้อมูลและจัดการแสดงผล
-            const studentName = data.student_name || "-";
-            const phone = data.phone || "093-537-7270";
-            const address = data.address || "เลขที่ 114/1 หมู่ 2 ตำบลคลองเขม้า อำเภอเหนือคลอง จังหวัดกระบี่ 81130";
-            const invoiceNo = data.invoice_no || "-";
-            
-            const paymentDate = (data.payment_date && data.payment_date !== "undefined" && data.payment_date.trim() !== "") ? data.payment_date : "อ้างอิงตามสลิปโอนเงิน";
-            const itemName = data.item_name || "-";
-            
-            let parsedAmt = parseFloat(data.amount);
-            let displayAmt = !isNaN(parsedAmt) ? parsedAmt.toLocaleString() + '.-' : data.amount + '.-';
-            if(displayAmt === "ตรวจสอบในสลิป.-") displayAmt = "ตามสลิป.-";
-            
-            const qrData = data.slip_url ? data.slip_url : "https://usk.ac.th";
-
-            const receiptHtml = `
-            <div class="receipt-wrapper">
-                <div class="receipt-container">
-                    <div class="header">
-                        <div class="logos">
-                            <img src="https://i.postimg.cc/g2TMtSVd/IMG-7790.png" alt="School Logo">
-                            <img src="https://i.postimg.cc/SQ6vQGhW/Untitled-design.png" alt="JSK Logo">
-                        </div>
-                        <div class="receipt-title">
-                             <h1>ใบเสร็จรับเงิน</h1>
-                            <h2>RECEIPT</h2>
-                        </div>
-                    </div>
-
-                     <div class="info-box">
-                        <div class="info-left">
-                            <div class="info-row">
-                                <span class="info-label">วันที่ :</span>
-                                <span class="dynamic-data">${paymentDate}</span> 
-                            </div>
-                            <div class="info-row">
-                                 <span class="info-label">ชื่อนักเรียน :</span>
-                                <span class="dynamic-data">${studentName}</span> 
-                            </div>
-                           <div class="info-row">
-                                <span class="info-label">โทรศัพท์ :</span>
-                                <span class="dynamic-data">${phone}</span>
-                             </div>
-                            <div class="info-row">
-                                <span class="info-label">ที่อยู่ :</span>
-                                <span class="dynamic-data">${address}</span>
-                            </div>
-                        </div>
-                        <div class="info-right">
-                             <div class="info-row" style="justify-content: flex-end;">
-                                <span class="info-label" style="width: auto; margin-right: 5px;">เลขที่ใบแจ้งหนี้ :</span>
-                                <span class="dynamic-data">${invoiceNo}</span> 
-                            </div>
-                            <div class="info-row" style="justify-content: flex-end;">
-                                 <span class="info-label" style="width: auto; margin-right: 5px;">วันที่ :</span>
-                                <span class="dynamic-data">${dateStr}</span> 
-                            </div>
-                        </div>
-                     </div>
-
-                    <div class="table-container">
-                        <img src="https://i.postimg.cc/5NmTgSK0/n-ange-n-laea-khaw-re-ybng-ay-bi-ser-c-xeksar-2.png" alt="Watermark" class="watermark">
-                        
-                        <div class="table-wrapper">
-                            <table>
-                                <thead>
-                                   <tr>
-                                        <th>ลำดับ</th>
-                                        <th>รายการ</th>
-                                     <th>จำนวนเงิน</th>
-                                        <th>ยอดรวม</th>
-                                    </tr>
-                                 </thead>
-                                <tbody>
-                                    <tr>
-                                       <td class="dynamic-data">1.</td>
-                                        <td class="dynamic-data">${itemName}</td>
-                                         <td class="dynamic-data">${displayAmt}</td>
-                                        <td class="dynamic-data">${displayAmt}</td>
-                                    </tr>
-                                   <tr><td><br></td><td></td><td></td><td></td></tr>
-                                    <tr><td><br></td><td></td><td></td><td></td></tr>
-                                     <tr><td><br></td><td></td><td></td><td></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                     </div>
-
-                    <div class="summary-container">
-                        <div class="summary-row">
-                            <span class="summary-label">ภาษี ณ ที่จ่าย 0%</span>
-                             <span class="summary-value dynamic-data">0.-</span>
-                        </div>
-                        <div class="summary-row">
-                            <span class="summary-label bold">ยอดที่จ่ายทั้งหมด</span>
-                             <span class="summary-value pill-box dynamic-data">${displayAmt}</span>
-                        </div>
-                    </div>
-
-                    <div class="signature-container">
-                         <div class="stamp-area">
-                            <img src="https://i.postimg.cc/5NmTgSK0/n-ange-n-laea-khaw-re-ybng-ay-bi-ser-c-xeksar-2.png" alt="Stamp" class="stamp-img">
-                            <div class="stamp-text">โรงเรียนอุทยานศึกษากระบี่</div>
-                         </div>
-                        <div class="qr-area">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}" alt="QR Code"> 
-                        </div>
-                     </div>
-
-                    <div class="footer-notes">
-                        <h4>หมายเหตุ</h4>
-                        <ol>
-                            <li>ใบเสร็จรับเงินฉบับนี้จะสมบูรณ์ถูกต้องต่อเมื่อมีตราประทับของทางโรงเรียน พร้อมลายมือชื่อของผู้รับเงินหรือเจ้าหน้าที่ผู้มีอำนาจครบถ้วน</li>
-                            <li>เงินค่าธรรมเนียมหอพักและค่าอาหารที่ชำระเรียบร้อยแล้ว ทางโรงเรียนขอสงวนสิทธิ์ในการคืนเงินหรือโอนสิทธิ์ให้ผู้อื่นในทุกกรณี</li>
-                            <li>ขอความกรุณาผู้ปกครองโปรดเก็บรักษาเอกสารฉบับนี้ไว้เป็นหลักฐานสำคัญ เพื่อใช้ในการตรวจสอบหรือยื่นเบิกสวัสดิการทางการศึกษา</li>
-                            <li>กรุณาชำระเงินภายในห้วงเวลาที่โรงเรียนกำหนด หากพ้นกำหนดแล้ว ใคร่ขอความร่วมมือติดต่อฝ่ายการเงินเพื่อดำเนินการตามระเบียบต่อไป</li>
-                         </ol>
-                        <div class="footer-pattern"></div>
-                    </div>
-                </div>
-            </div>
-            `;
-            const resArea = document.getElementById('receiptResultArea');
-            if(resArea) {
-                resArea.style.display = 'block';
-                resArea.innerHTML = receiptHtml + '<div style="text-align:center; margin-top:20px;"><button class="btn-green" style="padding:10px 30px; font-size:16px;" onclick="window.print()"><i class="fas fa-print"></i> พิมพ์ใบเสร็จ</button></div>';
-            }
-        }
-
         // --- ระบบบันทึกประวัติกิจกรรมแอดมิน (Admin Logs) ยึดตาม Firebase เหมือนเดิม ---
         const logsRef = ref(db, 'admin_logs');
         function logAdminActivity(actionDetail) {
@@ -1256,7 +1142,7 @@
                     <tr>
                         <td data-label="เวลา:">${new Date(log.timestamp).toLocaleString('th-TH')}</td>
                         <td data-label="แอดมิน:">${log.email}</td>
-                         <td data-label="กิจกรรม:"><b>${log.action}</b></td>
+                        <td data-label="กิจกรรม:"><b>${log.action}</b></td>
                     </tr>
                 `;
             });
@@ -1265,8 +1151,6 @@
         // =====================================================================================
         // ระบบติดตามการเข้าสู่ระบบแบบใหม่ด้วย SUPABASE PRESENCE (แก้ปัญหา Race Condition รีเฟรช)
         // =====================================================================================
-        let adminChannel = null;
-        let heartbeatInterval = null;
 
         function setupPresence(email) {
             // ล้างข้อมูลเก่าก่อน
@@ -1281,7 +1165,7 @@
                 config: {
                     presence: {
                         key: email, // ให้ Supabase รู้ว่าแท็บไหนเป็นของใคร โดยใช้อีเมลเป็นคีย์หลัก
-                   },
+                    },
                 },
             });
             // 2. รับฟังสถานะของแอดมินทุกคนแบบเรียลไทม์ (รวมถึงตัวเราเองด้วย)
@@ -1289,7 +1173,7 @@
                 .on('presence', { event: 'sync' }, () => {
                     const newState = adminChannel.presenceState();
                     const onlineSet = new Set();
-                     
+                    
                     // newState จะรวมอุปกรณ์/แท็บทั้งหมดที่กำลังต่ออยู่เข้าด้วยกัน
                     for (const userEmail in newState) {
                         if (newState[userEmail].length > 0) {
@@ -1302,7 +1186,7 @@
                     // ถ้าพบว่าตัวเราเองกลับมาออนไลน์ ให้ลบป้ายแดง (force_offline) ในฐานข้อมูลทิ้ง
                     if (onlineSet.has(currentAdminEmail)) {
                         try {
-                               supabase.from('admin_presence').upsert({ email: currentAdminEmail, force_offline: false }).then();
+                            supabase.from('admin_presence').upsert({ email: currentAdminEmail, force_offline: false }).then();
                         } catch(e) {}
                     }
 
@@ -1312,14 +1196,14 @@
                         const enc = encodeEmail(em);
                         if (!allAdminsPresence[enc] || !allAdminsPresence[enc].force_offline) {
                             adminOnlineCount++;
-                         }
+                        }
                     });
                     const dElem = document.getElementById('onlineCountDesktop');
                     const mElem = document.getElementById('onlineCountMobile');
                     if(dElem) dElem.innerText = adminOnlineCount;
                     if(mElem) mElem.innerText = adminOnlineCount;
 
-                    window.renderAdminTable();
+                    if (typeof window.renderAdminTable === "function") window.renderAdminTable();
                 })
                 .subscribe(async (status) => {
                     if (status === 'SUBSCRIBED') {
@@ -1337,11 +1221,11 @@
                     try {
                         supabase.from('admin_presence').upsert({ 
                             email: currentAdminEmail,
-                             last_active: Date.now() 
+                            last_active: Date.now() 
                         }).then();
                     } catch(e) {}
                 }
-             }, 5000);
+            }, 5000);
         }
 
         function removePresence() {
@@ -1366,7 +1250,7 @@
                  } catch(e) {}
                  window.currentOnlineAdmins.delete(currentAdminEmail);
             }
-            window.renderAdminTable();
+            if (typeof window.renderAdminTable === "function") window.renderAdminTable();
         }
 
         // --- ระบบติดตามการเคลื่อนไหวของแอดมิน เพื่อรีเซ็ตเวลา 5 ชั่วโมง ---
@@ -1411,7 +1295,6 @@
 
         // --- ระบบดึงข้อมูลผู้ใช้งานหน้าบ้าน (ออนไลน์) --- แบบ Real-time ทันที
         const onlineUsersRef = ref(db, "presence");
-        let frontendUsersState = new Map();
 
         function processFrontendUserRealtime(snapshot) {
             if(!snapshot.exists()) return;
@@ -1446,7 +1329,7 @@
                 if(!userPresenceMap.has(userName)) {
                     userPresenceMap.set(userName, { name: userName, status: data.status, last_seen: data.last_seen });
                 } else {
-                     let existing = userPresenceMap.get(userName);
+                    let existing = userPresenceMap.get(userName);
                     if(data.status === 'online') existing.status = 'online';
                     if(new Date(data.last_seen) > new Date(existing.last_seen)) {
                         existing.last_seen = data.last_seen;
@@ -1492,7 +1375,7 @@
                         let lastSeen = data.timestamp || data.last_seen || 0;
 
                         frontendUsersState.set(key, {
-                             key: key,
+                            key: key,
                             name: userName,
                             status: isOnline ? 'online' : 'offline',
                             last_seen: lastSeen
@@ -1568,138 +1451,6 @@
             selectChatUser(userName);
         }
 
-        // --- ระบบจัดการรายชื่อผู้ดูแลระบบในเมนูตั้งค่า (เปลี่ยนมาใช้ Supabase) ---
-        let allAdminsData = {};
-        let allAdminsPresence = {};
-        
-        // ฟังก์ชันโหลดข้อมูลจาก Supabase แทน Firebase
-        const loadSupabaseAdminData = async () => {
-            try {
-                const { data: users } = await supabase.from('admin_users').select('*');
-                if(users) {
-                    allAdminsData = {};
-                    users.forEach(u => {
-                        if(u.email) allAdminsData[encodeEmail(u.email)] = u;
-                    });
-                }
-                
-                const { data: presence } = await supabase.from('admin_presence').select('*');
-                if(presence) {
-                    allAdminsPresence = {};
-                    presence.forEach(p => {
-                        if(p.email) allAdminsPresence[encodeEmail(p.email)] = p;
-                    });
-                }
-                window.renderAdminTable();
-            } catch (err) {
-                console.warn(err);
-            }
-        };
-
-        loadSupabaseAdminData();
-        // สมัครรับการเปลี่ยนแปลง (Realtime) จาก Supabase สำหรับแสดงสถานะแบบสดๆ
-        supabase.channel('admin_db_changes_room')
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_users' }, payload => {
-                if (payload.eventType === 'DELETE') {
-                    if(payload.old && payload.old.email) delete allAdminsData[encodeEmail(payload.old.email)];
-                } else {
-                    if(payload.new && payload.new.email) allAdminsData[encodeEmail(payload.new.email)] = payload.new;
-                }
-                window.renderAdminTable();
-            })
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_presence' }, payload => {
-                if (payload.eventType === 'DELETE') {
-                    if(payload.old && payload.old.email) delete allAdminsPresence[encodeEmail(payload.old.email)];
-                } else {
-                    if(payload.new && payload.new.email) allAdminsPresence[encodeEmail(payload.new.email)] = payload.new;
-                }
-                window.renderAdminTable();
-            })
-            .subscribe();
-        // เพิ่มการรีเฟรชตารางของตัวเราเองอัตโนมัติ ทุก 5 วิ เพื่อให้เห็นเวลาคนอื่นออฟไลน์เพิ่มขึ้นเรื่อยๆ
-        setInterval(() => {
-            if(document.getElementById('system_mgmt').classList.contains('active')) {
-                window.renderAdminTable();
-            }
-        }, 5000);
-        window.renderAdminTable = function() {
-            const tbody = document.getElementById('adminUsersTableBody');
-            if(!tbody) return;
-            tbody.innerHTML = '';
-            
-            if(Object.keys(allAdminsData).length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>`;
-                return;
-            }
-
-            Object.keys(allAdminsData).forEach(encEmail => {
-                const adminData = allAdminsData[encEmail];
-                const rawEmail = adminData.email;
-                const pres = allAdminsPresence[encEmail] || { last_active: 0 };
-                
-                 const now = Date.now();
-                const lastActive = pres.last_active || 0;
-                
-                // ตรวจสอบความถูกต้อง: ถาม Supabase ว่าตกลงคนนี้ออนไลน์อยู่จริงๆ ใช่ไหม
-                let isActuallyOnline = window.currentOnlineAdmins && window.currentOnlineAdmins.has(rawEmail);
-                
-                // ถ้าระบบเจอว่าคนนี้จงใจกดออกจากระบบไปแล้ว (ปุ่ม logout)
-                if (pres.force_offline === true) {
-                    isActuallyOnline = false;
-                }
-
-                let dotClass = 'status-offline';
-                let statusText = 'ยังไม่เคยเข้าระบบ';
-                
-                if (isActuallyOnline) {
-                    dotClass = 'status-online';
-                    statusText = `กำลังใช้งานอยู่ในระบบ`;
-                } else {
-                    if (lastActive > 0) {
-                        const diffMs = Math.max(0, now - lastActive);
-                        const diffMins = Math.floor(diffMs / 60000);
-                        const diffHours = Math.floor(diffMins / 60);
-                        const diffDays = Math.floor(diffHours / 24);
-                        let offlineText = '';
-                        if (diffDays > 0) {
-                            offlineText = `${diffDays} วัน ${diffHours % 24} ชั่วโมง`;
-                        } else if (diffHours > 0) {
-                            offlineText = `${diffHours} ชั่วโมง ${diffMins % 60} นาที`;
-                        } else {
-                            offlineText = `${diffMins} นาที`;
-                        }
-
-                        if(diffMs < 60000) { 
-                            dotClass = 'status-recent';
-                            statusText = `เพิ่งออก (ไม่ถึง 1 นาที)`;
-                        } else {
-                            dotClass = 'status-offline';
-                            statusText = `ออกจากระบบไปแล้ว ${offlineText}`;
-                        }
-                    }
-                }
-                
-                let passDisplay = '********';
-                if(currentAdminEmail === 'admin@usk.ac.th' || currentAdminEmail === adminData.email) {
-                    passDisplay = adminData.password || 'ไม่ทราบรหัสผ่าน';
-                }
-                
-                let actBtn = '-';
-                if(currentAdminEmail === 'admin@usk.ac.th' && adminData.email !== 'admin@usk.ac.th' && currentAdminEmail !== adminData.email) {
-                    actBtn = `<button class="btn-red" onclick="deleteAdmin('${encEmail}')">ลบ</button>`;
-                }
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td data-label="สถานะ:"><span class="status-dot ${dotClass}"></span>${statusText}</td>
-                        <td data-label="อีเมล:">${adminData.email}</td>
-                        <td data-label="รหัสผ่าน:">${passDisplay}</td>
-                        <td data-label="จัดการ:">${actBtn}</td>
-                    </tr>
-                `;
-            });
-        }
-
         // --- ระบบจัดการเปิด/ปิด Sidebar บนมือถือ ---
         window.toggleSidebar = function() {
             const sidebar = document.getElementById('mainSidebar');
@@ -1773,7 +1524,7 @@
             // สร้าง Key ค้นหาเวลาปัจจุบัน
             const todayKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
             const monthKey = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}`;
-             const thisWeekKey = getWeekYear(d);
+            const thisWeekKey = getWeekYear(d);
             
             // สร้าง Key หาเวลาของเดือนที่แล้ว
             const lmDate = new Date(d); lmDate.setMonth(lmDate.getMonth() - 1);
@@ -1828,16 +1579,7 @@
         
         // ทดสอบรันการนับวิว หากแอดมินโหลดหน้านี้ (คุณสามารถลบหรือคอมเมนต์บรรทัดล่างทิ้งได้ หากไม่ต้องการให้แอดมินไปเพิ่มยอดเข้าชม)
         trackFrontendVisitor();
-        let allReportsMap = new Map();
-        let allPendingData = []; let allRepliedData = [];
-        let currentPendingPage = 1;
-        let currentRepliedPage = 1;
-        const ITEMS_PER_PAGE = 10;
-        let isFirstLoadComplete = false;
-        let unreadRepCount = 0;
-        let allChatsMap = new Map();
-        let unreadChatCount = 0;
-        let activeChatUser = null;
+
         // --- จัดการข้อมูล Reports ---
         function updateListsAndRender() {
             allPendingData = [];
@@ -1861,9 +1603,11 @@
             const repBadge = document.getElementById('navRepBadge');
             const chatBadge = document.getElementById('navChatBadge');
 
-            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount; }
+            if(unreadRepCount > 0) { repBadge.style.display = 'inline-block'; repBadge.innerText = unreadRepCount;
+            }
             else repBadge.style.display = 'none';
-            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount; }
+            if(unreadChatCount > 0) { chatBadge.style.display = 'inline-block'; chatBadge.innerText = unreadChatCount;
+            }
             else chatBadge.style.display = 'none';
             if(unreadRepCount + unreadChatCount > 0) bell.style.display = 'block';
             else bell.style.display = 'none';
@@ -1931,7 +1675,7 @@
 
                 const isActive = activeChatUser === userName ? 'active' : '';
                 listEl.innerHTML += `
-                     <div class="chat-user-item ${isActive}" onclick="selectChatUser('${userName}')">
+                    <div class="chat-user-item ${isActive}" onclick="selectChatUser('${userName}')">
                         <div class="chat-user-name">${userName}</div>
                         ${unreadBadge}
                     </div>
@@ -1976,7 +1720,7 @@
                     }
 
                     box.innerHTML += `
-                         <div class="reply-msg ${msgClass}" style="max-width: 70%;">
+                        <div class="reply-msg ${msgClass}" style="max-width: 70%;">
                             ${msg.message}
                             <div style="font-size:10px; opacity:0.7; text-align:right; margin-top:3px;">${timeStr} ${readStatusHtml}</div>
                         </div>
@@ -2197,7 +1941,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                             <td data-label="จัดการ:">
                                    <div style="display:flex; gap:5px;">
                                     <button class="btn-blue" style="background:#eab308;" onclick="editFaq('${key}', '${safeQ}', '${safeA}')"><i class="fas fa-edit"></i> แก้ไข</button>
-                                     <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
+                                    <button class="btn-red" onclick="deleteFaq('${key}')"><i class="fas fa-trash"></i> ลบ</button>
                                 </div>
                             </td>
                         </tr>
@@ -2261,7 +2005,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                         logAdminActivity(`แก้ไขข้อมูล FAQ`);
                         Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'แก้ไข FAQ สำเร็จ', showConfirmButton: false, timer: 2000 });
                     } catch(e) {
-                          Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
+                        Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถแก้ไขข้อมูลได้', 'error');
                     }
                 }
             });
@@ -2269,8 +2013,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
 
         // --- จัดการประกาศหน้าแรก (Announcement) ---
         const annRef = ref(db, 'announcement');
-        let currentAnnData = null;
-
+        
         window.toggleAnnSource = function() {
             const source = document.getElementById('annSource').value;
             if (source === 'url') { 
@@ -2386,7 +2129,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                     tbody.innerHTML += `
                         <tr>
                             <td data-label="รูปภาพ:"><img src="${item.imageUrl}" style="width: 100%; max-width: 150px; border-radius: 8px; object-fit: cover; aspect-ratio: 1.414 / 1;"></td>
-                             <td data-label="หัวข้อหลัก:"><b>${item.title}</b></td>
+                            <td data-label="หัวข้อหลัก:"><b>${item.title}</b></td>
                             <td data-label="เนื้อหา:"><div style="max-height: 80px; overflow-y: auto; font-size: 13px; white-space: pre-wrap;">${item.content}</div></td>
                             <td data-label="จัดการ:">
                                 <div style="display:flex; flex-direction:column; gap:8px;">
@@ -2398,6 +2141,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                     `;
                 });
             } else {
+                
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">ยังไม่มีข่าวประชาสัมพันธ์</td></tr>';
             }
         }, (error) => { console.warn('โหลดข้อมูลประชาสัมพันธ์ไม่สำเร็จ', error); });
@@ -2427,7 +2171,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                         imageUrl = await new Promise((resolve, reject) => {
                             const reader = new FileReader();
                             reader.readAsDataURL(fileInput);
-                             reader.onload = () => resolve(reader.result);
+                            reader.onload = () => resolve(reader.result);
                             reader.onerror = error => reject(error);
                         });
                     }
@@ -2619,55 +2363,61 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
             }
         };
 
-        // ==========================================
-        // --- USKTube Management System ---
-        // ==========================================
-        const SUPABASE_URL_USKTUBE = 'https://atjyqdfvrgjidrrlccos.supabase.co';
-        const SUPABASE_KEY_USKTUBE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF0anlxZGZ2cmdqaWRycmxjY29zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMTYzOTAsImV4cCI6MjA5NzY5MjM5MH0.z0Armn-yavD7lSDifGi05mq9fPg1LOMFG7nMBSz9eS8';
-        const usktubeDb = createClient(SUPABASE_URL_USKTUBE, SUPABASE_KEY_USKTUBE);
+        // =========================================================
+        // USKTube Script Integration
+        // =========================================================
+        const USK_OFFICIAL_NAME = 'USK Official';
+        const USK_OFFICIAL_LOGO = 'https://i.postimg.cc/PJ0mbct4/IMG-7790.png';
 
-        const OFFICIAL_NAME = 'USK Official';
-        const OFFICIAL_LOGO = 'https://i.postimg.cc/PJ0mbct4/IMG-7790.png';
+        window.processVideoLink = function(url) {
+            const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([\w-]{11})/);
+            if (ytMatch) return ytMatch[1];
+            return url;
+        }
 
-        function extractVideoID(url) { 
-            const regExp = /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([\w-]{11})/; 
-            const match = url.match(regExp); 
-            return match ? match[1] : null;
+        window.getThumbUrl = function(v) {
+            if (v.cover_url) return v.cover_url;
+            if (v.youtube_id && v.youtube_id.length === 11 && !v.youtube_id.includes('http')) {
+                return `https://i.ytimg.com/vi/${v.youtube_id}/mqdefault.jpg`;
+            }
+            return USK_OFFICIAL_LOGO;
         }
 
         window.execUploadVideo = async function() {
             const title = document.getElementById('vid-title').value.trim();
             const url = document.getElementById('vid-url').value.trim();
+            const cover = document.getElementById('vid-cover').value.trim();
             const desc = document.getElementById('vid-desc').value.trim();
             const isVert = document.getElementById('vid-is-vertical').checked;
-            const yt_id = extractVideoID(url);
-            if(!title || !yt_id) return alert('ข้อผิดพลาด: กรุณาระบุชื่อหัวข้อและตรวจสอบลิงก์ YouTube ให้ถูกต้อง');
+            if(!title || !url) return alert('ข้อผิดพลาด: กรุณาระบุชื่อหัวข้อและลิงก์วิดีโอ');
 
-            const { error } = await usktubeDb.from('videos').insert([{ title: title, youtube_id: yt_id, description: desc, is_vertical: isVert }]);
+            const finalUrlData = processVideoLink(url);
+            const { error } = await usktubeDb.from('videos').insert([{ 
+                title: title, 
+                youtube_id: finalUrlData, 
+                cover_url: cover,
+                description: desc, 
+                is_vertical: isVert 
+            }]);
             if(error) alert('ข้อผิดพลาดจากระบบ: ' + error.message);
             else {
                 alert('บันทึกข้อมูลวิดีโอเข้าสู่ระบบสำเร็จ');
                 document.getElementById('vid-title').value = ''; 
                 document.getElementById('vid-url').value = ''; 
+                document.getElementById('vid-cover').value = ''; 
                 document.getElementById('vid-desc').value = ''; 
                 document.getElementById('vid-is-vertical').checked = false;
-                window.loadVideos();
+                loadVideos();
             }
         }
 
         window.execCreatePost = async function() {
             const content = document.getElementById('post-content').value.trim();
             const img = document.getElementById('post-img').value.trim();
-
             if(!content) return alert('ข้อผิดพลาด: กรุณาระบุเนื้อหาที่ต้องการประกาศ');
-
             const { error } = await usktubeDb.from('community_posts').insert([{ content: content, image_url: img }]);
             if(error) alert('ข้อผิดพลาดจากระบบ: ' + error.message);
-            else {
-                alert('เผยแพร่ประกาศชุมชนเข้าสู่ระบบสำเร็จ');
-                document.getElementById('post-content').value = ''; 
-                document.getElementById('post-img').value = '';
-                window.loadPosts();
+            else { alert('เผยแพร่ประกาศชุมชนเข้าสู่ระบบสำเร็จ'); document.getElementById('post-content').value = ''; document.getElementById('post-img').value = ''; loadPosts();
             }
         }
 
@@ -2675,42 +2425,52 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
             const { data } = await usktubeDb.from('videos').select('*, video_likes(user_id), comments(*)').order('created_at', { ascending: false });
             const container = document.getElementById('video-list-container');
             document.getElementById('count-videos').innerText = data ? data.length : 0;
-            if(!data || data.length === 0) { 
-                container.innerHTML = '<div style="text-align:center; color:#64748b; padding:24px;">ไม่พบรายการวิดีโอในระบบ</div>'; 
-                return;
+            if(!data || data.length === 0) { container.innerHTML = '<div style="text-align:center; color:#64748b; padding:24px;">ไม่พบรายการวิดีโอในระบบ</div>'; return;
             }
 
             container.innerHTML = data.map(v => {
                 const mainComments = v.comments ? v.comments.filter(c => !c.parent_id) : [];
                 const replies = v.comments ? v.comments.filter(c => c.parent_id) : [];
+                const thumbImg = getThumbUrl(v);
 
                 let commentsHTML = '<div style="color:#94a3b8; font-size:12px; text-align:center; padding:8px 0;">ไม่มีรายการความคิดเห็น</div>';
+               
                 if(mainComments.length > 0) {
                     commentsHTML = mainComments.map(c => {
-                        const isMainAdmin = c.user_name === OFFICIAL_NAME;
-                        const mainAvatarElem = isMainAdmin ? `<img src="${OFFICIAL_LOGO}" class="usk-avatar-img">` : `<div class="usk-avatar-txt">${c.user_name.charAt(0)}</div>`;
+                        const isMainAdmin = c.user_name === USK_OFFICIAL_NAME;
+                        const cAvatar = c.avatar_url ? c.avatar_url : (isMainAdmin ? USK_OFFICIAL_LOGO : '');
+                        
+                        const mainAvatarElem = cAvatar ? `<img src="${cAvatar}" class="usk-avatar-img">` : `<div class="usk-avatar-txt">${c.user_name.charAt(0)}</div>`;
                         
                         const myReplies = replies.filter(r => r.parent_id === c.id);
+                        myReplies.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
                         const repliesHTML = myReplies.map(r => {
-                            const isRepAdmin = r.user_name === OFFICIAL_NAME;
-                            const repAvatarElem = isRepAdmin ? `<img src="${OFFICIAL_LOGO}" class="usk-avatar-img" style="width:20px; height:20px;">` : `<div class="usk-avatar-txt" style="width:20px; height:20px; font-size:10px;">${r.user_name.charAt(0)}</div>`;
+                            const isRepAdmin = r.user_name === USK_OFFICIAL_NAME;
+                            const rAvatar = r.avatar_url ? r.avatar_url : (isRepAdmin ? USK_OFFICIAL_LOGO : '');
+                            const repAvatarElem = rAvatar ? `<img src="${rAvatar}" class="usk-avatar-img" style="width:20px; height:20px;">` : `<div class="usk-avatar-txt" style="width:20px; height:20px; font-size:10px;">${r.user_name.charAt(0)}</div>`;
                             const repNameDisplay = isRepAdmin 
                                 ? `<span style="color:#1e3a8a; font-weight:600;">USK Official</span> <span class="material-symbols-outlined" style="font-size:12px; color:#1e3a8a; vertical-align:middle; font-variation-settings:'FILL' 1;">verified</span>`
-                                : `@${r.user_name}`;
+                                : `<strong style="color:#334155;">@${r.user_name}</strong>`;
 
                             return `
-                            <div class="usk-comment-item" style="margin-left: 28px; padding: 6px 12px; background: #ffffff; border-radius: 6px; border-left: 3px solid ${isRepAdmin ? '#1e3a8a' : '#94a3b8'}; margin-top: 6px;">
-                                ${repAvatarElem}
-                                <div style="flex:1; font-size:13px;">
-                                    <div>${repNameDisplay}: ${r.content}</div>
+                            <div class="usk-comment-item" style="margin-left: 28px; padding: 6px 12px; background: #ffffff; border-radius: 6px; border-left: 3px solid ${isRepAdmin ? '#1e3a8a' : '#cbd5e1'}; margin-top: 6px;">
+                                <div style="display:flex; gap:8px; align-items:flex-start; flex:1;">
+                                    ${repAvatarElem}
+                                    <div style="font-size:13px; line-height:1.4;">
+                                        <div>${repNameDisplay}: ${r.content}</div>
+                                        <span style="font-size:10px; color:#94a3b8;">${new Date(r.created_at).toLocaleString('th-TH')}</span>
+                                    </div>
                                 </div>
-                                <button class="usk-btn-outline-danger" style="padding:2px 6px; font-size:10px;" onclick="deleteComment('${r.id}')">ลบ</button>
+                                <div style="display:flex; gap:4px; flex-shrink:0;">
+                                    <button class="usk-btn-outline-normal" onclick="prepareReply('${c.id}', '${r.user_name}')">ตอบ</button>
+                                    <button class="usk-btn-outline-danger" onclick="deleteComment('${r.id}')">ลบ</button>
+                                </div>
                             </div>`;
                         }).join('');
 
                         const mainNameDisplay = isMainAdmin 
                             ? `<span style="color:#1e3a8a; font-weight:600;">USK Official</span> <span class="material-symbols-outlined" style="font-size:14px; color:#1e3a8a; vertical-align:middle; font-variation-settings:'FILL' 1;">verified</span>`
-                            : `@${c.user_name}`;
+                            : `<strong style="color:#0f172a;">@${c.user_name}</strong>`;
 
                         return `
                         <div style="background: #ffffff; border: 1px solid #cbd5e1; padding: 14px; border-radius: 6px; margin-bottom: 10px;">
@@ -2718,16 +2478,17 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                                 ${mainAvatarElem}
                                 <div style="flex:1; font-size:13px;">
                                     <div>${mainNameDisplay}: ${c.content}</div>
+                                    <span style="font-size:10px; color:#94a3b8;">${new Date(c.created_at).toLocaleString('th-TH')}</span>
                                 </div>
-                                <button class="usk-btn-outline-normal" onclick="document.getElementById('reply-drawer-${c.id}').style.display='flex'">ตอบกลับ</button>
-                                <button class="usk-btn-outline-danger" onclick="deleteComment('${c.id}')">ลบ</button>
+                                <div style="display:flex; gap:4px; flex-shrink:0;">
+                                    <button class="usk-btn-outline-normal" onclick="prepareReply('${c.id}', '${c.user_name}')">ตอบกลับ</button>
+                                    <button class="usk-btn-outline-danger" onclick="deleteComment('${c.id}')">ลบ</button>
+                                </div>
                             </div>
-                            
                             <div id="reply-drawer-${c.id}" class="usk-reply-drawer" style="display:none;">
-                                <input type="text" id="inp-reply-${c.id}" class="usk-input-field" style="padding:6px 10px; font-size:13px;" placeholder="ระบุข้อความตอบกลับในนาม USK Official...">
+                                <input type="text" id="inp-reply-${c.id}" class="usk-input-field" style="padding:6px 10px; font-size:13px;" placeholder="ระบุข้อความตอบกลับในนาม USK Official..." onkeyup="if(event.key==='Enter') execAdminReply('${v.id}', '${c.id}')">
                                 <button class="usk-btn usk-btn-primary" style="width:auto; padding:6px 14px; font-size:12px;" onclick="execAdminReply('${v.id}', '${c.id}')">ส่งข้อมูล</button>
                             </div>
-
                             <div>${repliesHTML}</div>
                         </div>`;
                     }).join('');
@@ -2737,7 +2498,7 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                 <div class="usk-record-card">
                     <div class="usk-record-master">
                         <div class="usk-thumb-box">
-                            <img src="https://i.ytimg.com/vi/${v.youtube_id}/mqdefault.jpg" alt="Video Thumbnail">
+                            <img src="${thumbImg}" alt="Video Thumbnail">
                             ${v.is_vertical ? '<span class="usk-tag-shorts">SHORTS 9:16</span>' : ''}
                         </div>
                         <div class="usk-record-info">
@@ -2747,64 +2508,74 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                                 <span class="usk-meta-item"><span class="material-symbols-outlined" style="font-size:14px;">thumb_up</span> ถูกใจ: ${v.video_likes ? v.video_likes.length : 0}</span>
                                 <span class="usk-meta-item"><span class="material-symbols-outlined" style="font-size:14px;">forum</span> ความคิดเห็น: ${v.comments ? v.comments.length : 0}</span>
                             </div>
+                            <div style="font-size:11px; color:#94a3b8; margin-top:8px; word-break:break-all;">🔗 แหล่งที่มา: ${v.youtube_id.length === 11 && !v.youtube_id.includes('http') ? 'YouTube' : 'ลิงก์ภายนอก'}</div>
                         </div>
                         <button class="usk-btn-outline-danger" onclick="deleteVideo('${v.id}')">
-                            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">delete</span> ลบรายการวิดีโอ
+                            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">delete</span>
+                            ลบรายการวิดีโอ
                         </button>
                     </div>
                     <div class="usk-sub-panel">
-                        <div class="usk-sub-panel-title">
-                            <span class="material-symbols-outlined" style="font-size:14px;">chat</span>
-                            <span>รายการความคิดเห็นและการตอบกลับ</span>
-                        </div>
+                        <div class="usk-sub-panel-title"><span class="material-symbols-outlined" style="font-size:14px;">chat</span><span>รายการความคิดเห็นและการตอบกลับ</span></div>
                         ${commentsHTML}
                     </div>
                 </div>`;
             }).join('');
         }
 
+        window.prepareReply = function(rootId, targetName) {
+            const drawer = document.getElementById(`reply-drawer-${rootId}`);
+            drawer.style.display = 'flex';
+            const inp = document.getElementById(`inp-reply-${rootId}`);
+            if(targetName !== USK_OFFICIAL_NAME) inp.value = `@${targetName} `; else inp.value = '';
+            inp.focus();
+        }
+
         window.execAdminReply = async function(vidId, parentId) {
             const inp = document.getElementById(`inp-reply-${parentId}`);
             if(!inp || !inp.value.trim()) return alert('กรุณาระบุข้อความที่ต้องการตอบกลับ');
-            const { error } = await usktubeDb.from('comments').insert([{ video_id: vidId, content: inp.value.trim(), user_name: OFFICIAL_NAME, avatar_url: OFFICIAL_LOGO, parent_id: parentId }]);
-            if(error) alert('ข้อผิดพลาด: ' + error.message); 
-            else { 
-                inp.value = ''; 
-                window.loadVideos();
+            const { error } = await usktubeDb.from('comments').insert([{ video_id: vidId, content: inp.value.trim(), user_name: USK_OFFICIAL_NAME, avatar_url: USK_OFFICIAL_LOGO, parent_id: parentId }]);
+            if(error) alert('ข้อผิดพลาด: ' + error.message); else { inp.value = ''; loadVideos();
             }
         }
 
-        window.deleteVideo = async function(id) { 
-            if(confirm('ยืนยันการลบข้อมูลวิดีโอนี้ออกจากระบบอย่างถาวรหรือไม่?')) { 
-                await usktubeDb.from('videos').delete().eq('id', id); 
-                window.loadVideos();
-            } 
-        }
-        
-        window.deleteComment = async function(id) { 
-            if(confirm('ยืนยันการลบรายการความคิดเห็นนี้หรือไม่?')) { 
-                await usktubeDb.from('comments').delete().eq('id', id); 
-                window.loadVideos();
-            } 
-        }
+        window.deleteVideo = async function(id) { if(confirm('ยืนยันการลบข้อมูลวิดีโอนี้ออกจากระบบอย่างถาวรหรือไม่?')) { await usktubeDb.from('videos').delete().eq('id', id); loadVideos();
+        } }
+        window.deleteComment = async function(id) { if(confirm('ยืนยันการลบรายการความคิดเห็นนี้หรือไม่?')) { await usktubeDb.from('comments').delete().eq('id', id); loadVideos();
+        } }
 
         window.loadPosts = async function() {
             const { data } = await usktubeDb.from('community_posts').select('*, post_likes(user_id), post_comments(*)').order('created_at', { ascending: false });
             const container = document.getElementById('post-list-container');
             document.getElementById('count-posts').innerText = data ? data.length : 0;
-            if(!data || data.length === 0) { 
-                container.innerHTML = '<div style="text-align:center; color:#64748b; padding:24px;">ไม่พบรายการประกาศในระบบ</div>'; 
-                return;
+            if(!data || data.length === 0) { container.innerHTML = '<div style="text-align:center; color:#64748b; padding:24px;">ไม่พบรายการประกาศในระบบ</div>'; return;
             }
 
             container.innerHTML = data.map(p => {
-                const commentsHtml = p.post_comments && p.post_comments.length > 0 ? p.post_comments.map(c => `
-                    <div class="usk-comment-item" style="background:#ffffff; padding:8px 12px; border-radius:4px; border:1px solid #e2e8f0; margin-bottom:6px;">
-                        <div class="usk-avatar-txt" style="width:24px; height:24px; font-size:10px;">${c.user_id.charAt(5).toUpperCase()}</div>
-                        <div style="flex:1; font-size:12px;"><strong>@User${c.user_id.substr(-4)}</strong>: ${c.content}</div>
-                        <button class="usk-btn-outline-danger" style="padding:2px 6px; font-size:10px;" onclick="deletePostComment('${c.id}')">ลบ</button>
-                    </div>
-                `).join('') : '<div style="color:#94a3b8; font-size:12px; padding:4px 0;">ไม่มีรายการความคิดเห็น</div>';
+                const commentsHtml = p.post_comments && p.post_comments.length > 0 ? p.post_comments.map(c => {
+                    const isPostAdmin = c.user_id === USK_OFFICIAL_NAME;
+                    const cAvatar = c.avatar_url ? c.avatar_url : (isPostAdmin ? USK_OFFICIAL_LOGO : '');
+                    const cAvatarElem = cAvatar ? `<img src="${cAvatar}" class="usk-avatar-img" style="width:24px; height:24px;">` : `<div class="usk-avatar-txt" style="width:24px; height:24px; font-size:10px;">${c.user_id.charAt(5).toUpperCase()}</div>`;
+                    const cNameDisplay = isPostAdmin 
+                        ? `<span style="color:#1e3a8a; font-weight:600;">USK Official</span> <span class="material-symbols-outlined" style="font-size:12px; color:#1e3a8a; vertical-align:middle; font-variation-settings:'FILL' 1;">verified</span>`
+                        : `<strong>@User${c.user_id.substr(-4)}</strong>`;
+
+                    const rawAuthor = isPostAdmin ? 'USK Official' : `User${c.user_id.substr(-4)}`;
+                    return `
+                    <div class="usk-comment-item" style="background:#ffffff; padding:8px 12px; border-radius:4px; border:1px solid #cbd5e1; margin-bottom:6px; display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+                        <div style="display:flex; gap:8px; align-items:flex-start; flex:1;">
+                            ${cAvatarElem}
+                            <div style="font-size:12px; line-height:1.4;">
+                                <div>${cNameDisplay}: ${c.content}</div>
+                                <span style="font-size:10px; color:#94a3b8;">${new Date(c.created_at).toLocaleString('th-TH')}</span>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:4px; flex-shrink:0;">
+                            <button class="usk-btn-outline-normal" onclick="preparePostReply('${p.id}', '${rawAuthor}')">ตอบ</button>
+                            <button class="usk-btn-outline-danger" onclick="deletePostComment('${c.id}')">ลบ</button>
+                        </div>
+                    </div>`;
+                }).join('') : '<div style="color:#94a3b8; font-size:12px; padding:4px 0;">ไม่มีรายการความคิดเห็น</div>';
 
                 return `
                 <div class="usk-record-card">
@@ -2817,76 +2588,232 @@ onclick="markAsReviewed('${key}')"><i class="fas fa-check-circle"></i> รับ
                             <div style="font-size:14px; color:#0f172a; margin-bottom:12px; white-space:pre-wrap;">${p.content}</div>
                             ${p.image_url ? `<img src="${p.image_url}" style="max-height:160px; border-radius:6px; border:1px solid #cbd5e1; display:block; margin-bottom:12px;">` : ''}
                         </div>
-                        <button class="usk-btn-outline-danger" onclick="deletePost('${p.id}')">
-                            <span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">delete</span> ลบประกาศ
-                        </button>
+                        <button class="usk-btn-outline-danger" onclick="deletePost('${p.id}')"><span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">delete</span> ลบประกาศ</button>
                     </div>
                     <div style="font-size:12px; color:#475569; display:flex; align-items:center; gap:6px;">
                         <span class="material-symbols-outlined" style="font-size:14px;">thumb_up</span>
                         <span>จำนวนผู้ถูกใจ: ${p.post_likes ? p.post_likes.length : 0} บัญชี</span>
                     </div>
                     <div class="usk-sub-panel" style="margin-top:0;">
-                        <div class="usk-sub-panel-title">
-                            <span class="material-symbols-outlined" style="font-size:14px;">forum</span>
-                            <span>ความคิดเห็นต่อประกาศ</span>
+                        <div class="usk-sub-panel-title" style="justify-content:space-between;">
+                            <div style="display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:14px;">forum</span><span>ความคิดเห็นต่อประกาศ</span></div>
+                            <button class="usk-btn-outline-normal" onclick="preparePostReply('${p.id}', 'ทั่วไป')">แสดงความเห็นเพิ่ม</button>
                         </div>
                         ${commentsHtml}
+                        <div id="post-drawer-${p.id}" class="usk-reply-drawer" style="display:none; margin-top:8px;">
+                            <input type="text" id="inp-post-reply-${p.id}" class="usk-input-field" style="padding:6px 10px; font-size:12px;" placeholder="ตอบกลับประกาศนี้ในนาม USK Official..." onkeyup="if(event.key==='Enter') execPostReply('${p.id}')">
+                            <button class="usk-btn usk-btn-primary" style="width:auto; padding:6px 14px; font-size:12px;" onclick="execPostReply('${p.id}')">ส่งข้อมูล</button>
+                        </div>
                     </div>
                 </div>`;
             }).join('');
         }
 
-        window.deletePost = async function(id) { 
-            if(confirm('ยืนยันการลบประกาศชุมชนนี้หรือไม่?')) { 
-                await usktubeDb.from('community_posts').delete().eq('id', id); 
-                window.loadPosts(); 
-            } 
-        }
-        
-        window.deletePostComment = async function(id) { 
-            if(confirm('ยืนยันการลบความคิดเห็นนี้หรือไม่?')) { 
-                await usktubeDb.from('post_comments').delete().eq('id', id); 
-                window.loadPosts(); 
-            } 
+        window.preparePostReply = function(postId, targetAuthor) {
+            const drawer = document.getElementById(`post-drawer-${postId}`);
+            drawer.style.display = 'flex';
+            const inp = document.getElementById(`inp-post-reply-${postId}`);
+            if(targetAuthor !== 'ทั่วไป' && targetAuthor !== 'USK Official') inp.value = `@${targetAuthor} `;
+            else inp.value = '';
+            inp.focus();
         }
 
+        window.execPostReply = async function(postId) {
+            const inp = document.getElementById(`inp-post-reply-${postId}`);
+            if(!inp || !inp.value.trim()) return alert('กรุณาระบุข้อความ');
+            const { error } = await usktubeDb.from('post_comments').insert([{ post_id: postId, content: inp.value.trim(), user_id: USK_OFFICIAL_NAME, avatar_url: USK_OFFICIAL_LOGO }]);
+            if(error) alert('ข้อผิดพลาด: ' + error.message); else { inp.value = ''; loadPosts();
+            }
+        }
+
+        window.deletePost = async function(id) { if(confirm('ยืนยันการลบประกาศชุมชนนี้หรือไม่?')) { await usktubeDb.from('community_posts').delete().eq('id', id); loadPosts();
+        } }
+        window.deletePostComment = async function(id) { if(confirm('ยืนยันการลบความคิดเห็นนี้หรือไม่?')) { await usktubeDb.from('post_comments').delete().eq('id', id); loadPosts();
+        } }
+
         window.loadAudience = async function() {
-            const { data: profsData } = await usktubeDb.from('user_profiles').select('*').order('created_at', { ascending: false });
-            const { data: subs } = await usktubeDb.from('subscriptions').select('*');
+            // ดึงข้อมูลผู้ใช้จาก Firebase presence ตามข้อกำหนดที่ให้นับจากนักเรียนที่กรอกชื่อเท่านั้น และไม่นับชื่อซ้ำ
+            const snapshot = await get(ref(db, 'presence'));
+            let profsMap = new Map();
+            if (snapshot.exists()) {
+                snapshot.forEach(child => {
+                    let data = child.val();
+                    let userName = data.name || data.email || child.key;
+                    if(userName && !userName.includes('@') && !userName.toLowerCase().includes('admin') && userName !== "กำลังอยู่หน้าเว็บ (ยังไม่ค้นหาชื่อ)") {
+                        if(!profsMap.has(userName)) {
+                            profsMap.set(userName, {
+                                user_id: userName,
+                                phone: data.phone || '',
+                                email: data.email || '',
+                                social_link: data.social_link || ''
+                            });
+                        }
+                    }
+                });
+            }
             
-            // กรองบัญชีเฉพาะนักเรียนที่กรอกชื่อแล้ว (user_id มีค่า ไม่ว่างเปล่า และไม่ใช่ 'ไม่ระบุ')
-            const profs = profsData ? profsData.filter(u => u.user_id && u.user_id.trim() !== '' && u.user_id !== 'ไม่ระบุ') : [];
+            let profs = Array.from(profsMap.values());
+            const { data: subs } = await usktubeDb.from('subscriptions').select('*');
 
             document.getElementById('count-users').innerText = profs.length;
             document.getElementById('count-subs').innerText = subs ? subs.length : 0;
 
             const grid = document.getElementById('user-profile-grid');
-            if(profs.length === 0) { 
-                grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#64748b; padding:24px;">ไม่พบข้อมูลนักเรียนที่ลงทะเบียนในทำเนียบ</div>'; 
-                return;
+            if(!profs || profs.length === 0) { 
+                grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#64748b; padding:24px;">ไม่พบข้อมูลในทำเนียบ</div>'; 
+                return; 
             }
 
             grid.innerHTML = profs.map(u => `
                 <div class="usk-directory-card">
                     <div style="width:46px; height:46px; border-radius:50%; background:#f1f5f9; display:flex; align-items:center; justify-content:center; font-weight:600; overflow:hidden; flex-shrink:0; border:1px solid #cbd5e1; font-size:16px;">
-                        ${u.avatar_url ? `<img src="${u.avatar_url}" style="width:100%; height:100%; object-fit:cover;">` : u.user_id.charAt(0).toUpperCase()}
+                        ${u.user_id.charAt(0).toUpperCase()}
                     </div>
                     <div style="overflow:hidden; flex:1;">
                         <div style="font-size:14px; font-weight:600; color:#0f172a; text-overflow:ellipsis; overflow:hidden;">${u.user_id}</div>
                         <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
                             <span class="usk-contact-pill"><span class="material-symbols-outlined" style="font-size:13px;">call</span> ${u.phone || 'ไม่ระบุ'}</span>
                             <span class="usk-contact-pill"><span class="material-symbols-outlined" style="font-size:13px;">mail</span> ${u.email || 'ไม่ระบุ'}</span>
-                            <span class="usk-contact-pill" style="color:#2563eb;"><span class="material-symbols-outlined" style="font-size:13px;">public</span> ${u.social_link || 'ไม่ระบุ'}</span>
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // สั่งโหลดข้อมูล USKTube เมื่อเปิดระบบ
-        window.loadVideos();
-        window.loadPosts();
-        window.loadAudience();
+        // โหลดข้อมูล USKTube ตอนเริ่มต้นระบบ
+        window.renderAdminTable = function() {
+            const tbody = document.getElementById('adminUsersTableBody');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            
+            if(Object.keys(allAdminsData).length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">ยังไม่มีข้อมูล</td></tr>`;
+                return;
+            }
+
+            Object.keys(allAdminsData).forEach(encEmail => {
+                const adminData = allAdminsData[encEmail];
+                const rawEmail = adminData.email;
+                const pres = allAdminsPresence[encEmail] || { last_active: 0 };
+                
+                const now = Date.now();
+                const lastActive = pres.last_active || 0;
+                
+                let isActuallyOnline = window.currentOnlineAdmins && window.currentOnlineAdmins.has(rawEmail);
+                if (pres.force_offline === true) isActuallyOnline = false;
+
+                let dotClass = 'status-offline';
+                let statusText = 'ยังไม่เคยเข้าระบบ';
+                
+                if (isActuallyOnline) {
+                    dotClass = 'status-online';
+                    statusText = `กำลังใช้งานอยู่ในระบบ`;
+                } else {
+                    if (lastActive > 0) {
+                        const diffMs = Math.max(0, now - lastActive);
+                        const diffMins = Math.floor(diffMs / 60000);
+                        const diffHours = Math.floor(diffMins / 60);
+                        const diffDays = Math.floor(diffHours / 24);
+                        let offlineText = '';
+                        if (diffDays > 0) {
+                            offlineText = `${diffDays} วัน ${diffHours % 24} ชั่วโมง`;
+                        } else if (diffHours > 0) {
+                            offlineText = `${diffHours} ชั่วโมง ${diffMins % 60} นาที`;
+                        } else {
+                            offlineText = `${diffMins} นาที`;
+                        }
+
+                        if(diffMs < 60000) { 
+                            dotClass = 'status-recent';
+                            statusText = `เพิ่งออก (ไม่ถึง 1 นาที)`;
+                        } else {
+                            dotClass = 'status-offline';
+                            statusText = `ออกจากระบบไปแล้ว ${offlineText}`;
+                        }
+                    }
+                }
+                
+                let passDisplay = '********';
+                if(currentAdminEmail === 'admin@usk.ac.th' || currentAdminEmail === adminData.email) {
+                    passDisplay = adminData.password || 'ไม่ทราบรหัสผ่าน';
+                }
+                
+                let actBtn = '-';
+                if(currentAdminEmail === 'admin@usk.ac.th' && adminData.email !== 'admin@usk.ac.th' && currentAdminEmail !== adminData.email) {
+                    actBtn = `<button class="btn-red" onclick="deleteAdmin('${encEmail}')">ลบ</button>`;
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td data-label="สถานะ:"><span class="status-dot ${dotClass}"></span>${statusText}</td>
+                        <td data-label="อีเมล:">${adminData.email}</td>
+                        <td data-label="รหัสผ่าน:">${passDisplay}</td>
+                        <td data-label="จัดการ:">${actBtn}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        const loadSupabaseAdminData = async () => {
+            try {
+                const { data: users } = await supabase.from('admin_users').select('*');
+                if(users) {
+                    allAdminsData = {};
+                    users.forEach(u => {
+                        if(u.email) allAdminsData[encodeEmail(u.email)] = u;
+                    });
+                }
+                
+                const { data: presence } = await supabase.from('admin_presence').select('*');
+                if(presence) {
+                    allAdminsPresence = {};
+                    presence.forEach(p => {
+                        if(p.email) allAdminsPresence[encodeEmail(p.email)] = p;
+                    });
+                }
+                if (typeof window.renderAdminTable === "function") window.renderAdminTable();
+            } catch (err) {
+                console.warn(err);
+            }
+        };
+
+        loadSupabaseAdminData();
+        supabase.channel('admin_db_changes_room')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_users' }, payload => {
+                if (payload.eventType === 'DELETE') {
+                    if(payload.old && payload.old.email) delete allAdminsData[encodeEmail(payload.old.email)];
+                } else {
+                    if(payload.new && payload.new.email) allAdminsData[encodeEmail(payload.new.email)] = payload.new;
+                }
+                if (typeof window.renderAdminTable === "function") window.renderAdminTable();
+            })
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'admin_presence' }, payload => {
+                if (payload.eventType === 'DELETE') {
+                    if(payload.old && payload.old.email) delete allAdminsPresence[encodeEmail(payload.old.email)];
+                } else {
+                    if(payload.new && payload.new.email) allAdminsPresence[encodeEmail(payload.new.email)] = payload.new;
+                }
+                if (typeof window.renderAdminTable === "function") window.renderAdminTable();
+            })
+            .subscribe();
+
+        setInterval(() => {
+            if(document.getElementById('system_mgmt').classList.contains('active')) {
+                if (typeof window.renderAdminTable === "function") window.renderAdminTable();
+            }
+        }, 5000);
+
+        loadVideos(); 
+        loadPosts(); 
+        loadAudience();
+
+        // ตรวจสอบ Session การเข้าสู่ระบบของ Admin (ไว้ล่างสุดเพื่อป้องกัน Error ตัวแปรยังไม่พร้อมใช้งาน)
+        checkUserSession();
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT' && !localStorage.getItem('adminSessionEmail')) {
+                document.getElementById('loginOverlay').style.display = 'flex';
+            }
+        });
 
     </script>
 </body>
